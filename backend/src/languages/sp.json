@@ -1,0 +1,40 @@
+{
+  "email": {
+    "sender": "Distribuidora - Administracion de usuarios",
+    "check": "Por favor confirme su correo electronico"
+  },
+  "user": {
+    "user_not_found": "Usuario no encontrado",
+    "invalid_password": "Contraseña incorrecta",
+    "login_error": "Error de inicio de sesión",
+    "register_error": "Error de registro",
+    "update_error": "Error de actualización",
+    "delete_error": "Error de borrado",
+    "register_success": "Usuario registrado con exito",
+    "update_success": "Usuario actualizado con exito",
+    "delete_success": "Usuario borrado con exito",
+    "change_password": "Debe cambiar su contraseña"
+  },
+  "item": {
+    "register_error": "Error de registro de producto",
+    "item_not_found": "Producto no encontrado",
+    "update_error": "Error de actualización",
+    "update_success": "Producto actualizado con exito",
+    "delete_error": "Error de borrado"
+  },
+  "order": {
+    "order_not_found": "Orden no encontrada",
+    "register_error": "Error de registro de orden",
+    "query_error": "Error de consulta de ordenes",
+    "update_error": "Error de actualización",
+    "update_success": "Orden actualizada con exito",
+    "delete_error": "Error de borrado"
+  },
+  "contact": {
+    "register_error": "Error de registro de contacto",
+    "register_success": "Contacto registrado con exito",
+    "update_error": "Error de actualización",
+    "contact_not_found": "Contacto no encontrado",
+    "delete_error": "Error de borrado"
+  }
+}
