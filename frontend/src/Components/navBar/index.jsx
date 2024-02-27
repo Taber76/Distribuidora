@@ -1,11 +1,35 @@
 import { Link } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+
 import { Button } from '../button';
 import { NavMobile } from '../nav-mobile';
 import { NavDesktop } from '../nav-desktop';
 import { useMediaQuery } from 'react-responsive';
+import { setUser } from '../../store/userSlice';
 
 const NavBar = () => {
   const isMobile = useMediaQuery({ query: '(max-width: 768px)' }); // Define el breakpoint para dispositivos móviles
+  const [btnText, setBtnText] = useState('Login');
+  const user = useSelector((state) => state.user);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (user.user) {
+      setBtnText(user.user.username);
+    } else {
+      setBtnText('Login');
+    }
+  }, [user]);
+
+  const handleLogin = () => {
+    if (user.user) {
+      dispatch(setUser(null));
+      localStorage.removeItem('token');
+    } else {
+      window.location.href = '/Login';
+    }
+  }
 
   return (
     <header className="bg-blue-500 py-4 md:py-6">
@@ -22,10 +46,8 @@ const NavBar = () => {
             {/* Botón de login */}
             <div className="md:flex items-center">
               <Button
-                onClick={() => {
-
-                }}
-                text="Login"
+                onClick={handleLogin}
+                text={btnText}
                 isActive={true}
               />
             </div>
@@ -38,9 +60,8 @@ const NavBar = () => {
             <div className="md:flex items-center ml-4">
               <Link to="/Login">
                 <Button
-                  onClick={() => {
-                  }}
-                  text="Login"
+                  onClick={handleLogin}
+                  text={btnText}
                   isActive={true}
                 />
               </Link>

@@ -9,32 +9,32 @@ import { FaUsers } from "react-icons/fa";
 export const routes = [
   {
     title: "Inicio",
-    href: "#",
+    href: "/",
     Icon: BiHomeAlt2,
   },
   {
     title: "Ventas",
-    href: "#",
+    href: "#1",
     Icon: FaTruck,
   },
   {
     title: "Compras",
-    href: "#",
+    href: "#2",
     Icon: MdOutlineStorage,
   },
   {
     title: "Productos",
-    href: "#",
+    href: "#3",
     Icon: FaWineBottle,
   },
   {
     title: "Contactos",
-    href: "#",
+    href: "#4",
     Icon: MdContactPhone,
   },
   {
     title: "Usuarios",
-    href: "#",
+    href: "#5",
     Icon: FaUsers,
   }
 ];

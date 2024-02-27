@@ -14,6 +14,18 @@ userRouter.post(
   userController.login
 )
 
+userRouter.get(
+  '/getbyid/:user_id',
+  passport.authenticate('userJWT', { session: false }),
+  userController.getById
+)
+
+userRouter.get(
+  '/getbytoken',
+  passport.authenticate('userJWT', { session: false }),
+  userController.getByToken
+)
+
 userRouter.put(
   '/update',
   passport.authenticate('userJWT', { session: false }),

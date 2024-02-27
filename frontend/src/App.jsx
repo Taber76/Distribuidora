@@ -1,5 +1,5 @@
-import { Inicio, Login, Registro, RegistroGes } from './Pages';
-import { NavBar, Footer } from './Components';
+import { Home, Login, Register, PasswordChange } from './views';
+import { NavBar, Footer } from './components';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
 function App() {
@@ -8,10 +8,10 @@ function App() {
 			<Router>
 				<NavBar />
 				<Routes>
-					<Route path="/" element={<Inicio />} />
-					<Route path="/Login" element={<Login />} />
-					<Route path="/Registro" element={<Registro />} />
-					<Route path="/RegistroGes" element={<RegistroGes />} />
+					<Route path="/" element={<Home />} />
+					<Route path="/login" element={<Login />} />
+					<Route path="/register" element={<Register />} />
+					<Route path="/password-change" element={<PasswordChange />} />
 				</Routes>
 				<Footer />
 			</Router>

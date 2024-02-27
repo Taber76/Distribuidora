@@ -10,13 +10,14 @@ class UserModel {
     this.model = connection.model<IUser>('User', UserSchema);
   }
 
-  public async login(email: string, username: string): Promise<IUser | null> {
+  public async login(username: string): Promise<IUser | null> {
     try {
       let user = null;
       if (username) {
         user = await this.model.findOne({ username }).select('+password');
-      } else if (email) {
-        user = await this.model.findOne({ email }).select('+password');
+        if (!user) {
+          user = await this.model.findOne({ email: username }).select('+password');
+        }
       }
       return user;
     } catch (error) {
@@ -30,6 +31,15 @@ class UserModel {
       const newUser = new this.model(userData);
       const savedUser = await newUser.save();
       return savedUser;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  public async getById(id: string): Promise<IUser | null> {
+    try {
+      const user = await this.model.findById(id);
+      return user;
     } catch (error) {
       throw error;
     }

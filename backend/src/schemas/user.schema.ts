@@ -25,6 +25,7 @@ export const UserSchema = new Schema<IUser>({
     type: String,
     required: false,
     unique: true,
+    sparse: true,
     validate: {
       validator: function (v: string) {
         const re = /^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/;
@@ -39,7 +40,8 @@ export const UserSchema = new Schema<IUser>({
   role: {
     type: String,
     required: true,
-    enum: ['SELER', 'ADMIN']
+    enum: ['SELER', 'ADMIN'],
+    default: 'SELER'
   },
   avatar: { type: String, required: false },
   secure_password: { type: Boolean, default: false },
