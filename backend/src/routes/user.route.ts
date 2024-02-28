@@ -21,6 +21,12 @@ userRouter.get(
 )
 
 userRouter.get(
+  '/getall',
+  passport.authenticate('userJWT', { session: false }),
+  userController.getAll
+)
+
+userRouter.get(
   '/getbytoken',
   passport.authenticate('userJWT', { session: false }),
   userController.getByToken
@@ -34,7 +40,7 @@ userRouter.put(
 
 userRouter.delete(
   '/delete/:user_id',
-  //passport.authenticate('adminJWT', { session: false }),
+  passport.authenticate('userJWT', { session: false }),
   userController.delete
 )
 

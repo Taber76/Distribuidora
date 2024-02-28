@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
 import { apiService } from '../../services/apiService';
 import { setUser } from '../../store/userSlice';
@@ -10,35 +11,36 @@ const Login = () => {
 	const [modalText, setModalText] = useState('');
 	const [formData, setFormData] = useState({});
 	const dispatch = useDispatch();
+	const navigate = useNavigate()
+
+	const activeModal = (text, time) => {
+		setShowModal(true);
+		setModalText(text);
+		setTimeout(() => {
+			setShowModal(false);
+		}, time)
+	}
 
 	const handleSubmit = async (event) => {
 		event.preventDefault();
 		try {
-			const res = await apiService.users.login(formData);
+			const res = await apiService.postPut('POST', 'user/login', formData);
 			if (res.status === 202 || res.status === 302) {
 				const data = await res.json();
-				console.log(20, "LOGIN", data.user);
 				localStorage.setItem('token', data.token);
 				dispatch(setUser(data.user));
 				if (res.status === 302) {
-					window.location.href = '/password-change';
+					navigate('/user/password-change')
+					return
 				}
+				navigate('/')
 			} else if (res.status === 401 || res.status === 404) {
-				setShowModal(true);
-				setModalText("Usuario o contraseña incorrecta,");
-				setTimeout(() => {
-					setShowModal(false);
-				}, 3000)
+				activeModal("Usuario o contraseña incorrecta.", 3000)
 			} else {
-				setShowModal(true);
-				setModalText("Error interno del servidor, pruebe más tarde.");
-				setTimeout(() => {
-					setShowModal(false);
-				}, 3000)
+				activeModal("Error interno del servidor, pruebe más tarde.", 3000)
 			}
-
 		} catch (error) {
-			console.error('Error en la solicitud:', error);
+			activeModal("Error interno del servidor, pruebe más tarde.", 3000)
 		}
 	};
 

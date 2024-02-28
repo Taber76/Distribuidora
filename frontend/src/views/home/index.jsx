@@ -14,7 +14,6 @@ const Home = () => {
 				const res = await apiService.users.getByToken();
 				const data = await res.json();
 				dispatch(setUser(data.user));
-				console.log(17, "HOME llamada a la api")
 			}
 		};
 		fetchData();

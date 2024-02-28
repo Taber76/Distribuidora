@@ -12,9 +12,9 @@ class UserController {
       req.body.password = validateAndHashPassword("Aa12345678");
       const user = await userModelInstance.register(req.body);
       user.password = '';
-      //const token = createJWT(user.id, user.role);
+      const token = createJWT(user.id, user.role);
       //await sendEmailToUser("Registro usuario Gestores", user.email, user.username, 'Gestores - Registro', 'Confirma tu email', token);
-      res.status(201).json({ message: language.user.register_success, user });
+      res.status(201).json({ message: language.user.register_success, user, token });
     } catch (error) {
       res.status(500).json({ error: `${language.user.register_error}: ${error}` });
     }
@@ -52,6 +52,15 @@ class UserController {
     }
   }
 
+  public async getAll(req: Request, res: Response): Promise<void> {
+    try {
+      const users = await userModelInstance.getAll();
+      res.status(202).json({ users });
+    } catch (error) {
+      res.status(500).json({ error: `${language.user.get_error}: ${error}` });
+    }
+  }
+
   public async getByToken(req: Request, res: Response): Promise<void> {
     try {
       const user = await userModelInstance.getById((req.user as AuthenticatedUser).id);
@@ -66,17 +75,17 @@ class UserController {
 
   public async update(req: Request, res: Response): Promise<void> {
     try {
-      const id = (req.user as AuthenticatedUser).id;
       if (req.body.password) {
         req.body.password = validateAndHashPassword(req.body.password);
       }
-      const updatedUser = await userModelInstance.update(id, req.body);
+      const updatedUser = await userModelInstance.update(req.body);
       if (!updatedUser) {
         res.status(404).json({ error: language.user.user_not_found });
       } else {
         res.status(202).json({ updatedUser });
       }
     } catch (error) {
+      console.log(error);
       res.status(500).json({ error: `${language.user.update_error}: ${error}` });
     }
   }

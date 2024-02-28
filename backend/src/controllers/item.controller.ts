@@ -8,7 +8,7 @@ class ItemController {
   public async register(req: Request, res: Response): Promise<void> {
     try {
       const item = await itemModelInstance.register(req.body);
-      res.status(201).json(item);
+      res.status(201).json({ item });
     }
     catch (error) {
       res.status(500).json({ error: `${language.item.register_error}: ${error}` });
@@ -18,7 +18,7 @@ class ItemController {
   public async getAll(req: Request, res: Response): Promise<void> {
     try {
       const items = await itemModelInstance.getAll(String(req.params.partialMatch).toUpperCase());
-      res.status(200).json(items);
+      res.status(200).json({ items });
     } catch (error) {
       res.status(500).json({ error: `${language.item.item_not_found}: ${error}` });
     }
@@ -30,7 +30,7 @@ class ItemController {
       if (!item) {
         res.status(404).json({ error: language.item.item_not_found });
       } else {
-        res.status(200).json(item);
+        res.status(200).json({ item });
       }
     } catch (error) {
       res.status(500).json({ error: `${language.item.item_not_found}: ${error}` });
@@ -43,7 +43,7 @@ class ItemController {
       if (!item) {
         res.status(404).json({ error: language.item.item_not_found });
       } else {
-        res.status(202).json(item);
+        res.status(202).json({ item });
       }
     } catch (error) {
       res.status(500).json({ error: `${language.item.update_error}: ${error}` });
@@ -56,7 +56,7 @@ class ItemController {
       if (!deletedItem) {
         res.status(404).json({ error: language.item.item_not_found });
       } else {
-        res.status(202).json(deletedItem);
+        res.status(202).json({ deletedItem });
       }
     } catch (error) {
       res.status(500).json({ error: `${language.item.delete_error}: ${error}` });

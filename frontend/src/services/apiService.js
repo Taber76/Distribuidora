@@ -32,6 +32,33 @@ const apiCallGet = async (endpoint) => { // endpoint includes query or params
 }
 
 export const apiService = {
+
+  postPut: async (method, endpoint, data) => {
+    try {
+      return await apiCall(method, endpoint, data)
+    } catch (error) {
+      throw error
+    }
+  },
+
+  get: async (endpoint) => {
+    try {
+      return await apiCallGet(endpoint)
+    } catch (error) {
+      throw error
+    }
+  },
+
+  delete: async (endpoint) => {
+    try {
+      return await apiCall('DELETE', endpoint, {})
+    } catch (error) {
+      throw error
+    }
+  },
+
+
+
   users: {
     register: async (data) => {
       try {
@@ -41,13 +68,6 @@ export const apiService = {
       }
     },
 
-    login: async (data) => {
-      try {
-        return await apiCall('POST', 'user/login', data);
-      } catch (error) {
-        throw error
-      }
-    },
 
     update: async (data) => {
       try {
@@ -80,7 +100,16 @@ export const apiService = {
         throw error
       }
     }
+  },
 
+  items: {
+    register: async (data) => {
+      try {
+        return await apiCall('POST', 'item/register', data);
+      } catch (error) {
+        throw error
+      }
+    },
   }
 
 }

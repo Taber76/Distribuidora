@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
 import { Button } from '../button';
 import { NavMobile } from '../nav-mobile';
@@ -13,6 +14,7 @@ const NavBar = () => {
   const [btnText, setBtnText] = useState('Login');
   const user = useSelector((state) => state.user);
   const dispatch = useDispatch();
+  const navigate = useNavigate()
 
   useEffect(() => {
     if (user.user) {
@@ -27,7 +29,7 @@ const NavBar = () => {
       dispatch(setUser(null));
       localStorage.removeItem('token');
     } else {
-      window.location.href = '/Login';
+      navigate('/login');
     }
   }
 

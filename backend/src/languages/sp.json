@@ -13,7 +13,8 @@
     "register_success": "Usuario registrado con exito",
     "update_success": "Usuario actualizado con exito",
     "delete_success": "Usuario borrado con exito",
-    "change_password": "Debe cambiar su contraseña"
+    "change_password": "Debe cambiar su contraseña",
+    "get_error": "Error de carga de usuarios."
   },
   "item": {
     "register_error": "Error de registro de producto",

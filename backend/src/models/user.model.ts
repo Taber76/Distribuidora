@@ -45,10 +45,20 @@ class UserModel {
     }
   }
 
-  public async update(id: string, userData: IUser): Promise<IUser | null> {
+  public async getAll(): Promise<IUser[]> {
     try {
-      userData.updated_at = new Date();
-      const updatedUser = await this.model.findByIdAndUpdate(id, userData, { new: true, runValidators: true });
+      const users = await this.model.find();
+      return users;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  public async update(userData: IUser): Promise<IUser | null> {
+    try {
+      const { _id, secure_password, created_at, ...dataToUpdate } = userData;
+      dataToUpdate.updated_at = new Date();
+      const updatedUser = await this.model.findByIdAndUpdate(userData._id, dataToUpdate, { new: true, runValidators: true });
       return updatedUser;
     } catch (error) {
       throw error;

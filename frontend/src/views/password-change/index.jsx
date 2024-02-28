@@ -1,38 +1,40 @@
-import React, { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import { apiService } from '../../services/apiService';
+import { Modal } from '../../components';
 
 const PasswordChange = () => {
+  const [showModal, setShowModal] = useState(false);
+  const [modalText, setModalText] = useState('');
   const [formData, setFormData] = useState({});
+  const navigate = useNavigate()
+
+  const activeModal = (text, time) => {
+    setShowModal(true);
+    setModalText(text);
+    setTimeout(() => {
+      setShowModal(false);
+    }, time)
+  }
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
       if (formData.password !== formData.repassword) {
-        console.error('Las contraseñas no coinciden');
+        activeModal('Las contraseñas no coinciden.', 2000)
         return;
       }
-      const response = await fetch('http://localhost:8080/api/v1/user/update', {
-        method: 'PUT',
-        headers: {
-          'Bearer': localStorage.getItem('token'),
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(formData)
-      })
-      if (response.ok) {
-        // La solicitud fue exitosa, puedes manejar la respuesta aquí
-        console.log('Datos enviados correctamente');
+      const res = await apiService.postPut('PUT', 'user/update', formData)
+      if (res.status == 202) {
+        activeModal('Contraseña actualizada con éxito.', 1500)
       } else {
-        console.error('Error al enviar datos');
+        activeModal('Ocurrió un error, intente más tarde.', 2500)
       }
-      const resp = await response.json();
-      console.log(resp);
+      navigate('/')
     } catch (error) {
-      console.error('Error en la solicitud:', error);
+      activeModal('Ocurrió un error, intente más tarde.', 2500)
     }
-
   }
 
   const handleChange = (event) => {
@@ -46,6 +48,18 @@ const PasswordChange = () => {
       <div className="flex flex-col text-center items-center">
         <h2>Cambio de contraseña</h2>
         <form onSubmit={handleSubmit} className="flex flex-col gap-4 mt-4 w-2/3">
+
+          {showModal && (
+            <Modal
+              text={modalText}
+              width="300px"
+              height="150px"
+              color="blue"
+              textColor="white"
+              margin="0"
+            />
+          )}
+
           <input
             className="bg-blue-100 text-xs rounded p-2"
             type="password"

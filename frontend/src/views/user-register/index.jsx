@@ -1,7 +1,27 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
-const Register = () => {
+import { apiService } from '../../services/apiService';
+import { setUser } from '../../store/userSlice';
+import { Modal } from '../../components';
+
+const UserRegister = () => {
+	const [showModal, setShowModal] = useState(false);
+	const [modalText, setModalText] = useState('');
 	const [formData, setFormData] = useState({});
+	const user = useSelector((state) => state.user);
+	const dispatch = useDispatch();
+	const navigate = useNavigate()
+
+	const activeModal = (text, time) => {
+		setShowModal(true);
+		setModalText(text);
+		setTimeout(() => {
+			setShowModal(false);
+			navigate('/users')
+		}, time)
+	}
 
 	const handleChange = (event) => {
 		const { name, value } = event.target;
@@ -11,24 +31,19 @@ const Register = () => {
 	const handleSubmit = async (event) => {
 		event.preventDefault();
 		try {
-
-			const response = await fetch('http://localhost:8080/api/v1/user/register', {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json'
-				},
-				body: JSON.stringify(formData)
-			});
-			if (response.ok) {
-				// La solicitud fue exitosa, puedes manejar la respuesta aquí
-				console.log('Datos enviados correctamente');
+			const res = await apiService.postPut('POST', 'user/register', formData)
+			if (res.status === 201) {
+				activeModal("Usuario registrado correctamente.", 1500)
+				const data = await res.json()
+				if (!user.user) {
+					localStorage.setItem('token', data.token);
+					dispatch(setUser(data.user));
+				}
 			} else {
-				console.error('Error al enviar datos');
+				activeModal("Error al intentar registrar al usuario.", 2500)
 			}
-			const resp = await response.json();
-			console.log(resp);
 		} catch (error) {
-			console.error('Error en la solicitud:', error);
+			activeModal("Error al intentar registrar al usuario.", 2500)
 		}
 	};
 
@@ -37,6 +52,17 @@ const Register = () => {
 			<div className="flex flex-col text-center items-center">
 				<h2>Registro de usuario</h2>
 				<form onSubmit={handleSubmit} className="flex flex-col gap-4 mt-4 w-2/3">
+
+					{showModal && (
+						<Modal
+							text={modalText}
+							width="300px"
+							height="150px"
+							color="blue"
+							textColor="white"
+							margin="0"
+						/>
+					)}
 
 					<input
 						className="bg-blue-100 text-xs rounded p-2"
@@ -96,4 +122,4 @@ const Register = () => {
 };
 
 
-export { Register };
+export { UserRegister };
