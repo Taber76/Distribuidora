@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { apiService } from '../../services/apiService';
 import { ModalInteractive } from '../modal-interactive';
 
-const ListItem = ({ item, columnWidths, handleDelete }) => {
+const ListItem = ({ item, columnWidths, handleDelete, type }) => {
   const [showModal, setShowModal] = useState(false);
   const [modalText, setModalText] = useState('');
   const keys = Object.keys(columnWidths);
@@ -18,10 +18,12 @@ const ListItem = ({ item, columnWidths, handleDelete }) => {
 
   const handleComfirmDelete = async () => {
     try {
-      const res = await apiService.delete(`user/delete/${item._id}`);
+      const res = await apiService.delete(`${type}/delete/${item._id}`);
       if (res.status === 202) {
         setShowModal(false);
         handleDelete();
+      } else {
+        setShowModal(false)
       }
     } catch (error) {
       setShowModal(false);
@@ -42,7 +44,7 @@ const ListItem = ({ item, columnWidths, handleDelete }) => {
           <FaEdit
             className="text-green-500 mr-2 cursor-pointer"
             title="Editar"
-            onClick={() => navigate(`/user/update`, { state: { user_id: item._id } })}
+            onClick={() => navigate(`/users/update`, { state: { user_id: item._id } })}
           />
           <FaTrash
             className="text-red-500 cursor-pointer"

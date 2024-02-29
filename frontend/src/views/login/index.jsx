@@ -30,7 +30,7 @@ const Login = () => {
 				localStorage.setItem('token', data.token);
 				dispatch(setUser(data.user));
 				if (res.status === 302) {
-					navigate('/user/password-change')
+					navigate('/users/password-change')
 					return
 				}
 				navigate('/')

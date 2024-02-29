@@ -24,7 +24,7 @@ export const routes = [
   },
   {
     title: "Productos",
-    path: "#3",
+    path: "/items",
     Icon: FaWineBottle,
   },
   {

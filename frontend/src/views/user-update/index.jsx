@@ -1,14 +1,15 @@
 import { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 import { apiService } from '../../services/apiService';
-import { Modal } from '../../components';
+import { Modal, Form } from '../../components';
 
 const UserUpdate = () => {
   const [showModal, setShowModal] = useState(false);
   const [modalText, setModalText] = useState('');
   const [formData, setFormData] = useState({});
   const location = useLocation();
+  const navegate = useNavigate()
 
   const activeModal = (text, time) => {
     setShowModal(true);
@@ -39,6 +40,9 @@ const UserUpdate = () => {
       const res = await apiService.postPut('PUT', 'user/update', formData)
       if (res.status === 202) {
         activeModal("Usuario actualizado correctamente.", 1500)
+        setTimeout(() => {
+          navegate('/users')
+        }, 1500)
       } else {
         activeModal("Error al intentar actualizar al usuario.", 2500)
       }
@@ -52,76 +56,38 @@ const UserUpdate = () => {
     setFormData({ ...formData, [name]: value });
   }
 
+  const formDetail = [
+    { type: 'text', name: 'username', value: formData.username, onChange: handleChange, required: true, placeholder: 'Nombre de usuario (requerido)' },
+    { type: 'text', name: 'name', value: formData.name, onChange: handleChange, required: false, placeholder: 'Nombre completo' },
+    { type: 'email', name: 'email', value: formData.email, onChange: handleChange, required: false, placeholder: 'Correo electronico' },
+    { type: 'text', name: 'phone', value: formData.phone, onChange: handleChange, required: true, placeholder: 'Telefono (requerido)' },
+    { type: 'text', name: 'address', value: formData.address, onChange: handleChange, required: false, placeholder: 'Dirección' },
+  ]
+
 
   return (
     <div className="py-4 md:py-6">
       <div className="flex flex-col text-center items-center">
         <h2>Actualiza los datos</h2>
-        <form onSubmit={handleSubmit} className="flex flex-col gap-4 mt-4 w-2/3">
 
-          {showModal && (
-            <Modal
-              text={modalText}
-              width="300px"
-              height="150px"
-              color="blue"
-              textColor="white"
-              margin="0"
-            />
-          )}
-
-          <input
-            className="bg-blue-100 text-xs rounded p-2"
-            type="text"
-            name="username"
-            value={formData.username}
-            onChange={handleChange}
-            required={true}
-            placeholder="Nombre de usuario (requerido)"
+        {showModal && (
+          <Modal
+            text={modalText}
+            width="300px"
+            height="150px"
+            color="blue"
+            textColor="white"
+            margin="0"
           />
+        )}
 
-          <input
-            className="bg-blue-100 text-xs rounded p-2"
-            type="text"
-            name="name"
-            value={formData.name}
-            onChange={handleChange}
-            required={false}
-            placeholder="Nombre completo"
-          />
+        <Form
+          formDetails={formDetail}
+          handleChange={handleChange}
+          onSubmit={handleSubmit}
+          buttonText="Actualizar"
+        />
 
-          <input
-            className="bg-blue-100 text-xs rounded p-2"
-            type="email"
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
-            required={false}
-            placeholder="Correo electrónico"
-          />
-
-          <input
-            className="bg-blue-100 text-xs rounded p-2"
-            type="text"
-            name="phone"
-            value={formData.phone}
-            onChange={handleChange}
-            required={true}
-            placeholder="Teléfono (requerido)"
-          />
-
-          <input
-            className="bg-blue-100 text-xs rounded p-2"
-            type="text"
-            name="address"
-            value={formData.address}
-            onChange={handleChange}
-            required={false}
-            placeholder="Dirección"
-          />
-
-          <input type="submit" value="Actualizar" className="btn btn-primary py-2 rounded bg-blue-500 text-white" />
-        </form>
       </div>
     </div>
   )

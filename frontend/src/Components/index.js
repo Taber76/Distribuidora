@@ -1,6 +1,7 @@
-export { Footer } from './footer';
-export { NavBar } from './navBar';
 export { Button } from './button';
+export { Footer } from './footer';
+export { Form } from './form';
+export { List } from './list'
 export { Modal } from './modal';
 export { ModalInteractive } from './modal-interactive';
-export { List } from './list'
+export { NavBar } from './navBar';

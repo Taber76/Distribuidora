@@ -27,7 +27,7 @@ app.use(cors());
 // ---------- Routes ---------------
 app.use('/api/v1/contact', contactRouter);
 app.use('/api/v1/user', userRouter);
-app.use('/api/v1/item', itemRouter);
+app.use('/api/v1', itemRouter);
 app.use('/api/v1/order', orderRouter);
 
 // ---------- Websocket ------------

@@ -7,6 +7,7 @@ class ItemController {
 
   public async register(req: Request, res: Response): Promise<void> {
     try {
+      req.body.description = String(req.body.description).toUpperCase();
       const item = await itemModelInstance.register(req.body);
       res.status(201).json({ item });
     }
@@ -17,7 +18,16 @@ class ItemController {
 
   public async getAll(req: Request, res: Response): Promise<void> {
     try {
-      const items = await itemModelInstance.getAll(String(req.params.partialMatch).toUpperCase());
+      const items = await itemModelInstance.getAll();
+      res.status(202).json({ items });
+    } catch (error) {
+      res.status(500).json({ error: `${language.item.item_not_found}: ${error}` });
+    }
+  }
+
+  public async getByDescription(req: Request, res: Response): Promise<void> {
+    try {
+      const items = await itemModelInstance.getByDescription(String(req.params.partialMatch).toUpperCase());
       res.status(200).json({ items });
     } catch (error) {
       res.status(500).json({ error: `${language.item.item_not_found}: ${error}` });
@@ -39,6 +49,7 @@ class ItemController {
 
   public async update(req: Request, res: Response): Promise<void> {
     try {
+      req.body.description = String(req.body.description).toUpperCase();
       const item = await itemModelInstance.update(req.params.item_id, req.body);
       if (!item) {
         res.status(404).json({ error: language.item.item_not_found });
@@ -52,7 +63,7 @@ class ItemController {
 
   public async delete(req: Request, res: Response): Promise<void> {
     try {
-      const deletedItem = await itemModelInstance.delete(req.params.id);
+      const deletedItem = await itemModelInstance.delete(req.params.item_id);
       if (!deletedItem) {
         res.status(404).json({ error: language.item.item_not_found });
       } else {

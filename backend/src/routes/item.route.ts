@@ -5,31 +5,37 @@ import passport from '../middlewares/auth.mid';
 const itemRouter = express.Router();
 
 itemRouter.post(
-  '/register',
+  '/item/register',
   passport.authenticate('userJWT', { session: false }),
   itemController.register
 )
 
 itemRouter.get(
-  '/all/:partialMatch',
+  '/item/getall',
   passport.authenticate('userJWT', { session: false }),
   itemController.getAll
 )
 
 itemRouter.get(
-  '/get/:item_id',
+  '/item/getbydescription/:partialMatch',
+  passport.authenticate('userJWT', { session: false }),
+  itemController.getByDescription
+)
+
+itemRouter.get(
+  '/item/get/:item_id',
   passport.authenticate('userJWT', { session: false }),
   itemController.getById
 )
 
 itemRouter.put(
-  '/update/:item_id',
+  '/item/update/:item_id',
   passport.authenticate('userJWT', { session: false }),
   itemController.update
 )
 
 itemRouter.delete(
-  '/delete/:item_id',
+  '/item/delete/:item_id',
   passport.authenticate('userJWT', { session: false }),
   itemController.delete
 )

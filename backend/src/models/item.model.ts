@@ -20,7 +20,16 @@ class ItemModel {
     }
   }
 
-  public async getAll(partialMatch: string): Promise<IItem[]> {
+  public async getAll(): Promise<IItem[]> {
+    try {
+      const items = await this.model.find();
+      return items;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  public async getByDescription(partialMatch: string): Promise<IItem[]> {
     try {
       const items = await this.model.find({ description: { $regex: partialMatch, $options: 'i' } });
       return items;
