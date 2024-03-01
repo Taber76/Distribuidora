@@ -14,7 +14,7 @@ export const routes = [
   },
   {
     title: "Ventas",
-    path: "#1",
+    path: "/orders",
     Icon: FaTruck,
   },
   {
@@ -29,7 +29,7 @@ export const routes = [
   },
   {
     title: "Contactos",
-    path: "#4",
+    path: "/contacts",
     Icon: MdContactPhone,
   },
   {

@@ -45,8 +45,9 @@ class UserController {
       const user = await userModelInstance.getById(req.params.user_id);
       if (!user) {
         res.status(404).json({ error: language.user.user_not_found });
+      } else {
+        res.status(202).json({ user });
       }
-      res.status(202).json({ user });
     } catch (error) {
       res.status(500).json({ error: `${language.user.get_error}: ${error}` });
     }

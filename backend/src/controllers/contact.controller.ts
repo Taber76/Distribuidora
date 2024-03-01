@@ -16,8 +16,17 @@ class ContactController {
 
   public async getAll(req: Request, res: Response): Promise<void> {
     try {
-      const contacts = await contactModelInstance.getAll(String(req.params.partialMatch).toUpperCase());
-      res.status(200).json(contacts);
+      const contacts = await contactModelInstance.getAll();
+      res.status(202).json({ contacts });
+    } catch (error) {
+      res.status(500).json({ error: `${language.contact.contact_not_found}: ${error}` });
+    }
+  }
+
+  public async getByPartialMatch(req: Request, res: Response): Promise<void> {
+    try {
+      const contacts = await contactModelInstance.getByPartialMatch(String(req.params.partialMatch));
+      res.status(202).json({ contacts });
     } catch (error) {
       res.status(500).json({ error: `${language.contact.contact_not_found}: ${error}` });
     }
@@ -29,7 +38,7 @@ class ContactController {
       if (!contact) {
         res.status(404).json({ error: language.contact.contact_not_found });
       } else {
-        res.status(200).json(contact);
+        res.status(200).json({ contact });
       }
     } catch (error) {
       res.status(500).json({ error: `${language.contact.contact_not_found}: ${error}` });
@@ -42,7 +51,7 @@ class ContactController {
       if (!updatedContact) {
         res.status(404).json({ error: language.contact.contact_not_found });
       } else {
-        res.status(202).json(updatedContact);
+        res.status(202).json({ updatedContact });
       }
     } catch (error) {
       res.status(500).json({ error: `${language.contact.update_error}: ${error}` });
@@ -55,7 +64,7 @@ class ContactController {
       if (!deletedContact) {
         res.status(404).json({ error: language.contact.contact_not_found });
       } else {
-        res.status(202).json(deletedContact);
+        res.status(202).json({ deletedContact });
       }
     } catch (error) {
       res.status(500).json({ error: `${language.contact.delete_error}: ${error}` });

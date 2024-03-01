@@ -8,6 +8,8 @@ interface IItem {
 
 export interface IOrder extends Document {
   client_id: string;
+  client_name: string;
+  user_id: string;
   items: IItem[];
   discount: number;
   observation: string;
@@ -19,7 +21,9 @@ export interface IOrder extends Document {
 }
 
 export const OrderSchema = new Schema<IOrder>({
-  client_id: { type: String, required: true },
+  client_id: { type: String, required: false },
+  client_name: { type: String, required: false },
+  user_id: { type: String, required: true },
   items: [{
     item_id: { type: String, required: true },
   }],

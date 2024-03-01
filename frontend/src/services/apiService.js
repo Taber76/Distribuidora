@@ -25,7 +25,6 @@ const apiCallGet = async (endpoint) => { // endpoint includes query or params
         'Authorization': `Bearer ${localStorage.getItem('token')}`
       }
     })
-    console.log('APISERVICE', res)
     return res
   } catch (error) {
     throw error

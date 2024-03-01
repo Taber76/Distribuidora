@@ -20,7 +20,16 @@ class ContactModel {
     }
   }
 
-  public async getAll(partialMatch: string): Promise<IContact[]> {
+  public async getAll(): Promise<IContact[]> {
+    try {
+      const contacts = await this.model.find();
+      return contacts;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  public async getByPartialMatch(partialMatch: string): Promise<IContact[]> {
     try {
       const contacts = await this.model.find({ name: { $regex: partialMatch, $options: 'i' } });
       return contacts;

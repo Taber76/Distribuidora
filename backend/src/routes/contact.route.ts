@@ -11,9 +11,15 @@ contactRouter.post(
 )
 
 contactRouter.get(
-  '/all/:partialMatch',
+  '/getall',
   passport.authenticate('userJWT', { session: false }),
   contactController.getAll
+)
+
+contactRouter.get(
+  '/getbypartialmatch/:partialMatch',
+  passport.authenticate('userJWT', { session: false }),
+  contactController.getByPartialMatch
 )
 
 contactRouter.get(
