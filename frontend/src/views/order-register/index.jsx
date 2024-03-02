@@ -58,7 +58,7 @@ const OrderRegister = () => {
 				<FormOrder
 					handleChange={handleChange}
 					onSubmit={handleSubmit}
-					buttonText="Registro"
+					buttonText="Enviar"
 				/>
 
 			</div>

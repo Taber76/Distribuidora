@@ -59,7 +59,7 @@ const Users = () => {
             />
           )}
 
-          <div className="flex items-center gap-4 w-full">
+          <div className="hidden sm:block  flex items-center gap-4 w-full">
             <div className="flex flex-col sm:flex-row bg-blue-500 rounded-md shadow-md p-4 w-full">
 
               <div className={`mb-2 sm:mb-0`} style={{ minWidth: `${columnWidths.name}` }}>
