@@ -1,4 +1,5 @@
 export { Button } from './button';
+export { InputDropdown } from './input-dropdown';
 export { Filter } from './filter';
 export { Footer } from './footer';
 export { Form } from './form';

@@ -17,7 +17,7 @@ itemRouter.get(
 )
 
 itemRouter.get(
-  '/item/getbydescription/:partialMatch',
+  '/item/getbypartialmatch/:partialMatch',
   passport.authenticate('userJWT', { session: false }),
   itemController.getByDescription
 )

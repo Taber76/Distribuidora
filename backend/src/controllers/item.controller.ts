@@ -27,8 +27,8 @@ class ItemController {
 
   public async getByDescription(req: Request, res: Response): Promise<void> {
     try {
-      const items = await itemModelInstance.getByDescription(String(req.params.partialMatch).toUpperCase());
-      res.status(200).json({ items });
+      const items = await itemModelInstance.getByDescription(String(req.params.partialMatch));
+      res.status(202).json({ items });
     } catch (error) {
       res.status(500).json({ error: `${language.item.item_not_found}: ${error}` });
     }

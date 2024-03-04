@@ -1,42 +1,55 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { FaPlus, FaTrash } from 'react-icons/fa';
 
-import { apiService } from '../../services/apiService';
+import { InputDropdown } from '../input-dropdown';
 
-const FormOrder = ({ handleChange, onSubmit, buttonText }) => {
-  const [clientList, setClientList] = useState([]);
-  const [selectedClient, setSelectedClient] = useState(null);
-  const [productLines, setProductLines] = useState([])
+const FormOrder = ({ onSubmit, buttonText }) => {
+  const [selectedClient, setSelectedClient] = useState({});
+  const [selectedProduct, setSelectedProduct] = useState({});
+  const [productList, setProductList] = useState([])
+  const [total, setTotal] = useState(0);
+  const [iva, setIva] = useState(0);
+  const [discountPercentage, setDiscountPercentage] = useState(0);
+  const [discount, setDiscount] = useState(0);
+  const [subtotal, setSubtotal] = useState(0);
 
-  const handleChangeClient = async (event) => {
-    const { name, value } = event.target;
-    if (value.length > 2 && clientList.length === 0) {
-      const res = await apiService.get('contact/getbypartialmatch/' + value);
-      if (res.status === 202) {
-        const data = await res.json();
-        setClientList(data.contacts);
-      }
-    } else if (value.length < 3) {
-      setClientList([]);
+  useEffect(() => {
+    if (selectedProduct.selectedElementOfList) {
+      const updatedProductList = [...productList];
+      updatedProductList[selectedProduct.index].description = selectedProduct.selectedElementOfList.description;
+      selectedProduct.selectedElementOfList.sale_price ? updatedProductList[selectedProduct.index].sale_price = selectedProduct.selectedElementOfList.sale_price : 0;
+      setProductList(updatedProductList);
     }
-  }
+  }, [selectedProduct])
 
-  const handleSelectClient = async (event) => {
-    const selectedName = event.target.value;
-    const selectedClient = clientList.find(client => client.name === selectedName);
-    if (selectedClient) {
-      setSelectedClient(selectedClient);
+  useEffect(() => {
+    if (productList.length > 0) {
+      let sum = 0;
+      productList.forEach((product) => {
+        if (isNaN(product.quantity)) product.quantity = 0
+        if (isNaN(product.sale_price)) product.sale_price = 0
+        sum += product.quantity * product.sale_price;
+      })
+      setSubtotal(parseFloat(sum).toFixed(2))
+      setDiscount(parseFloat(sum * (discountPercentage / 100)).toFixed(2))
+      setIva(parseFloat(sum * (1 - (discountPercentage / 100)) * (22 / 100)).toFixed(2))
+      setTotal(parseFloat(sum * (1 - (discountPercentage / 100)) * (122 / 100)).toFixed(2))
     }
-  }
+  }, [productList, discountPercentage])
 
   const handleAddProductLine = () => {
-    setProductLines([...productLines, { description: '', quantity: 0 }]);
+    setProductList([...productList, { description: '', quantity: 0 }]);
   };
 
-  const handleProductLineChange = (index, field, value) => {
-    const updatedProductLines = [...productLines];
-    updatedProductLines[index][field] = value;
-    setProductLines(updatedProductLines);
+  const handleRemoveProductLine = (index) => {
+    const updatedProductList = productList.filter((_, i) => i !== index);
+    setProductList(updatedProductList);
+  }
+
+  const handleProductListChange = (index, field, value) => {
+    const updatedProductList = [...productList];
+    updatedProductList[index][field] = value;
+    setProductList(updatedProductList);
   };
 
   return (
@@ -47,30 +60,28 @@ const FormOrder = ({ handleChange, onSubmit, buttonText }) => {
 
         <div className="flex flex-col flex-1 sm:w-full border border-gray-300 rounded p-2 m-1" style={{ width: '100%' }}>
           <span className="text-xs text-gray-500" style={{ textAlign: 'left' }}>Nombre del cliente</span>
-          <input
-            className="bg-blue-100 text-xs rounded p-1 mt-1"
+          <InputDropdown
+            className="bg-blue-100 text-xs rounded p-1 mt-1 w-full"
             type="text"
-            name="client_name"
-            list="clients"
-            onChange={handleChangeClient}
             required={true}
-            onSelect={handleSelectClient}
+            setValue={setSelectedClient}
+            apiUrl='contact/getbypartialmatch/'
+            jsonResponse={'contacts'}
+            fieldName={'name'}
+            index={0}
+            listName={'contactList'}
           />
-          <datalist id="clients">
-            {clientList.map((client) => (
-              <option key={client._id} value={client.name} />
-            ))}
-          </datalist>
         </div>
 
         <div className="flex flex-col flex-1 sm:w-full border border-gray-300 rounded p-2 m-1" style={{ width: '100%' }}>
           <span className="text-xs text-gray-500" style={{ textAlign: 'left' }}>Dirección</span>
-          <span className="bg-blue-100 text-xs rounded p-1 mt-1 block" style={{ minHeight: '1.5rem' }}>{selectedClient?.address || ' '}</span>
+          <span className="bg-blue-100 text-xs rounded p-1 mt-1 block" style={{ minHeight: '1.5rem' }}>{selectedClient && selectedClient.selectedElementOfList && selectedClient.selectedElementOfList.address || ' '}</span>
+
         </div>
 
         <div className="flex flex-col flex-1 sm:w-full border border-gray-300 rounded p-2 m-1" style={{ width: '100%' }}>
           <span className="text-xs text-gray-500" style={{ textAlign: 'left' }}>RUT</span>
-          <span className="bg-blue-100 text-xs rounded p-1 mt-1 block" style={{ minHeight: '1.5rem' }}>{selectedClient?.rut || ' '}</span>
+          <span className="bg-blue-100 text-xs rounded p-1 mt-1 block" style={{ minHeight: '1.5rem' }}>{selectedClient && selectedClient.selectedElementOfList && selectedClient.selectedElementOfList.rut || ' '}</span>
         </div>
 
       </div>
@@ -114,17 +125,23 @@ const FormOrder = ({ handleChange, onSubmit, buttonText }) => {
           </div>
         </div>
 
-        {productLines.map((productLine, index) => (
+        {productList.map((product, index) => (
           <div key={index} className="flex items-center gap-4 w-full">
             <div className="flex flex-col sm:flex-row rounded-md shadow-md p-1 w-full">
 
               <div className="mb-2 sm:mb-0 flex items-center w-full sm:w-[69%] sm:block" >
-                <input
-                  className="text-sm font-semibold w-full bg-blue-100 "
-                  type="text"
-                  value={productLine.description}
-                  onChange={(e) => handleProductLineChange(index, 'description', e.target.value)}
-                  placeholder='Descripción del producto'
+                <InputDropdown
+                  className={"text-sm font-semibold w-full bg-blue-100"}
+                  type={"text"}
+                  placeholder={"Descripción del producto"}
+                  required={true}
+                  inputValue={product.description}
+                  setValue={setSelectedProduct}
+                  apiUrl={"item/getbypartialmatch/"}
+                  jsonResponse={"items"}
+                  fieldName={"description"}
+                  index={index}
+                  listName={"itemList" + index}
                 />
               </div>
 
@@ -132,27 +149,36 @@ const FormOrder = ({ handleChange, onSubmit, buttonText }) => {
                 <input
                   className="text-sm w-full bg-blue-200 text-right sm:text-left"
                   type="number"
-                  value={productLine.quantity}
-                  onChange={(e) => handleProductLineChange(index, 'quantity', e.target.value)}
+                  inputMode="numeric"
+                  onWheel={(e) => e.preventDefault()}
+                  value={product.quantity}
+                  onChange={(e) => handleProductListChange(index, 'quantity', e.target.value)}
                 />
                 <span className="sm:hidden text-sm ml-1 font-semibold w-full text-left" >Cantidad</span>
               </div>
 
               <div className="mb-2 sm:mb-0 flex items-center w-3/4 sm:w-[9%]">
-                <span className="text-sm  w-full pr-1 bg-blue-100 text-left text-right sm:text-left" >1000</span>
+                <input
+                  className="text-sm  w-full pr-1 bg-blue-100 text-left text-right sm:text-left"
+                  type="number"
+                  inputMode="numeric"
+                  onWheel={(e) => e.preventDefault()}
+                  value={product.sale_price}
+                  onChange={(e) => handleProductListChange(index, 'sale_price', e.target.value)}
+                />
                 <span className="sm:hidden text-sm ml-1 font-semibold w-full text-left" >Precio unidad</span>
               </div>
 
               <div className="mb-2 sm:mb-0 flex items-center justify-end w-3/4 sm:w-[9%]">
-                <span className="text-sm font-semibold w-full bg-blue-200 pr-1 text-right" >150000</span>
+                <span className="text-sm font-semibold w-full bg-blue-200 pr-1 text-right" >{isNaN(product.quantity * product.sale_price) ? 0 : product.quantity * product.sale_price}</span>
                 <span className="sm:hidden text-sm ml-1 font-semibold w-full text-left" >Total</span>
               </div>
 
               <div className="flex items-center justify-end w-full sm:w-[5%]">
                 <FaTrash
                   className="text-red-500 cursor-pointer"
-                  title="Eliminar Linea"
-                  onClick={() => handleDeleteProductLine(index)}
+                  title="Eliminar Linea "
+                  onClick={() => handleRemoveProductLine(index)}
                 />
               </div>
 
@@ -177,16 +203,24 @@ const FormOrder = ({ handleChange, onSubmit, buttonText }) => {
               <p>Subtotal</p>
             </div>
             <div className="text-sm font-semibold ml-1 flex w-1/2 justify-end">
-              <p>200000</p>
+              <p>{subtotal}</p>
             </div>
           </div>
 
           <div className='flex items-center w-full bg-blue-200 mb-1'>
             <div className="text-sm flex items-center w-1/2 justify-end">
-              <p>Descuentos</p>
+              <p>Descuento (%)</p>
             </div>
             <div className="text-sm font-semibold ml-1 flex w-1/2 justify-end">
-              <p>3500</p>
+              <input
+                className="text-sm w-1/5 bg-blue-200 text-right"
+                type="number"
+                inputMode="numeric"
+                onWheel={(e) => e.preventDefault()}
+                value={discountPercentage}
+                onChange={(e) => setDiscountPercentage(e.target.value)}
+              />
+              <p className="text-sm w-4/5 bg-blue-200 text-right">{discount}</p>
             </div>
           </div>
 
@@ -195,7 +229,7 @@ const FormOrder = ({ handleChange, onSubmit, buttonText }) => {
               <p>IVA</p>
             </div>
             <div className="text-sm font-semibold ml-1 flex w-1/2 justify-end">
-              <p>21540</p>
+              <p>{iva}</p>
             </div>
           </div>
 
@@ -204,7 +238,7 @@ const FormOrder = ({ handleChange, onSubmit, buttonText }) => {
               <p>TOTAL</p>
             </div>
             <div className="text-sm font-semibold ml-1 flex w-1/2 justify-end">
-              <p>217894</p>
+              <p>{total}</p>
             </div>
           </div>
 
@@ -240,11 +274,7 @@ const FormOrder = ({ handleChange, onSubmit, buttonText }) => {
         </div>
 
 
-
       </div>
-
-
-
     </form>
   );
 };
