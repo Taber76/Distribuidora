@@ -3,7 +3,7 @@ import { FaPlus, FaTrash } from 'react-icons/fa';
 
 import { InputDropdown } from '../input-dropdown';
 
-const FormOrder = ({ onSubmit, buttonText }) => {
+const FormOrder = ({ handleFillForm }) => {
   const [selectedClient, setSelectedClient] = useState({});
   const [selectedProduct, setSelectedProduct] = useState({});
   const [productList, setProductList] = useState([])
@@ -18,6 +18,7 @@ const FormOrder = ({ onSubmit, buttonText }) => {
       const updatedProductList = [...productList];
       updatedProductList[selectedProduct.index].description = selectedProduct.selectedElementOfList.description;
       selectedProduct.selectedElementOfList.sale_price ? updatedProductList[selectedProduct.index].sale_price = selectedProduct.selectedElementOfList.sale_price : 0;
+      selectedProduct.selectedElementOfList._id ? updatedProductList[selectedProduct.index].item_id = selectedProduct.selectedElementOfList._id : 0;
       setProductList(updatedProductList);
     }
   }, [selectedProduct])
@@ -52,8 +53,38 @@ const FormOrder = ({ onSubmit, buttonText }) => {
     setProductList(updatedProductList);
   };
 
+  const fillForm = (status) => {
+    const client = selectedClient.selectedElementOfList
+    const newForm = {
+      client_id: client._id,
+      client_name: client.name,
+      user_id: '5452435425254324',
+      discount: discountPercentage,
+      observation: '',
+      status: status,
+      items: productList.map((item) => ({
+        item_id: item.item_id, quantity: item.quantity, price: item.sale_price
+      }))
+    }
+    handleFillForm(newForm)
+  }
+
+  const handleSendOrder = () => {
+    fillForm('IN_PROGRESS')
+  }
+
+  const handleSaveOrder = () => {
+    fillForm()
+    console.log('saving order')
+  }
+
+  const handleBillOrder = () => {
+    fillForm()
+    console.log('bill order')
+  }
+
   return (
-    <form onSubmit={onSubmit} className="flex flex-col gap-4 mt-4 w-4/5">
+    <form className="flex flex-col gap-4 mt-4 w-4/5">
 
       {/* Header */}
       <div className="flex flex-col sm:flex-row items-center justify-between w-full">
@@ -251,25 +282,28 @@ const FormOrder = ({ onSubmit, buttonText }) => {
 
         <div className="flex w-1/3 m-1 justify-center">
           <input
-            type="submit"
-            value={buttonText}
             className="btn btn-primary py-2 rounded bg-blue-500 text-white text-center w-full"
+            type='button'
+            onClick={handleSendOrder}
+            value={"Enviar"}
           />
         </div>
 
         <div className="flex w-1/3 m-1 justify-center">
           <input
-            type="submit"
+            className="btn btn-primary py-2 rounded bg-blue-500 text-white text-center w-full"
+            type="button"
+            onClick={handleSaveOrder}
             value="Guardar"
-            className="btn btn-primary py-2 rounded bg-blue-500 text-white text-center w-full"
           />
         </div>
 
         <div className="flex w-1/3 m-1 justify-center">
           <input
-            type="submit"
-            value="Facturar"
             className="btn btn-primary py-2 rounded bg-blue-500 text-white text-center w-full"
+            type="submit"
+            onClick={handleBillOrder}
+            value="Facturar"
           />
         </div>
 

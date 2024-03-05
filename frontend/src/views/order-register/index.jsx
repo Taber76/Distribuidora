@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { apiService } from '../../services/apiService';
@@ -19,13 +19,18 @@ const OrderRegister = () => {
 		}, time)
 	}
 
-	const handleChange = (event) => {
-		const { name, value } = event.target;
-		setFormData({ ...formData, [name]: value });
+	const handleFillForm = (newForm) => {
+		setFormData(newForm);
 	};
 
-	const handleSubmit = async (event) => {
-		event.preventDefault();
+	useEffect(() => {
+		if (Object.keys(formData).length > 0) {
+			handleSubmit();
+		}
+	}, [formData]);
+
+
+	const handleSubmit = async () => {
 		try {
 			const res = await apiService.postPut('POST', 'order/register', formData)
 			if (res.status === 201) {
@@ -56,9 +61,7 @@ const OrderRegister = () => {
 				)}
 
 				<FormOrder
-					handleChange={handleChange}
-					onSubmit={handleSubmit}
-					buttonText="Enviar"
+					handleFillForm={handleFillForm}
 				/>
 
 			</div>

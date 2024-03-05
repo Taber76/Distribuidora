@@ -20,6 +20,15 @@ class OrderModel {
     }
   }
 
+  public async getAll(): Promise<IOrder[]> {
+    try {
+      const orders = await this.model.find();
+      return orders;
+    } catch (error) {
+      throw error;
+    }
+  }
+
   public async getByField(field: keyof IOrder, value: any): Promise<IOrder[]> {
     try {
       const filter: FilterQuery<IOrder> = {};

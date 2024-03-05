@@ -16,6 +16,15 @@ class orderController {
     }
   }
 
+  public async getAll(req: Request, res: Response): Promise<void> {
+    try {
+      const orders = await orderModelInstance.getAll();
+      res.status(202).json({ orders });
+    } catch (error) {
+      res.status(500).json({ error: `${language.order.get_error}: ${error}` });
+    }
+  }
+
   public async getByField(req: Request, res: Response): Promise<void> {
     try {
       if (req.params.filed && req.params.value) {

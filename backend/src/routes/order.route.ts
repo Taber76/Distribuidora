@@ -11,6 +11,12 @@ orderRouter.post(
 )
 
 orderRouter.get(
+  '/getAll',
+  passport.authenticate('userJWT', { session: false }),
+  orderController.getAll
+)
+
+orderRouter.get(
   '/getByField/:field/:value',
   passport.authenticate('userJWT', { session: false }),
   orderController.getByField

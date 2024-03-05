@@ -26,6 +26,17 @@ class orderController {
             }
         });
     }
+    getAll(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const orders = yield order_model_1.default.getAll();
+                res.status(202).json({ orders });
+            }
+            catch (error) {
+                res.status(500).json({ error: `${language_loader_1.default.order.get_error}: ${error}` });
+            }
+        });
+    }
     getByField(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {

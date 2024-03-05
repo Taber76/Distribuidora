@@ -31,6 +31,17 @@ class OrderModel {
             }
         });
     }
+    getAll() {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const orders = yield this.model.find();
+                return orders;
+            }
+            catch (error) {
+                throw error;
+            }
+        });
+    }
     getByField(field, value) {
         return __awaiter(this, void 0, void 0, function* () {
             try {

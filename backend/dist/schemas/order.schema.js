@@ -8,6 +8,8 @@ exports.OrderSchema = new mongoose_1.Schema({
     user_id: { type: String, required: true },
     items: [{
             item_id: { type: String, required: true },
+            price: { type: Number, required: true },
+            quantity: { type: Number, required: true }
         }],
     discount: { type: Number, required: false },
     observation: { type: String, required: false },
