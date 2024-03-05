@@ -2,9 +2,13 @@ import { useEffect, useState } from 'react';
 import { apiService } from '../../services/apiService';
 
 const InputDropdown = ({
-  className, type, placeholder, required,
-  inputValue, setValue, apiUrl, jsonResponse,
-  fieldName, index, listName
+  className, type, placeholder, required, inputValue,
+  setValue,         // The function to set the selected filter value
+  apiUrl,           // The api url to get the data
+  jsonResponse,     // The json data field from the response
+  fieldName,        // The field to search into response.jsonResponse
+  index,            // The index of the inputDropdown
+  listName          // The name of the dropdown list
 }) => {
 
   const [list, setList] = useState([]);

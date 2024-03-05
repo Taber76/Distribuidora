@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import { FaPlus, FaTrash } from 'react-icons/fa';
 
 import { InputDropdown } from '../input-dropdown';
@@ -12,6 +13,8 @@ const FormOrder = ({ handleFillForm }) => {
   const [discountPercentage, setDiscountPercentage] = useState(0);
   const [discount, setDiscount] = useState(0);
   const [subtotal, setSubtotal] = useState(0);
+  const user = useSelector((state) => state.user);
+
 
   useEffect(() => {
     if (selectedProduct.selectedElementOfList) {
@@ -39,6 +42,7 @@ const FormOrder = ({ handleFillForm }) => {
   }, [productList, discountPercentage])
 
   const handleAddProductLine = () => {
+    console.log(user)
     setProductList([...productList, { description: '', quantity: 0 }]);
   };
 
@@ -58,7 +62,7 @@ const FormOrder = ({ handleFillForm }) => {
     const newForm = {
       client_id: client._id,
       client_name: client.name,
-      user_id: '5452435425254324',
+      user_id: user.user._id,
       discount: discountPercentage,
       observation: '',
       status: status,

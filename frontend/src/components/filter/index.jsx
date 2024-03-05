@@ -1,21 +1,25 @@
 import { useState, useEffect } from 'react';
-
 import { Modal } from '../modal';
 import { apiService } from '../../services/apiService';
 
-const Filter = ({ name, getRoute, searchField, liveFilter, preLoadedOptions, setFilter }) => {
-  const [showModal, setShowModal] = useState(false);
-  const [modalText, setModalText] = useState('');
+const Filter = ({
+  name,             // The name on placeholder
+  getRoute,         // The route to get the data
+  jsonData,         // The json data field from the response
+  searchField,      // The field to search into jsonData
+  liveFilter,       // If the filter is the active one
+  preLoadedOptions, // The preloaded options without api
+  setFilter         // The function to set the selected filter value
+}) => {
+  const [modal, setModal] = useState({ show: false, text: '' });
   const [optionsList, setOptionsList] = useState([]);
-  const [optionsLoaded, setOptionsLoaded] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   const activeModal = (text, time) => {
-    setShowModal(true);
-    setModalText(text);
+    setModal({ show: true, text });
     setTimeout(() => {
-      setShowModal(false);
+      setModal({ show: false, text: '' });
     }, time)
   }
 
@@ -26,15 +30,13 @@ const Filter = ({ name, getRoute, searchField, liveFilter, preLoadedOptions, set
     }
   }, [])
 
-
   const loadOptions = async () => {
     try {
-      if (!preLoadedOptions) {
+      if (!preLoadedOptions && optionsList.length === 0) {
         const res = await apiService.get(getRoute);
         if (res.status === 202) {
           const data = await res.json();
-          setOptionsList(data.users);
-          setOptionsLoaded(true);
+          setOptionsList(data[jsonData]);
         } else {
           activeModal(`Error al cargar la lista de ${name}.`, 2500);
         }
@@ -45,7 +47,7 @@ const Filter = ({ name, getRoute, searchField, liveFilter, preLoadedOptions, set
   };
 
   const handleOptionFocus = () => {
-    if (!optionsLoaded && liveFilter) {
+    if (liveFilter) {
       loadOptions();
     }
   };
@@ -53,10 +55,6 @@ const Filter = ({ name, getRoute, searchField, liveFilter, preLoadedOptions, set
   const handleSearchChange = event => {
     setSearchTerm(event.target.value);
   };
-
-  const filteredOptions = optionsList.filter(option =>
-    preLoadedOptions ? true : option[searchField].toLowerCase().includes(searchTerm.toLowerCase())
-  );
 
   const handleOptionSelect = option => {
     setSearchTerm(option);
@@ -66,10 +64,9 @@ const Filter = ({ name, getRoute, searchField, liveFilter, preLoadedOptions, set
 
   return (
     <div>
-
-      {showModal && (
+      {modal.show && (
         <Modal
-          text={modalText}
+          text={modal.text}
           width="300px"
           height="150px"
           color="blue"
@@ -91,7 +88,9 @@ const Filter = ({ name, getRoute, searchField, liveFilter, preLoadedOptions, set
       />
       {isDropdownOpen && searchTerm && (
         <ul className="absolute z-10 bg-white border border-gray-300 rounded-md mt-1">
-          {filteredOptions.map(option => (
+          {optionsList.filter(option =>
+            preLoadedOptions ? true : option[searchField].toLowerCase().includes(searchTerm.toLowerCase())
+          ).map(option => (
             <li
               key={option._id}
               className="px-2 py-1 cursor-pointer hover:bg-gray-200"

@@ -2,7 +2,7 @@ export { Button } from './button';
 export { InputDropdown } from './input-dropdown';
 export { Filter } from './filter';
 export { Footer } from './footer';
-export { Form } from './form';
+export { FormRegister } from './form-register';
 export { FormOrder } from './form-order';
 export { List } from './list'
 export { Modal } from './modal';

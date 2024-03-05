@@ -1,4 +1,4 @@
-import { Home, Contacts, ContactRegister, Login, Orders, OrderRegister, Users, UserRegister, UserUpdate, PasswordChange, ItemRegister, Items } from './views';
+import { Home, Contacts, ContactRegister, ContactUpdate, Login, Orders, OrderRegister, Users, UserRegister, UserUpdate, PasswordChange, ItemRegister, Items } from './views';
 import { NavBar, Footer } from './components';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
@@ -11,6 +11,7 @@ function App() {
 					<Route path="/" element={<Home />} />
 					<Route path="/contacts" element={<Contacts />} />
 					<Route path="/contacts/register" element={<ContactRegister />} />
+					<Route path="/contacts/update" element={<ContactUpdate />} />
 					<Route path="/items" element={<Items />} />
 					<Route path="/items/register" element={<ItemRegister />} />
 					<Route path="/login" element={<Login />} />

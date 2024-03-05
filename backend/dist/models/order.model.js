@@ -55,6 +55,18 @@ class OrderModel {
             }
         });
     }
+    getFiltered(filter) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                console.log(filter);
+                const orders = yield this.model.find(filter);
+                return orders;
+            }
+            catch (error) {
+                throw error;
+            }
+        });
+    }
     update(order_id, orderData) {
         return __awaiter(this, void 0, void 0, function* () {
             try {

@@ -29,7 +29,7 @@ contactRouter.get(
 )
 
 contactRouter.put(
-  '/update/:contact_id',
+  '/update',
   passport.authenticate('userJWT', { session: false }),
   contactController.update
 )

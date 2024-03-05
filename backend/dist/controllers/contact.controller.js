@@ -51,12 +51,12 @@ class ContactController {
     getById(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const contact = yield contact_model_1.default.getById(req.params.id);
+                const contact = yield contact_model_1.default.getById(req.params.contact_id);
                 if (!contact) {
                     res.status(404).json({ error: language_loader_1.default.contact.contact_not_found });
                 }
                 else {
-                    res.status(200).json({ contact });
+                    res.status(202).json({ contact });
                 }
             }
             catch (error) {
@@ -67,7 +67,7 @@ class ContactController {
     update(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const updatedContact = yield contact_model_1.default.update(req.params.contact_id, req.body);
+                const updatedContact = yield contact_model_1.default.update(req.body);
                 if (!updatedContact) {
                     res.status(404).json({ error: language_loader_1.default.contact.contact_not_found });
                 }

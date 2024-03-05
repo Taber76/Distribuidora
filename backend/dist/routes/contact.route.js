@@ -11,6 +11,6 @@ contactRouter.post('/register', auth_mid_1.default.authenticate('userJWT', { ses
 contactRouter.get('/getall', auth_mid_1.default.authenticate('userJWT', { session: false }), contact_controller_1.default.getAll);
 contactRouter.get('/getbypartialmatch/:partialMatch', auth_mid_1.default.authenticate('userJWT', { session: false }), contact_controller_1.default.getByPartialMatch);
 contactRouter.get('/getById/:contact_id', auth_mid_1.default.authenticate('userJWT', { session: false }), contact_controller_1.default.getById);
-contactRouter.put('/update/:contact_id', auth_mid_1.default.authenticate('userJWT', { session: false }), contact_controller_1.default.update);
+contactRouter.put('/update', auth_mid_1.default.authenticate('userJWT', { session: false }), contact_controller_1.default.update);
 contactRouter.delete('/delete/:contact_id', auth_mid_1.default.authenticate('userJWT', { session: false }), contact_controller_1.default.delete);
 exports.default = contactRouter;

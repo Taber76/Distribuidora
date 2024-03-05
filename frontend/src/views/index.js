@@ -1,6 +1,7 @@
 export { Home } from './home';
 export { Contacts } from './contacts';
 export { ContactRegister } from './contact-register';
+export { ContactUpdate } from './contact-update';
 export { Items } from './items'
 export { ItemRegister } from './item-register';
 export { Login } from './login';

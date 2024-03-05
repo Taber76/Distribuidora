@@ -47,10 +47,10 @@ class ContactModel {
     }
   }
 
-  public async update(id: string, contactData: IContact): Promise<IContact | null> {
+  public async update(contactData: IContact): Promise<IContact | null> {
     try {
       contactData.updated_at = new Date();
-      const updatedContact = await this.model.findByIdAndUpdate(id, contactData, { new: true, runValidators: true });
+      const updatedContact = await this.model.findByIdAndUpdate(contactData._id, contactData, { new: true, runValidators: true });
       return updatedContact;
     } catch (error) {
       throw error;

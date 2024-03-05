@@ -1,4 +1,4 @@
-const Form = ({ formDetails, handleChange, onSubmit, buttonText }) => {
+const FormRegister = ({ formDetails, handleChange, onSubmit, buttonText }) => {
 
   return (
     <form onSubmit={onSubmit} className="flex flex-col gap-4 mt-4 w-2/3">
@@ -21,4 +21,4 @@ const Form = ({ formDetails, handleChange, onSubmit, buttonText }) => {
   )
 };
 
-export { Form }
+export { FormRegister }

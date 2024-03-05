@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { apiService } from '../../services/apiService';
-import { Modal, Form } from '../../components';
+import { Modal, FormRegister } from '../../components';
 
 const ContactRegister = () => {
 	const [showModal, setShowModal] = useState(false);
@@ -62,7 +62,7 @@ const ContactRegister = () => {
 					/>
 				)}
 
-				<Form
+				<FormRegister
 					formDetails={formDetail}
 					handleChange={handleChange}
 					onSubmit={handleSubmit}

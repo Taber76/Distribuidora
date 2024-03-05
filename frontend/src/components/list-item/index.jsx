@@ -5,7 +5,9 @@ import { useNavigate } from 'react-router-dom';
 import { apiService } from '../../services/apiService';
 import { ModalInteractive } from '../modal-interactive';
 
-const ListItem = ({ item, columnWidths, handleDelete, type }) => {
+const ListItem = ({ item, columnWidths, handleDelete,
+  type // for apiService (user, contact, ex.)
+}) => {
   const [showModal, setShowModal] = useState(false);
   const [modalText, setModalText] = useState('');
   const keys = Object.keys(columnWidths);
@@ -44,7 +46,7 @@ const ListItem = ({ item, columnWidths, handleDelete, type }) => {
           <FaEdit
             className="text-green-500 mr-2 cursor-pointer"
             title="Editar"
-            onClick={() => navigate(`/users/update`, { state: { user_id: item._id } })}
+            onClick={() => navigate(`/${type}s/update`, { state: { item_id: item._id } })}
           />
           <FaTrash
             className="text-red-500 cursor-pointer"

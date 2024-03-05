@@ -64,11 +64,11 @@ class ContactModel {
             }
         });
     }
-    update(id, contactData) {
+    update(contactData) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 contactData.updated_at = new Date();
-                const updatedContact = yield this.model.findByIdAndUpdate(id, contactData, { new: true, runValidators: true });
+                const updatedContact = yield this.model.findByIdAndUpdate(contactData._id, contactData, { new: true, runValidators: true });
                 return updatedContact;
             }
             catch (error) {

@@ -34,11 +34,11 @@ class ContactController {
 
   public async getById(req: Request, res: Response): Promise<void> {
     try {
-      const contact = await contactModelInstance.getById(req.params.id);
+      const contact = await contactModelInstance.getById(req.params.contact_id);
       if (!contact) {
         res.status(404).json({ error: language.contact.contact_not_found });
       } else {
-        res.status(200).json({ contact });
+        res.status(202).json({ contact });
       }
     } catch (error) {
       res.status(500).json({ error: `${language.contact.contact_not_found}: ${error}` });
@@ -47,7 +47,7 @@ class ContactController {
 
   public async update(req: Request, res: Response): Promise<void> {
     try {
-      const updatedContact = await contactModelInstance.update(req.params.contact_id, req.body);
+      const updatedContact = await contactModelInstance.update(req.body);
       if (!updatedContact) {
         res.status(404).json({ error: language.contact.contact_not_found });
       } else {

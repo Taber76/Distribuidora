@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 
 import { apiService } from '../../services/apiService';
 import { setUser } from '../../store/userSlice';
-import { Modal, Form } from '../../components';
+import { Modal, FormRegister } from '../../components';
 
 const UserRegister = () => {
 	const [showModal, setShowModal] = useState(false);
@@ -71,7 +71,7 @@ const UserRegister = () => {
 					/>
 				)}
 
-				<Form
+				<FormRegister
 					formDetails={formDetail}
 					handleChange={handleChange}
 					onSubmit={handleSubmit}

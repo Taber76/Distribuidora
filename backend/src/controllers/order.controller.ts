@@ -12,6 +12,7 @@ class orderController {
       res.status(201).json(order);
     }
     catch (error) {
+      console.log(error)
       res.status(500).json({ error: `${language.order.register_error}: ${error}` });
     }
   }
@@ -30,10 +31,19 @@ class orderController {
       if (req.params.filed && req.params.value) {
         const field = req.params.field as keyof IOrder;
         const orders = await orderModelInstance.getByField(field, req.params.value);
-        res.status(200).json(orders);
+        res.status(202).json(orders);
       } else {
         res.status(400).json({ error: language.order.query_error });
       }
+    } catch (error) {
+      res.status(500).json({ error: `${language.order.order_not_found}: ${error}` });
+    }
+  }
+
+  public async getFiltered(req: Request, res: Response): Promise<void> {
+    try {
+      const orders = await orderModelInstance.getFiltered(req.body);
+      res.status(202).json({ orders });
     } catch (error) {
       res.status(500).json({ error: `${language.order.order_not_found}: ${error}` });
     }

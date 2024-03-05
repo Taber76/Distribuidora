@@ -40,6 +40,16 @@ class OrderModel {
     }
   }
 
+  public async getFiltered(filter: FilterQuery<IOrder>): Promise<IOrder[]> {
+    try {
+      console.log(filter);
+      const orders = await this.model.find(filter);
+      return orders;
+    } catch (error) {
+      throw error;
+    }
+  }
+
   public async update(order_id: string, orderData: IOrder): Promise<IOrder | null> {
     try {
       const updatedOrder = await this.model.findByIdAndUpdate(

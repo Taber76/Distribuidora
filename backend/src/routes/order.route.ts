@@ -22,6 +22,12 @@ orderRouter.get(
   orderController.getByField
 )
 
+orderRouter.post(
+  '/getFiltered',
+  passport.authenticate('userJWT', { session: false }),
+  orderController.getFiltered
+)
+
 orderRouter.put(
   '/update/:order_id',
   passport.authenticate('userJWT', { session: false }),

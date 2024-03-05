@@ -22,6 +22,7 @@ class orderController {
                 res.status(201).json(order);
             }
             catch (error) {
+                console.log(error);
                 res.status(500).json({ error: `${language_loader_1.default.order.register_error}: ${error}` });
             }
         });
@@ -43,11 +44,22 @@ class orderController {
                 if (req.params.filed && req.params.value) {
                     const field = req.params.field;
                     const orders = yield order_model_1.default.getByField(field, req.params.value);
-                    res.status(200).json(orders);
+                    res.status(202).json(orders);
                 }
                 else {
                     res.status(400).json({ error: language_loader_1.default.order.query_error });
                 }
+            }
+            catch (error) {
+                res.status(500).json({ error: `${language_loader_1.default.order.order_not_found}: ${error}` });
+            }
+        });
+    }
+    getFiltered(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const orders = yield order_model_1.default.getFiltered(req.body);
+                res.status(202).json({ orders });
             }
             catch (error) {
                 res.status(500).json({ error: `${language_loader_1.default.order.order_not_found}: ${error}` });

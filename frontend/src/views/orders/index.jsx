@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { apiService } from '../../services/apiService';
+import { helpers } from '../../services/helpers';
 import { Filter, Modal, List } from '../../components';
 
 const Orders = () => {
@@ -40,8 +41,12 @@ const Orders = () => {
       const res = await apiService.get('order/getall')
       if (res.status === 202) {
         const data = await res.json()
-        const orders = data.orders.map(({ client_id, user_id, items, discount, observation, updated_at, finished_at, ...rest }) => rest)
-        setOrderList(orders)
+        // const orders = data.orders.map(({ client_id, user_id, items, discount, observation, updated_at, finished_at, ...rest }) => rest)
+        data.orders.forEach((order) => {
+          order.created_at = helpers.formatDate(order.created_at)
+        })
+        console.log(data.orders)
+        setOrderList(data.orders)
       } else {
         activeModal('No se han podido cargr las ordenes de compra.')
       }
@@ -50,9 +55,30 @@ const Orders = () => {
   }, [deleteOrder])
 
 
-  const handleSearch = () => {
-    console.log('Buscando')
-    console.log(client, user, status, date, invoice)
+  const handleSearch = async () => {
+    try {
+      let filter = {}
+      if (client) filter.client_name = client
+      if (user) filter.user_id = user
+      if (status) filter.status = status
+      if (date) filter.created_at = date
+      if (invoice) filter.invoice_number = invoice
+      let res
+      if (Object.keys(filter).length === 0) {
+        res = await apiService.get('order/getall')
+      } else {
+        res = await apiService.postPut('POST', 'order/getFiltered', filter)
+      }
+      if (res.status === 202) {
+        const data = await res.json()
+        data.orders.forEach((order) => {
+          order.created_at = helpers.formatDate(order.created_at)
+        })
+        setOrderList(data.orders)
+      }
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   return (
@@ -73,7 +99,8 @@ const Orders = () => {
 
             <Filter
               name="Clientes"
-              getRoute="client/getall"
+              getRoute="contact/getall"
+              jsonData="contacts"
               searchField="name"
               liveFilter={true}
               setFilter={setClient}
@@ -83,6 +110,7 @@ const Orders = () => {
               name="Vendedores"
               getRoute="user/getall"
               searchField="name"
+              jsonData="users"
               liveFilter={true}
               setFilter={setUser}
             />
