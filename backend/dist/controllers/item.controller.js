@@ -41,8 +41,8 @@ class ItemController {
     getByDescription(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const items = yield item_model_1.default.getByDescription(String(req.params.partialMatch).toUpperCase());
-                res.status(200).json({ items });
+                const items = yield item_model_1.default.getByDescription(String(req.params.partialMatch));
+                res.status(202).json({ items });
             }
             catch (error) {
                 res.status(500).json({ error: `${language_loader_1.default.item.item_not_found}: ${error}` });

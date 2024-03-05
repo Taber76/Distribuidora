@@ -1,7 +1,7 @@
 import passport from 'passport';
 import { Strategy as JwtStrategy, ExtractJwt } from 'passport-jwt';
 
-import { JWT_SECRET } from '../config/environment';
+import { JWT_SECRET, MODE } from '../config/environment';
 
 passport.use(
   'userJWT',

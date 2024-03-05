@@ -9,7 +9,7 @@ const auth_mid_1 = __importDefault(require("../middlewares/auth.mid"));
 const itemRouter = express_1.default.Router();
 itemRouter.post('/item/register', auth_mid_1.default.authenticate('userJWT', { session: false }), item_controller_1.default.register);
 itemRouter.get('/item/getall', auth_mid_1.default.authenticate('userJWT', { session: false }), item_controller_1.default.getAll);
-itemRouter.get('/item/getbydescription/:partialMatch', auth_mid_1.default.authenticate('userJWT', { session: false }), item_controller_1.default.getByDescription);
+itemRouter.get('/item/getbypartialmatch/:partialMatch', auth_mid_1.default.authenticate('userJWT', { session: false }), item_controller_1.default.getByDescription);
 itemRouter.get('/item/get/:item_id', auth_mid_1.default.authenticate('userJWT', { session: false }), item_controller_1.default.getById);
 itemRouter.put('/item/update/:item_id', auth_mid_1.default.authenticate('userJWT', { session: false }), item_controller_1.default.update);
 itemRouter.delete('/item/delete/:item_id', auth_mid_1.default.authenticate('userJWT', { session: false }), item_controller_1.default.delete);

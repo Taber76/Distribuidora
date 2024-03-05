@@ -9,3 +9,4 @@ export const SENDINBLUE_API_KEY = process.env.SENDINBLUE_API_KEY
 export const REDIS_PW = process.env.REDIS_PW
 export const REDIS_HOST = process.env.REDIS_HOST
 export const LANGUAGE = process.env.LANGUAGE || 'sp'
+export const MODE = process.env.MODE || 'pro'
