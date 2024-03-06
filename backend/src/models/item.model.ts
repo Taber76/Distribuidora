@@ -47,6 +47,24 @@ class ItemModel {
     }
   }
 
+  public async getDescriptions(arrayOfIds: string[]): Promise<Record<string, string>> {
+    try {
+      let descriptions: Record<string, string> = {};
+      for (let i = 0; i < arrayOfIds.length; i++) {
+        const item = await this.model.findById(arrayOfIds[i]);
+        if (!item) {
+          descriptions[arrayOfIds[i]] = '';
+        } else {
+          descriptions[arrayOfIds[i]] = item.description;
+        }
+      }
+      return descriptions;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+
   public async update(item_id: string, itemData: IItem): Promise<IItem | null> {
     try {
       const updatedItem = await this.model.findByIdAndUpdate(

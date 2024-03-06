@@ -47,6 +47,15 @@ class ItemController {
     }
   }
 
+  public async getDescriptions(req: Request, res: Response): Promise<void> {
+    try {
+      const descriptions = await itemModelInstance.getDescriptions(req.body.arrayOfIds);
+      res.status(202).json({ descriptions });
+    } catch (error) {
+      res.status(500).json({ error: `${language.item.item_not_found}: ${error}` });
+    }
+  }
+
   public async update(req: Request, res: Response): Promise<void> {
     try {
       req.body.description = String(req.body.description).toUpperCase();

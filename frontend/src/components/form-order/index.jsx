@@ -4,7 +4,7 @@ import { FaPlus, FaTrash } from 'react-icons/fa';
 
 import { InputDropdown } from '../input-dropdown';
 
-const FormOrder = ({ handleFillForm, preloadedData }) => {
+const FormOrder = ({ handleFillForm, formData }) => {
   const [selectedClient, setSelectedClient] = useState({});
   const [selectedProduct, setSelectedProduct] = useState({});
   const [productList, setProductList] = useState([])
@@ -16,16 +16,21 @@ const FormOrder = ({ handleFillForm, preloadedData }) => {
   const user = useSelector((state) => state.user);
 
   useEffect(() => {
-    if (preloadedData) {
-      console.log(preloadedData)
-      setSelectedClient(preloadedData.client);
-      setProductList(preloadedData.items);
-      setDiscountPercentage(preloadedData.discount);
+    const loadData = async () => {
+      if (formData) {
+        setSelectedClient({ selectedElementOfList: { client_name: formData.client_name } });
+        setDiscountPercentage(formData.discount);
+
+
+        setProductList(formData.items);
+
+      }
     }
 
-  })
+    loadData()
+  }, [])
 
-
+  // When a product is selected form dropdown it is added to the product list
   useEffect(() => {
     if (selectedProduct.selectedElementOfList) {
       const updatedProductList = [...productList];
@@ -36,6 +41,7 @@ const FormOrder = ({ handleFillForm, preloadedData }) => {
     }
   }, [selectedProduct])
 
+  // When product list or discount percentage is changed, then recalculate values
   useEffect(() => {
     if (productList.length > 0) {
       let sum = 0;
@@ -51,21 +57,25 @@ const FormOrder = ({ handleFillForm, preloadedData }) => {
     }
   }, [productList, discountPercentage])
 
+  // Add empty product line
   const handleAddProductLine = () => {
     setProductList([...productList, { description: '', quantity: 0 }]);
   };
 
+  // Remove product line
   const handleRemoveProductLine = (index) => {
     const updatedProductList = productList.filter((_, i) => i !== index);
     setProductList(updatedProductList);
   }
 
+  // Modify any value in product line
   const handleProductListChange = (index, field, value) => {
     const updatedProductList = [...productList];
     updatedProductList[index][field] = value;
     setProductList(updatedProductList);
   };
 
+  // Fill form and send to father element
   const fillForm = (status) => {
     const client = selectedClient.selectedElementOfList
     const newForm = {
@@ -108,6 +118,7 @@ const FormOrder = ({ handleFillForm, preloadedData }) => {
             className="bg-blue-100 text-xs rounded p-1 mt-1 w-full"
             type="text"
             required={true}
+            value={selectedClient}
             setValue={setSelectedClient}
             apiUrl='contact/getbypartialmatch/'
             jsonResponse={'contacts'}
@@ -133,6 +144,7 @@ const FormOrder = ({ handleFillForm, preloadedData }) => {
       {/* Items */}
       <div className="flex flex-col items-center justify-between w-full">
 
+        {/* Mobile header */}
         <div className="btn btn-primary py-2 mb-2 flex justify-between rounded bg-blue-500 text-white w-full text-left">
           <span className="ml-2">Productos</span>
           <div className="sm:hidden flex items-center justify-end w-[5%]">
@@ -144,6 +156,7 @@ const FormOrder = ({ handleFillForm, preloadedData }) => {
           </div>
         </div>
 
+        {/* Desktop header */}
         <div className="hidden sm:block  flex items-center gap-4 w-full">
           <div className="flex flex-col sm:flex-row bg-blue-500 rounded-md shadow-md p-4 w-full">
 
@@ -173,6 +186,7 @@ const FormOrder = ({ handleFillForm, preloadedData }) => {
           <div key={index} className="flex items-center gap-4 w-full">
             <div className="flex flex-col sm:flex-row rounded-md shadow-md p-1 w-full">
 
+              {/* Product description */}
               <div className="mb-2 sm:mb-0 flex items-center w-full sm:w-[69%] sm:block" >
                 <InputDropdown
                   className={"text-sm font-semibold w-full bg-blue-100"}
@@ -189,6 +203,7 @@ const FormOrder = ({ handleFillForm, preloadedData }) => {
                 />
               </div>
 
+              {/* Quantity */}
               <div className="mb-2 sm:mb-0 flex items-center  w-3/4 sm:w-[8%]">
                 <input
                   className="text-sm w-full bg-blue-200 text-right sm:text-left"
@@ -201,6 +216,7 @@ const FormOrder = ({ handleFillForm, preloadedData }) => {
                 <span className="sm:hidden text-sm ml-1 font-semibold w-full text-left" >Cantidad</span>
               </div>
 
+              {/* Sale price */}
               <div className="mb-2 sm:mb-0 flex items-center w-3/4 sm:w-[9%]">
                 <input
                   className="text-sm  w-full pr-1 bg-blue-100 text-left text-right sm:text-left"
@@ -213,11 +229,13 @@ const FormOrder = ({ handleFillForm, preloadedData }) => {
                 <span className="sm:hidden text-sm ml-1 font-semibold w-full text-left" >Precio unidad</span>
               </div>
 
+              {/* Total price of product */}
               <div className="mb-2 sm:mb-0 flex items-center justify-end w-3/4 sm:w-[9%]">
                 <span className="text-sm font-semibold w-full bg-blue-200 pr-1 text-right" >{isNaN(product.quantity * product.sale_price) ? 0 : product.quantity * product.sale_price}</span>
                 <span className="sm:hidden text-sm ml-1 font-semibold w-full text-left" >Total</span>
               </div>
 
+              {/* Delete product */}
               <div className="flex items-center justify-end w-full sm:w-[5%]">
                 <FaTrash
                   className="text-red-500 cursor-pointer"

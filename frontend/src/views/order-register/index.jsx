@@ -19,10 +19,12 @@ const OrderRegister = () => {
 		}, time)
 	}
 
+	// For children update order
 	const handleFillForm = (newForm) => {
 		setFormData(newForm);
 	};
 
+	// Submit when formData is updated and not empty
 	useEffect(() => {
 		if (Object.keys(formData).length > 0) {
 			handleSubmit();

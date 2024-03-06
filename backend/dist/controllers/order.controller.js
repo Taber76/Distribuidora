@@ -41,7 +41,7 @@ class orderController {
     getByField(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                if (req.params.filed && req.params.value) {
+                if (req.params.field && req.params.value) {
                     const field = req.params.field;
                     const orders = yield order_model_1.default.getByField(field, req.params.value);
                     res.status(202).json(orders);

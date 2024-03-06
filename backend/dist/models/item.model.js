@@ -64,6 +64,26 @@ class ItemModel {
             }
         });
     }
+    getDescriptions(arrayOfIds) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                let descriptions = {};
+                for (let i = 0; i < arrayOfIds.length; i++) {
+                    const item = yield this.model.findById(arrayOfIds[i]);
+                    if (!item) {
+                        descriptions[arrayOfIds[i]] = '';
+                    }
+                    else {
+                        descriptions[arrayOfIds[i]] = item.description;
+                    }
+                }
+                return descriptions;
+            }
+            catch (error) {
+                throw error;
+            }
+        });
+    }
     update(item_id, itemData) {
         return __awaiter(this, void 0, void 0, function* () {
             try {

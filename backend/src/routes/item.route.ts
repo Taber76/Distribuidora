@@ -29,6 +29,12 @@ itemRouter.get(
 )
 
 itemRouter.put(
+  '/item/getdescriptions',
+  passport.authenticate('userJWT', { session: false }),
+  itemController.getDescriptions
+)
+
+itemRouter.put(
   '/item/update/:item_id',
   passport.authenticate('userJWT', { session: false }),
   itemController.update

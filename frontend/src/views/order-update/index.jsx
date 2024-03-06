@@ -19,34 +19,34 @@ const OrderUpdate = () => {
 		}, time)
 	}
 
+	// Get order data
 	useEffect(() => {
 		const getData = async () => {
-			console.log(location.state.item_id, "order_id")
 			const res = await apiService.get(`order/getbyfield/_id/${location.state.item_id}`)
-			console.log(res)
 			if (res.status === 202) {
 				const data = await res.json();
-				setFormData(data.item)
+				setFormData(data[0])
 			} else {
 				activeModal('Error al obtener los datos de la orden.', 2500)
 			}
 		}
-		console.log("formData", formData)
 		getData()
 	}, [])
 
-
+	// For children update order
 	const handleFillForm = (newForm) => {
 		setFormData(newForm);
 	};
 
+	// To render children with updated data
 	useEffect(() => {
 		if (Object.keys(formData).length > 0) {
-			handleSubmit();
+			//	console.log(formData, 'formData updated')
 		}
 	}, [formData]);
 
 
+	// Submit when formData is updated
 	const handleSubmit = async () => {
 		try {
 			const res = await apiService.postPut('PUT', 'order/update', formData)
@@ -64,7 +64,7 @@ const OrderUpdate = () => {
 	return (
 		<div className="py-4 md:py-6">
 			<div className="flex flex-col text-center items-center">
-				<h2>Registro de orden de compra</h2>
+				<h2>Modificacion de orden de compra</h2>
 
 				{showModal && (
 					<Modal
@@ -77,10 +77,12 @@ const OrderUpdate = () => {
 					/>
 				)}
 
-				<FormOrder
-					handleFillForm={handleFillForm}
-					preloadedData={{ cient: "pepe", items: [], discount: 0 }}
-				/>
+				{formData?.items &&
+					<FormOrder
+						handleFillForm={handleFillForm}
+						formData={formData}//{{ client_name: 'Eleonora Escoceria', items: [], discount: 0 }}
+					/>
+				}
 
 			</div>
 		</div>

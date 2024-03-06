@@ -57,8 +57,19 @@ class ItemController {
                     res.status(404).json({ error: language_loader_1.default.item.item_not_found });
                 }
                 else {
-                    res.status(200).json({ item });
+                    res.status(202).json({ item });
                 }
+            }
+            catch (error) {
+                res.status(500).json({ error: `${language_loader_1.default.item.item_not_found}: ${error}` });
+            }
+        });
+    }
+    getDescriptions(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const descriptions = yield item_model_1.default.getDescriptions(req.body.arrayOfIds);
+                res.status(202).json({ descriptions });
             }
             catch (error) {
                 res.status(500).json({ error: `${language_loader_1.default.item.item_not_found}: ${error}` });

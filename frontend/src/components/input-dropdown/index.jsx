@@ -3,6 +3,7 @@ import { apiService } from '../../services/apiService';
 
 const InputDropdown = ({
   className, type, placeholder, required, inputValue,
+  value,            // Preselected value
   setValue,         // The function to set the selected filter value
   apiUrl,           // The api url to get the data
   jsonResponse,     // The json data field from the response
@@ -14,10 +15,26 @@ const InputDropdown = ({
   const [list, setList] = useState([]);
   const [inputValueChild, setInputValueChild] = useState(inputValue);
 
+  // if value is recived, set it in the input
+  useEffect(() => {
+    const getData = async () => {
+      const res = await apiService.get(apiUrl + value.selectedElementOfList.client_name);
+      if (res.status === 202) {
+        const data = await res.json();
+        setValue({ selectedElementOfList: data[jsonResponse][0], index });
+      }
+    }
+    console.log(value, "valor recibido en el dropdown input")
+    //if (value.selectedElementOfList.client_name) getData()
+  }, [])
+
+  // Set value to show in the input
   useEffect(() => {
     setInputValueChild(inputValue)
   }, [inputValue])
 
+
+  // When input value is more than 2 characters and list is empty, get data to the list
   const handleChange = async (event) => {
     const { value } = event.target;
     setInputValueChild(value);
@@ -33,6 +50,7 @@ const InputDropdown = ({
     }
   }
 
+  // When an item is selected, send it to father and clear list
   const handleSelect = (event) => {
     const selected = event.target.value;
     const selectedElementOfList = list.find(ele => ele[fieldName] === selected);
