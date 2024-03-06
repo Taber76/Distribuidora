@@ -45,7 +45,6 @@ const Orders = () => {
         data.orders.forEach((order) => {
           order.created_at = helpers.formatDate(order.created_at)
         })
-        console.log(data.orders)
         setOrderList(data.orders)
       } else {
         activeModal('No se han podido cargr las ordenes de compra.')

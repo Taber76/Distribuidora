@@ -4,7 +4,7 @@ import { FaPlus, FaTrash } from 'react-icons/fa';
 
 import { InputDropdown } from '../input-dropdown';
 
-const FormOrder = ({ handleFillForm }) => {
+const FormOrder = ({ handleFillForm, preloadedData }) => {
   const [selectedClient, setSelectedClient] = useState({});
   const [selectedProduct, setSelectedProduct] = useState({});
   const [productList, setProductList] = useState([])
@@ -14,6 +14,16 @@ const FormOrder = ({ handleFillForm }) => {
   const [discount, setDiscount] = useState(0);
   const [subtotal, setSubtotal] = useState(0);
   const user = useSelector((state) => state.user);
+
+  useEffect(() => {
+    if (preloadedData) {
+      console.log(preloadedData)
+      setSelectedClient(preloadedData.client);
+      setProductList(preloadedData.items);
+      setDiscountPercentage(preloadedData.discount);
+    }
+
+  })
 
 
   useEffect(() => {
@@ -42,7 +52,6 @@ const FormOrder = ({ handleFillForm }) => {
   }, [productList, discountPercentage])
 
   const handleAddProductLine = () => {
-    console.log(user)
     setProductList([...productList, { description: '', quantity: 0 }]);
   };
 

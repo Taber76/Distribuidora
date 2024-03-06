@@ -28,7 +28,7 @@ class orderController {
 
   public async getByField(req: Request, res: Response): Promise<void> {
     try {
-      if (req.params.filed && req.params.value) {
+      if (req.params.field && req.params.value) {
         const field = req.params.field as keyof IOrder;
         const orders = await orderModelInstance.getByField(field, req.params.value);
         res.status(202).json(orders);

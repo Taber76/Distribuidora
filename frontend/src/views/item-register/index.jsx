@@ -27,7 +27,7 @@ const ItemRegister = () => {
 	const handleSubmit = async (event) => {
 		event.preventDefault();
 		try {
-			const res = await apiService.items.register(formData);
+			const res = await apiService.postPut("POST", "item/register", formData);
 			if (res.status === 201) {
 				activeModal("Item registrado correctamente.", 1500)
 				setTimeout(() => {

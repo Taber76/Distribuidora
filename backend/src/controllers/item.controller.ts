@@ -40,7 +40,7 @@ class ItemController {
       if (!item) {
         res.status(404).json({ error: language.item.item_not_found });
       } else {
-        res.status(200).json({ item });
+        res.status(202).json({ item });
       }
     } catch (error) {
       res.status(500).json({ error: `${language.item.item_not_found}: ${error}` });

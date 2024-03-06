@@ -6,7 +6,7 @@ import { apiService } from '../../services/apiService';
 import { ModalInteractive } from '../modal-interactive';
 
 const ListItem = ({ item, columnWidths, handleDelete,
-  type // for apiService (user, contact, ex.)
+  type // for delete apiService and navigate to update (user, contact, ex.)
 }) => {
   const [showModal, setShowModal] = useState(false);
   const [modalText, setModalText] = useState('');

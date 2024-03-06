@@ -23,7 +23,7 @@ itemRouter.get(
 )
 
 itemRouter.get(
-  '/item/get/:item_id',
+  '/item/getbyid/:item_id',
   passport.authenticate('userJWT', { session: false }),
   itemController.getById
 )
