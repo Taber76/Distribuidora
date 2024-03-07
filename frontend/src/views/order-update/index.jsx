@@ -81,6 +81,7 @@ const OrderUpdate = () => {
 					<FormOrder
 						handleFillForm={handleFillForm}
 						formData={formData}//{{ client_name: 'Eleonora Escoceria', items: [], discount: 0 }}
+						updateType={true}
 					/>
 				}
 

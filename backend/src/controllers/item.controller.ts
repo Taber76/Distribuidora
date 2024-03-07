@@ -52,6 +52,7 @@ class ItemController {
       const descriptions = await itemModelInstance.getDescriptions(req.body.arrayOfIds);
       res.status(202).json({ descriptions });
     } catch (error) {
+      console.log(error)
       res.status(500).json({ error: `${language.item.item_not_found}: ${error}` });
     }
   }

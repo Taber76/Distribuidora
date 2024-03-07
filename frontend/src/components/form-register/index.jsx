@@ -1,3 +1,5 @@
+// Register form for users, contacts and items
+
 const FormRegister = ({ formDetails, handleChange, onSubmit, buttonText }) => {
 
   return (

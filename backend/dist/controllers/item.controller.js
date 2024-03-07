@@ -72,6 +72,7 @@ class ItemController {
                 res.status(202).json({ descriptions });
             }
             catch (error) {
+                console.log(error);
                 res.status(500).json({ error: `${language_loader_1.default.item.item_not_found}: ${error}` });
             }
         });

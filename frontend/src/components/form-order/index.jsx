@@ -3,30 +3,46 @@ import { useSelector } from 'react-redux';
 import { FaPlus, FaTrash } from 'react-icons/fa';
 
 import { InputDropdown } from '../input-dropdown';
+import { apiService } from '../../services/apiService';
 
-const FormOrder = ({ handleFillForm, formData }) => {
+const FormOrder = ({
+  handleFillForm,   // For father to send data of the order 
+  formData,         // Data of the order when updating 
+  updateType        // True if updating
+}) => {
   const [selectedClient, setSelectedClient] = useState({});
   const [selectedProduct, setSelectedProduct] = useState({});
   const [productList, setProductList] = useState([])
+  const user = useSelector((state) => state.user);
+
   const [total, setTotal] = useState(0);
   const [iva, setIva] = useState(0);
   const [discountPercentage, setDiscountPercentage] = useState(0);
   const [discount, setDiscount] = useState(0);
   const [subtotal, setSubtotal] = useState(0);
-  const user = useSelector((state) => state.user);
 
+  // Load previous data (used for update order)
   useEffect(() => {
     const loadData = async () => {
       if (formData) {
-        setSelectedClient({ selectedElementOfList: { client_name: formData.client_name } });
+        let res = await apiService.get('contact/getById/' + formData.client_id);
+        if (res.status === 202) {
+          const data = await res.json();
+          setSelectedClient({ selectedElementOfList: data.contact });
+        }
         setDiscountPercentage(formData.discount);
-
-
+        const itemsIds = formData.items.map((item) => item.item_id);
+        res = await apiService.postPut('PUT', 'item/getdescriptions', { arrayOfIds: itemsIds });
+        if (res.status === 202) {
+          const data = await res.json();
+          formData.items.forEach((item) => {
+            item.description = data.descriptions[item.item_id];
+            item.sale_price = item.price
+          })
+        }
         setProductList(formData.items);
-
       }
     }
-
     loadData()
   }, [])
 
@@ -110,36 +126,37 @@ const FormOrder = ({ handleFillForm, formData }) => {
     <form className="flex flex-col gap-4 mt-4 w-4/5">
 
       {/* Header */}
-      <div className="flex flex-col sm:flex-row items-center justify-between w-full">
+      {(!updateType || selectedClient) &&
+        <div className="flex flex-col sm:flex-row items-center justify-between w-full">
 
-        <div className="flex flex-col flex-1 sm:w-full border border-gray-300 rounded p-2 m-1" style={{ width: '100%' }}>
-          <span className="text-xs text-gray-500" style={{ textAlign: 'left' }}>Nombre del cliente</span>
-          <InputDropdown
-            className="bg-blue-100 text-xs rounded p-1 mt-1 w-full"
-            type="text"
-            required={true}
-            value={selectedClient}
-            setValue={setSelectedClient}
-            apiUrl='contact/getbypartialmatch/'
-            jsonResponse={'contacts'}
-            fieldName={'name'}
-            index={0}
-            listName={'contactList'}
-          />
+          <div className="flex flex-col flex-1 sm:w-full border border-gray-300 rounded p-2 m-1" style={{ width: '100%' }}>
+            <span className="text-xs text-gray-500" style={{ textAlign: 'left' }}>Nombre del cliente</span>
+            <InputDropdown
+              className="bg-blue-100 text-xs rounded p-1 mt-1 w-full"
+              type="text"
+              required={true}
+              initValue={formData?.client_name} //{ selectedElementOfList: { client_name: formData.client_name } }
+              setValue={setSelectedClient}
+              apiUrl='contact/getbypartialmatch/'
+              jsonResponse={'contacts'}
+              fieldName={'name'}
+              index={0}
+              listName={'contactList'}
+            />
+          </div>
+
+          <div className="flex flex-col flex-1 sm:w-full border border-gray-300 rounded p-2 m-1" style={{ width: '100%' }}>
+            <span className="text-xs text-gray-500" style={{ textAlign: 'left' }}>Dirección</span>
+            <span className="bg-blue-100 text-xs rounded p-1 mt-1 block" style={{ minHeight: '1.5rem' }}>{selectedClient && selectedClient.selectedElementOfList && selectedClient.selectedElementOfList.address || ' '}</span>
+          </div>
+
+          <div className="flex flex-col flex-1 sm:w-full border border-gray-300 rounded p-2 m-1" style={{ width: '100%' }}>
+            <span className="text-xs text-gray-500" style={{ textAlign: 'left' }}>RUT</span>
+            <span className="bg-blue-100 text-xs rounded p-1 mt-1 block" style={{ minHeight: '1.5rem' }}>{selectedClient && selectedClient.selectedElementOfList && selectedClient.selectedElementOfList.rut || ' '}</span>
+          </div>
+
         </div>
-
-        <div className="flex flex-col flex-1 sm:w-full border border-gray-300 rounded p-2 m-1" style={{ width: '100%' }}>
-          <span className="text-xs text-gray-500" style={{ textAlign: 'left' }}>Dirección</span>
-          <span className="bg-blue-100 text-xs rounded p-1 mt-1 block" style={{ minHeight: '1.5rem' }}>{selectedClient && selectedClient.selectedElementOfList && selectedClient.selectedElementOfList.address || ' '}</span>
-
-        </div>
-
-        <div className="flex flex-col flex-1 sm:w-full border border-gray-300 rounded p-2 m-1" style={{ width: '100%' }}>
-          <span className="text-xs text-gray-500" style={{ textAlign: 'left' }}>RUT</span>
-          <span className="bg-blue-100 text-xs rounded p-1 mt-1 block" style={{ minHeight: '1.5rem' }}>{selectedClient && selectedClient.selectedElementOfList && selectedClient.selectedElementOfList.rut || ' '}</span>
-        </div>
-
-      </div>
+      }
 
       {/* Items */}
       <div className="flex flex-col items-center justify-between w-full">
