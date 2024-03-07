@@ -42,9 +42,9 @@ const Users = () => {
         activeModal('No se han podido cargar los usuarios.')
       }
     }
-    if (user.role === 'SELER') {
+    if (user?.role === 'SELER') {
       navigate('/users/update', { state: { item_id: user._id, role: user.role } })
-    } else {
+    } else if (user?.role === 'ADMIN') {
       getUsers()
     }
   }, [deleteUser])

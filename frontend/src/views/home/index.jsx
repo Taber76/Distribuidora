@@ -20,9 +20,9 @@ const Home = () => {
 	}, []);
 
 	return (
-		<div className="relative overflow-hidden">
+		<div className="overflow-hidden">
 			<img src="/warehouse.jpg" alt="" className="w-full md:h-auto md:w-full lg:w-full xl:w-full object-top" />
-			<div class="absolute inset-0 bg-black opacity-25"></div>
+
 		</div>
 	);
 };
