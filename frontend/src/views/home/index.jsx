@@ -20,10 +20,9 @@ const Home = () => {
 	}, []);
 
 	return (
-		<div className="py-4 md:py-6">
-			<div className="flex flex-col text-center items-center">
-				<h2>Home</h2>
-			</div>
+		<div className="relative overflow-hidden">
+			<img src="/warehouse.jpg" alt="" className="w-full md:h-auto md:w-full lg:w-full xl:w-full object-top" />
+			<div class="absolute inset-0 bg-black opacity-25"></div>
 		</div>
 	);
 };

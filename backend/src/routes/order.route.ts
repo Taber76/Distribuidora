@@ -18,7 +18,7 @@ orderRouter.get(
 
 orderRouter.get(
   '/getByField/:field/:value',
-  //passport.authenticate('userJWT', { session: false }),
+  passport.authenticate('userJWT', { session: false }),
   orderController.getByField
 )
 

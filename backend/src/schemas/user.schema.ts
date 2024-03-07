@@ -24,7 +24,6 @@ export const UserSchema = new Schema<IUser>({
   email: {
     type: String,
     required: false,
-    unique: true,
     sparse: true,
     validate: {
       validator: function (v: string) {

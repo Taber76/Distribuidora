@@ -31,7 +31,7 @@ class orderController {
       if (req.params.field && req.params.value) {
         const field = req.params.field as keyof IOrder;
         const orders = await orderModelInstance.getByField(field, req.params.value);
-        res.status(202).json(orders);
+        res.status(202).json({ orders });
       } else {
         res.status(400).json({ error: language.order.query_error });
       }

@@ -1,6 +1,8 @@
 // Register form for users, contacts and items
+import { useNavigate } from 'react-router-dom';
 
 const FormRegister = ({ formDetails, handleChange, onSubmit, buttonText }) => {
+  const navigate = useNavigate()
 
   return (
     <form onSubmit={onSubmit} className="flex flex-col gap-4 mt-4 w-2/3">
@@ -16,8 +18,20 @@ const FormRegister = ({ formDetails, handleChange, onSubmit, buttonText }) => {
         />
       ))}
 
-      <input type="submit" value={buttonText} className="btn btn-primary py-2 rounded bg-blue-500 text-white" />
-
+      <div className="flex justify-evenly">
+        <button
+          className="w-1/3 btn btn-primary py-2 rounded bg-blue-500 text-white"
+          type="submit"
+        >
+          {buttonText}
+        </button>
+        <button
+          className="w-1/3 btn btn-secondary py-2 rounded bg-blue-500 text-white"
+          onClick={() => navigate(-1)}
+        >
+          Cancelar
+        </button>
+      </div>
     </form>
 
   )

@@ -38,7 +38,7 @@ const NavBar = () => {
       <div className="flex items-center justify-between px-4 md:px-6">
 
         <Link className="flex items-center space-x-2" to="/">
-          {/* Aquí va tu icono o logotipo */}
+          <img src="https://flowbite.com/docs/images/logo.svg" className="h-10 w-10" alt="Logo" />
           <span className="font-semibold text-white">Distribuidora</span>
         </Link>
 

@@ -25,7 +25,7 @@ const OrderUpdate = () => {
 			const res = await apiService.get(`order/getbyfield/_id/${location.state.item_id}`)
 			if (res.status === 202) {
 				const data = await res.json();
-				setFormData(data[0])
+				setFormData(data.orders[0])
 			} else {
 				activeModal('Error al obtener los datos de la orden.', 2500)
 			}
@@ -62,9 +62,9 @@ const OrderUpdate = () => {
 
 
 	return (
-		<div className="py-4 md:py-6">
+		<div className="py-4 md:py-6 bg-gray-100">
 			<div className="flex flex-col text-center items-center">
-				<h2>Modificacion de orden de compra</h2>
+				<h2 className="text-2xl font-bold text-gray-700 mb-4">Modificacion de orden de compra</h2>
 
 				{showModal && (
 					<Modal

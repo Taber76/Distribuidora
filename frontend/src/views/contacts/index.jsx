@@ -21,10 +21,9 @@ const Contacts = () => {
   }
 
   const columnWidths = {
-    name: '30%',
-    email: '30%',
+    name: '32%',
+    email: '38%',
     phone: '20%',
-    role: '10%',
   }
 
   useEffect(() => {
@@ -42,9 +41,9 @@ const Contacts = () => {
   }, [deleteContact])
 
   return (
-    <div className="py-4 md:py-6">
+    <div className="py-4 md:py-6 bg-gray-100">
       <div className="flex flex-col text-center items-center">
-        <h2>Contactos</h2>
+        <h2 className="text-2xl font-bold text-gray-700">Contactos</h2>
         <div className="flex flex-col gap-4 mt-4 w-2/3">
 
           {showModal && (
@@ -69,9 +68,6 @@ const Contacts = () => {
               </div>
               <div className={`mb-2 sm:mb-0`} style={{ minWidth: `${columnWidths.phone}` }}>
                 <h3 className="text-md text-white font-semibold">Teléfono</h3>
-              </div>
-              <div className={`mb-2 sm:mb-0`} style={{ minWidth: `${columnWidths.role}` }}>
-                <h3 className="text-md text-white font-semibold">Rol</h3>
               </div>
               <div className={`flex items-center justify-end mb-2 sm:mb-0`} style={{ minWidth: `10%` }}>
                 <FaPlus

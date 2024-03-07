@@ -1,6 +1,7 @@
-import { FaPlus, FaSearch } from 'react-icons/fa';
+import { FaPlus, FaSearch, FaTrash } from 'react-icons/fa';
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 import { apiService } from '../../services/apiService';
 import { helpers } from '../../services/helpers';
@@ -11,10 +12,11 @@ const Orders = () => {
   const [modalText, setModalText] = useState('');
   const [orderList, setOrderList] = useState([])
   const [deleteOrder, setDeleteOrder] = useState(false)
+  const { user } = useSelector(state => state.user)
 
   // Filters
   const [client, setClient] = useState('')
-  const [user, setUser] = useState('')
+  const [seler, setSeler] = useState({})
   const [status, setStatus] = useState('')
   const [date, setDate] = useState('')
   const [invoice, setInvoice] = useState('')
@@ -38,10 +40,14 @@ const Orders = () => {
 
   useEffect(() => {
     const getOrders = async () => {
-      const res = await apiService.get('order/getall')
+      let res
+      if (user.role === 'ADMIN') {
+        res = await apiService.get('order/getall')
+      } else {
+        res = await apiService.get(`order/getbyfield/user_id/${user._id}`)
+      }
       if (res.status === 202) {
         const data = await res.json()
-        // const orders = data.orders.map(({ client_id, user_id, items, discount, observation, updated_at, finished_at, ...rest }) => rest)
         data.orders.forEach((order) => {
           order.created_at = helpers.formatDate(order.created_at)
         })
@@ -58,7 +64,7 @@ const Orders = () => {
     try {
       let filter = {}
       if (client) filter.client_name = client
-      if (user) filter.user_id = user
+      if (seler) filter.user_id = seler._id
       if (status) filter.status = status
       if (date) filter.created_at = date
       if (invoice) filter.invoice_number = invoice
@@ -80,16 +86,20 @@ const Orders = () => {
     }
   }
 
+  const handleClearFilters = () => {
+
+  }
+
   return (
-    <div className="py-4 md:py-6">
+    <div className="py-4 md:py-6 bg-gray-100">
       <div className="flex flex-col text-center items-center">
-        <h2>Ventas</h2>
+        <h2 className="text-2xl font-bold text-gray-700 mb-4">Ventas</h2>
 
         {/* Filters */}
         <div className="w-full flex flex-col sm:flex-row gap-4 justify-center items-center">
 
           <div className="flex items-center">
-            <p className="font-semibold">
+            <p className="font-semibold text-sm">
               Filtrar por:
             </p>
           </div>
@@ -103,6 +113,7 @@ const Orders = () => {
               searchField="name"
               liveFilter={true}
               setFilter={setClient}
+              allInfo={false}
             />
 
             <Filter
@@ -111,7 +122,8 @@ const Orders = () => {
               searchField="name"
               jsonData="users"
               liveFilter={true}
-              setFilter={setUser}
+              setFilter={setSeler}
+              allInfo={true}
             />
 
             <Filter
@@ -126,6 +138,7 @@ const Orders = () => {
                 { status: 'Cancelado' },
               ]}
               setFilter={setStatus}
+              allInfo={false}
             />
 
             <Filter
@@ -141,6 +154,7 @@ const Orders = () => {
                 { created_at: 'Todos' },
               ]}
               setFilter={setDate}
+              allInfo={false}
             />
 
             <Filter
@@ -149,6 +163,7 @@ const Orders = () => {
               searchField="invoice_number"
               liveFilter={false}
               setFilter={setInvoice}
+              allInfo={false}
             />
 
           </div>
@@ -158,6 +173,11 @@ const Orders = () => {
               className="text-green-500 mr-2 cursor-pointer"
               title="Buscar"
               onClick={handleSearch}
+            />
+            <FaTrash
+              className="hidden text-red-500 cursor-pointer"
+              title="Borrar filtros"
+              onClick={handleClearFilters}
             />
           </div>
 

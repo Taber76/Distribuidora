@@ -51,7 +51,7 @@ const ItemRegister = () => {
 	return (
 		<div className="py-4 md:py-6">
 			<div className="flex flex-col text-center items-center">
-				<h2>Registro de producto</h2>
+				<h2 className="text-2xl font-bold text-gray-700">Registro de producto</h2>
 
 				{showModal && (
 					<Modal

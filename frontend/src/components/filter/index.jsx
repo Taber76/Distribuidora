@@ -9,7 +9,8 @@ const Filter = ({
   searchField,      // The field to search into jsonData
   liveFilter,       // If the filter is the active one
   preLoadedOptions, // The preloaded options without api
-  setFilter         // The function to set the selected filter value
+  setFilter,        // The function to set the selected filter value
+  allInfo           // Return all info from the document
 }) => {
   const [modal, setModal] = useState({ show: false, text: '' });
   const [optionsList, setOptionsList] = useState([]);
@@ -54,12 +55,24 @@ const Filter = ({
 
   const handleSearchChange = event => {
     setSearchTerm(event.target.value);
+    if (event.target.value === '') {
+      if (allInfo) {
+        setFilter({});
+      } else {
+        setFilter('');
+      }
+    }
   };
 
   const handleOptionSelect = option => {
     setSearchTerm(option);
     setIsDropdownOpen(false);
-    setFilter(option);
+    if (allInfo) {
+      const optionInfo = optionsList.filter(item => item[searchField] === option);
+      setFilter(optionInfo[0]);
+    } else {
+      setFilter(option);
+    }
   };
 
   return (

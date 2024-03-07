@@ -64,11 +64,15 @@ const UserUpdate = () => {
     { type: 'text', name: 'address', value: formData.address, onChange: handleChange, required: false, placeholder: 'Dirección' },
   ]
 
+  if (location.state.role != 'SELER') {
+    formDetail.push({ type: 'text', name: 'role', value: formData.role, onChange: handleChange, required: true, placeholder: 'Rol (requerido)' })
+  }
+
 
   return (
     <div className="py-4 md:py-6">
       <div className="flex flex-col text-center items-center">
-        <h2>Actualiza los datos</h2>
+        <h2 className="text-2xl font-bold text-gray-700">Actualiza los datos</h2>
 
         {showModal && (
           <Modal

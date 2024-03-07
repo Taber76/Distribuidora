@@ -33,18 +33,26 @@ const Items = () => {
       if (res.status === 202) {
         const data = await res.json()
         const items = data.items.map(({ profit_margin, supliers_id, created_at, updated_at, ...rest }) => rest)
+        if (window.innerWidth < 640) {
+          items.forEach((item) => {
+            item.purchase_price = `Precio de compra: $${item.purchase_price}`
+            item.sale_price = `Precio de venta: $${item.sale_price}`
+            item.stock = `Stock: ${item.stock} unidades`
+          })
+        }
         setItemList(items)
       } else {
         activeModal('No se han podido cargar los articulos.')
       }
     }
+
     getItems()
   }, [deleteItem])
 
   return (
-    <div className="py-4 md:py-6">
+    <div className="py-4 md:py-6 bg-gray-100">
       <div className="flex flex-col text-center items-center">
-        <h2>Productos</h2>
+        <h2 className="text-2xl font-bold text-gray-700">Productos</h2>
         <div className="flex flex-col gap-4 mt-4 w-2/3">
 
           {showModal && (
@@ -58,7 +66,7 @@ const Items = () => {
             />
           )}
 
-          <div className="flex items-center gap-4 w-full">
+          <div className="hidden sm:block flex items-center gap-4 w-full">
             <div className="flex flex-col sm:flex-row bg-blue-500 rounded-md shadow-md p-4 w-full">
 
               <div className={`mb-2 sm:mb-0 items-center justify-center flex`} style={{ minWidth: `${columnWidths.description}` }}>
