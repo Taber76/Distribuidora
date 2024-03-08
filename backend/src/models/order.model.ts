@@ -22,7 +22,7 @@ class OrderModel {
 
   public async getAll(): Promise<IOrder[]> {
     try {
-      const orders = await this.model.find();
+      const orders = await this.model.find({ active: true });
       return orders;
     } catch (error) {
       throw error;
@@ -33,6 +33,7 @@ class OrderModel {
     try {
       const filter: FilterQuery<IOrder> = {};
       filter[field] = value;
+      filter['active'] = true;
       const orders = await this.model.find(filter);
       return orders;
     } catch (error) {
@@ -42,7 +43,7 @@ class OrderModel {
 
   public async getFiltered(filter: FilterQuery<IOrder>): Promise<IOrder[]> {
     try {
-      console.log(filter);
+      filter['active'] = true;
       const orders = await this.model.find(filter);
       return orders;
     } catch (error) {
@@ -64,7 +65,7 @@ class OrderModel {
 
   public async delete(order_id: string): Promise<IOrder | null> {
     try {
-      const deletedOrder = await this.model.findByIdAndDelete({ _id: order_id });
+      const deletedOrder = await this.model.findByIdAndUpdate({ _id: order_id }, { active: false }, { new: true });
       return deletedOrder;
     } catch (error) {
       throw error;

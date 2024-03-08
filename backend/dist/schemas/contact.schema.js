@@ -29,5 +29,5 @@ exports.ContactSchema = new mongoose_1.Schema({
     avatar: { type: String, required: false },
     created_at: { type: Date, default: Date.now },
     updated_at: { type: Date, default: Date.now },
-    active: { type: Boolean, default: false },
+    active: { type: Boolean, default: true },
 });

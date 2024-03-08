@@ -22,7 +22,7 @@ class ContactModel {
 
   public async getAll(): Promise<IContact[]> {
     try {
-      const contacts = await this.model.find();
+      const contacts = await this.model.find({ active: true });
       return contacts;
     } catch (error) {
       throw error;
@@ -31,7 +31,7 @@ class ContactModel {
 
   public async getByPartialMatch(partialMatch: string): Promise<IContact[]> {
     try {
-      const contacts = await this.model.find({ name: { $regex: partialMatch, $options: 'i' } });
+      const contacts = await this.model.find({ name: { $regex: partialMatch, $options: 'i' }, active: true });
       return contacts;
     } catch (error) {
       throw error;
@@ -40,7 +40,7 @@ class ContactModel {
 
   public async getById(id: string): Promise<IContact | null> {
     try {
-      const contact = await this.model.findById(id);
+      const contact = await this.model.findOne({ _id: id, active: true })
       return contact;
     } catch (error) {
       throw error;
@@ -59,7 +59,7 @@ class ContactModel {
 
   public async delete(id: string): Promise<IContact | null> {
     try {
-      const deletedContact = await this.model.findByIdAndDelete(id);
+      const deletedContact = await this.model.findByIdAndUpdate(id, { active: false }, { new: true });
       return deletedContact;
     } catch (error) {
       throw error;

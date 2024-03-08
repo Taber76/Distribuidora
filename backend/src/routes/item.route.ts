@@ -42,7 +42,7 @@ itemRouter.put(
 
 itemRouter.delete(
   '/item/delete/:item_id',
-  passport.authenticate('userJWT', { session: false }),
+  passport.authenticate('adminJWT', { session: false }),
   itemController.delete
 )
 

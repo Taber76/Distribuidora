@@ -22,7 +22,7 @@ userRouter.get(
 
 userRouter.get(
   '/getall',
-  passport.authenticate('userJWT', { session: false }),
+  passport.authenticate('adminJWT', { session: false }),
   userController.getAll
 )
 

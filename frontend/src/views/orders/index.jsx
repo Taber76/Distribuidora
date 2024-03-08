@@ -50,6 +50,7 @@ const Orders = () => {
         const data = await res.json()
         data.orders.forEach((order) => {
           order.created_at = helpers.formatDate(order.created_at)
+          order.status = helpers.statusDictionary[order.status]
         })
         setOrderList(data.orders)
       } else {
@@ -65,7 +66,7 @@ const Orders = () => {
       let filter = {}
       if (client) filter.client_name = client
       if (seler) filter.user_id = seler._id
-      if (status) filter.status = status
+      if (status) filter.status = helpers.inverseStatusDictionary[status]
       if (date) filter.created_at = date
       if (invoice) filter.invoice_number = invoice
       let res
@@ -78,6 +79,7 @@ const Orders = () => {
         const data = await res.json()
         data.orders.forEach((order) => {
           order.created_at = helpers.formatDate(order.created_at)
+          order.status = helpers.statusDictionary[order.status]
         })
         setOrderList(data.orders)
       }
@@ -132,10 +134,12 @@ const Orders = () => {
               searchField="status"
               liveFilter={true}
               preLoadedOptions={[
+                { status: 'Borrador' },
                 { status: 'Pendiente' },
-                { status: 'En proceso' },
+                { status: 'Procesado' },
                 { status: 'Finalizado' },
                 { status: 'Cancelado' },
+                { status: 'Facturado' },
               ]}
               setFilter={setStatus}
               allInfo={false}

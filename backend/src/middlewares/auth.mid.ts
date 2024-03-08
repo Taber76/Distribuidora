@@ -23,5 +23,25 @@ passport.use(
   )
 );
 
+passport.use(
+  'adminJWT',
+  new JwtStrategy(
+    {
+      jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+      secretOrKey: JWT_SECRET,
+    },
+    async (payload, done) => {
+      try {
+        if (!payload.role || payload.role !== 'ADMIN') {
+          return done("Invalid token / User not logged", false);
+        }
+        return done(null, payload);
+      } catch (error) {
+        return done(error);
+      }
+    }
+  )
+)
+
 
 export default passport;

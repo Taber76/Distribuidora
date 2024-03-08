@@ -34,7 +34,7 @@ class OrderModel {
     getAll() {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const orders = yield this.model.find();
+                const orders = yield this.model.find({ active: true });
                 return orders;
             }
             catch (error) {
@@ -47,6 +47,7 @@ class OrderModel {
             try {
                 const filter = {};
                 filter[field] = value;
+                filter['active'] = true;
                 const orders = yield this.model.find(filter);
                 return orders;
             }
@@ -58,7 +59,7 @@ class OrderModel {
     getFiltered(filter) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                console.log(filter);
+                filter['active'] = true;
                 const orders = yield this.model.find(filter);
                 return orders;
             }
@@ -81,7 +82,7 @@ class OrderModel {
     delete(order_id) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const deletedOrder = yield this.model.findByIdAndDelete({ _id: order_id });
+                const deletedOrder = yield this.model.findByIdAndUpdate({ _id: order_id }, { active: false }, { new: true });
                 return deletedOrder;
             }
             catch (error) {

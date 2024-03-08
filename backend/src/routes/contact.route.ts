@@ -36,7 +36,7 @@ contactRouter.put(
 
 contactRouter.delete(
   '/delete/:contact_id',
-  passport.authenticate('userJWT', { session: false }),
+  passport.authenticate('adminJWT', { session: false }),
   contactController.delete
 )
 

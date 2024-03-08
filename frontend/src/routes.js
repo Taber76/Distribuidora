@@ -1,10 +1,7 @@
 
 import { BiHomeAlt2 } from "react-icons/bi";
-import { FaTruck } from "react-icons/fa";
-import { MdOutlineStorage } from "react-icons/md";
-import { FaWineBottle } from "react-icons/fa";
-import { MdContactPhone } from "react-icons/md";
-import { FaUsers } from "react-icons/fa";
+import { FaTruck, FaWineBottle, FaUsers } from "react-icons/fa";
+import { MdOutlineStorage, MdContactPhone } from "react-icons/md";
 
 export const routes = [
   {
@@ -17,11 +14,7 @@ export const routes = [
     path: "/orders",
     Icon: FaTruck,
   },
-  {
-    title: "Compras",
-    path: "#2",
-    Icon: MdOutlineStorage,
-  },
+
   {
     title: "Productos",
     path: "/items",
@@ -36,5 +29,11 @@ export const routes = [
     title: "Usuarios",
     path: "/users",
     Icon: FaUsers,
+  },
+  {
+    title: "Instrucciones",
+    path: "/instructions",
+    Icon: MdOutlineStorage,
   }
+
 ];

@@ -5,6 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const cors_1 = __importDefault(require("cors"));
+const express_rate_limit_1 = __importDefault(require("express-rate-limit"));
 //import { Server } from 'socket.io';
 //import http from 'http';
 const environment_1 = require("./config/environment");
@@ -22,6 +23,11 @@ const app = (0, express_1.default)();
 mogodb_1.default.getInstance();
 //RedisDB.getInstance()
 // ---------- Middlewares ----------
+const limiter = (0, express_rate_limit_1.default)({
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    max: 100, // limit each IP to 100 requests per windowMs
+});
+app.use(limiter);
 app.use(express_1.default.json());
 app.use((0, cors_1.default)());
 // ---------- Routes ---------------

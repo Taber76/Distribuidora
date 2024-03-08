@@ -10,6 +10,7 @@ export interface IItem extends Document {
   supliers_id: string[];
   created_at: Date;
   updated_at: Date;
+  active: boolean;
 }
 
 export const ItemSchema = new Schema<IItem>({
@@ -21,4 +22,5 @@ export const ItemSchema = new Schema<IItem>({
   supliers_id: [{ type: String, required: false }],
   created_at: { type: Date, default: Date.now },
   updated_at: { type: Date, default: Date.now },
+  active: { type: Boolean, default: true },
 })

@@ -13,5 +13,5 @@ itemRouter.get('/item/getbypartialmatch/:partialMatch', auth_mid_1.default.authe
 itemRouter.get('/item/getbyid/:item_id', auth_mid_1.default.authenticate('userJWT', { session: false }), item_controller_1.default.getById);
 itemRouter.put('/item/getdescriptions', auth_mid_1.default.authenticate('userJWT', { session: false }), item_controller_1.default.getDescriptions);
 itemRouter.put('/item/update/:item_id', auth_mid_1.default.authenticate('userJWT', { session: false }), item_controller_1.default.update);
-itemRouter.delete('/item/delete/:item_id', auth_mid_1.default.authenticate('userJWT', { session: false }), item_controller_1.default.delete);
+itemRouter.delete('/item/delete/:item_id', auth_mid_1.default.authenticate('adminJWT', { session: false }), item_controller_1.default.delete);
 exports.default = itemRouter;

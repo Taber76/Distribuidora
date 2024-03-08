@@ -47,7 +47,7 @@ class UserModel {
 
   public async getAll(): Promise<IUser[]> {
     try {
-      const users = await this.model.find();
+      const users = await this.model.find({ active: true });
       return users;
     } catch (error) {
       throw error;
@@ -67,7 +67,7 @@ class UserModel {
 
   public async delete(id: string): Promise<IUser | null> {
     try {
-      const deletedUser = await this.model.findByIdAndDelete(id);
+      const deletedUser = await this.model.findByIdAndUpdate(id, { active: false }, { new: true });
       return deletedUser;
     } catch (error) {
       throw error;

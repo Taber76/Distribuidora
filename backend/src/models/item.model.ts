@@ -22,7 +22,7 @@ class ItemModel {
 
   public async getAll(): Promise<IItem[]> {
     try {
-      const items = await this.model.find();
+      const items = await this.model.find({ active: true });
       return items;
     } catch (error) {
       throw error;
@@ -31,7 +31,7 @@ class ItemModel {
 
   public async getByDescription(partialMatch: string): Promise<IItem[]> {
     try {
-      const items = await this.model.find({ description: { $regex: partialMatch, $options: 'i' } });
+      const items = await this.model.find({ description: { $regex: partialMatch, $options: 'i' }, active: true });
       return items;
     } catch (error) {
       throw error;
@@ -79,7 +79,7 @@ class ItemModel {
 
   public async delete(item_id: string): Promise<IItem | null> {
     try {
-      const deletedItem = await this.model.findByIdAndDelete({ _id: item_id });
+      const deletedItem = await this.model.findByIdAndUpdate({ _id: item_id }, { active: false }, { new: true });
       return deletedItem;
     } catch (error) {
       throw error;

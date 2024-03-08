@@ -4,22 +4,37 @@ import { FaPlus, FaTrash } from 'react-icons/fa';
 
 import { InputDropdown } from '../input-dropdown';
 import { apiService } from '../../services/apiService';
+import { helpers } from '../../services/helpers';
 
 const FormOrder = ({
   handleFillForm,   // For father to send data of the order 
   formData,         // Data of the order when updating 
   updateType        // True if updating
 }) => {
+  const [showModal, setShowModal] = useState(false);
+  const [modalText, setModalText] = useState('');
   const [selectedClient, setSelectedClient] = useState({});
   const [selectedProduct, setSelectedProduct] = useState({});
   const [productList, setProductList] = useState([])
-  const user = useSelector((state) => state.user);
+  const { user } = useSelector((state) => state.user);
 
+  // Calculate total
   const [total, setTotal] = useState(0);
   const [iva, setIva] = useState(0);
   const [discountPercentage, setDiscountPercentage] = useState(0);
   const [discount, setDiscount] = useState(0);
   const [subtotal, setSubtotal] = useState(0);
+
+  // Allowed buttons
+  const [isAllowed, setIsAllowed] = useState(false);
+
+  const activeModal = (text, time) => {
+    setShowModal(true);
+    setModalText(text);
+    setTimeout(() => {
+      setShowModal(false);
+    }, time)
+  }
 
   // Load previous data (used for update order)
   useEffect(() => {
@@ -41,6 +56,7 @@ const FormOrder = ({
           })
         }
         setProductList(formData.items);
+        setIsAllowed(true);
       }
     }
     loadData()
@@ -70,6 +86,7 @@ const FormOrder = ({
       setDiscount(parseFloat(sum * (discountPercentage / 100)).toFixed(2))
       setIva(parseFloat(sum * (1 - (discountPercentage / 100)) * (22 / 100)).toFixed(2))
       setTotal(parseFloat(sum * (1 - (discountPercentage / 100)) * (122 / 100)).toFixed(2))
+      sum > 0 ? setIsAllowed(true) : setIsAllowed(false)
     }
   }, [productList, discountPercentage])
 
@@ -97,7 +114,7 @@ const FormOrder = ({
     const newForm = {
       client_id: client._id,
       client_name: client.name,
-      user_id: user.user._id,
+      user_id: user._id,
       discount: discountPercentage,
       observation: '',
       status: status,
@@ -109,17 +126,23 @@ const FormOrder = ({
   }
 
   const handleSendOrder = () => {
-    fillForm('IN_PROGRESS')
+    if (formData?.status != 'BILLED' || formData?.status != 'FINISHED') {
+      fillForm('IN_PROGRESS')
+    } else {
+      activeModal('La orden ya ha sido facturada o finalizada', 3000)
+    }
   }
 
   const handleSaveOrder = () => {
-    fillForm()
-    console.log('saving order')
+    if (formData?.status != 'BILLED' || formData?.status != 'FINISHED') {
+      fillForm('DRAFT')
+    } else {
+      activeModal('La orden ya ha sido facturada o finalizada', 3000)
+    }
   }
 
   const handleBillOrder = () => {
-    fillForm()
-    console.log('bill order')
+    fillForm('BILLED')
   }
 
   return (
@@ -127,36 +150,56 @@ const FormOrder = ({
 
       {/* Header */}
       {(!updateType || selectedClient) &&
-        <div className="flex flex-col sm:flex-row items-center justify-between w-full">
+        <div>
 
-          <div className="flex flex-col flex-1 sm:w-full border border-gray-300 rounded p-2 m-1" style={{ width: '100%' }}>
-            <span className="text-xs text-gray-500" style={{ textAlign: 'left' }}>Nombre del cliente</span>
-            <InputDropdown
-              className="bg-blue-100 text-xs rounded p-1 mt-1 w-full"
-              type="text"
-              required={true}
-              initValue={formData?.client_name} //{ selectedElementOfList: { client_name: formData.client_name } }
-              setValue={setSelectedClient}
-              apiUrl='contact/getbypartialmatch/'
-              jsonResponse={'contacts'}
-              fieldName={'name'}
-              index={0}
-              listName={'contactList'}
-            />
+          <div className="flex flex-col flex-1 sm:w-full w-1/3 border border-gray-300 rounded p-2 m-1" style={{ width: '100%' }}>
+            <span className="text-xs text-gray-500" style={{ textAlign: 'left' }}>Estado</span>
+            <span className="bg-blue-100 text-xs rounded p-1 mt-1 block" style={{ minHeight: '1.5rem' }}>{helpers.statusDictionary[formData?.status]}</span>
           </div>
 
-          <div className="flex flex-col flex-1 sm:w-full border border-gray-300 rounded p-2 m-1" style={{ width: '100%' }}>
-            <span className="text-xs text-gray-500" style={{ textAlign: 'left' }}>Dirección</span>
-            <span className="bg-blue-100 text-xs rounded p-1 mt-1 block" style={{ minHeight: '1.5rem' }}>{selectedClient && selectedClient.selectedElementOfList && selectedClient.selectedElementOfList.address || ' '}</span>
-          </div>
+          <div className="flex flex-col sm:flex-row items-center justify-between w-full">
 
-          <div className="flex flex-col flex-1 sm:w-full border border-gray-300 rounded p-2 m-1" style={{ width: '100%' }}>
-            <span className="text-xs text-gray-500" style={{ textAlign: 'left' }}>RUT</span>
-            <span className="bg-blue-100 text-xs rounded p-1 mt-1 block" style={{ minHeight: '1.5rem' }}>{selectedClient && selectedClient.selectedElementOfList && selectedClient.selectedElementOfList.rut || ' '}</span>
+            <div className="flex flex-col flex-1 sm:w-full border border-gray-300 rounded p-2 m-1" style={{ width: '100%' }}>
+              <span className="text-xs text-gray-500" style={{ textAlign: 'left' }}>Nombre del cliente</span>
+              <InputDropdown
+                className="bg-blue-100 text-xs rounded p-1 mt-1 w-full"
+                type="text"
+                required={true}
+                initValue={formData?.client_name}
+                setValue={setSelectedClient}
+                apiUrl='contact/getbypartialmatch/'
+                jsonResponse={'contacts'}
+                fieldName={'name'}
+                index={0}
+                listName={'contactList'}
+              />
+            </div>
+
+            <div className="flex flex-col flex-1 sm:w-full border border-gray-300 rounded p-2 m-1" style={{ width: '100%' }}>
+              <span className="text-xs text-gray-500" style={{ textAlign: 'left' }}>Dirección</span>
+              <span className="bg-blue-100 text-xs rounded p-1 mt-1 block" style={{ minHeight: '1.5rem' }}>{selectedClient && selectedClient.selectedElementOfList && selectedClient.selectedElementOfList.address || ' '}</span>
+            </div>
+
+            <div className="flex flex-col flex-1 sm:w-full border border-gray-300 rounded p-2 m-1" style={{ width: '100%' }}>
+              <span className="text-xs text-gray-500" style={{ textAlign: 'left' }}>RUT</span>
+              <span className="bg-blue-100 text-xs rounded p-1 mt-1 block" style={{ minHeight: '1.5rem' }}>{selectedClient && selectedClient.selectedElementOfList && selectedClient.selectedElementOfList.rut || ' '}</span>
+            </div>
+
           </div>
 
         </div>
       }
+
+      {showModal && (
+        <Modal
+          text={modalText}
+          width="300px"
+          height="150px"
+          color="blue"
+          textColor="white"
+          margin="0"
+        />
+      )}
 
       {/* Items */}
       <div className="flex flex-col items-center justify-between w-full">
@@ -330,28 +373,31 @@ const FormOrder = ({
 
         <div className="flex w-1/3 m-1 justify-center">
           <input
-            className="btn btn-primary py-2 rounded bg-blue-500 text-white text-center w-full"
+            className={`text-sm sm:text-base btn py-2 rounded text-center w-full ${isAllowed ? 'bg-blue-500 text-white' : 'bg-gray-300 text-gray-500 cursor-not-allowed'}`}
             type='button'
-            onClick={handleSendOrder}
-            value={"Enviar"}
-          />
-        </div>
-
-        <div className="flex w-1/3 m-1 justify-center">
-          <input
-            className="btn btn-primary py-2 rounded bg-blue-500 text-white text-center w-full"
-            type="button"
             onClick={handleSaveOrder}
-            value="Guardar"
+            value={"Guardar borrador"}
+            disabled={!isAllowed}
           />
         </div>
 
         <div className="flex w-1/3 m-1 justify-center">
           <input
-            className="btn btn-primary py-2 rounded bg-blue-500 text-white text-center w-full"
-            type="submit"
+            className={`text-sm sm:text-base btn py-2 rounded text-center w-full ${isAllowed ? 'bg-blue-500 text-white' : 'bg-gray-300 text-gray-500 cursor-not-allowed'}`}
+            type="button"
+            onClick={handleSendOrder}
+            value="Generar orden"
+            disabled={!isAllowed}
+          />
+        </div>
+
+        <div className="flex w-1/3 m-1 justify-center">
+          <input
+            className={`text-sm sm:text-base btn py-2 rounded text-center w-full ${(isAllowed && user.role === 'ADMIN') ? 'bg-blue-500 text-white' : 'bg-gray-300 text-gray-500 cursor-not-allowed'}`}
+            type="button"
             onClick={handleBillOrder}
             value="Facturar"
+            disabled={!isAllowed || user.role !== 'ADMIN'}
           />
         </div>
 

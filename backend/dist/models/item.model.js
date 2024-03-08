@@ -34,7 +34,7 @@ class ItemModel {
     getAll() {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const items = yield this.model.find();
+                const items = yield this.model.find({ active: true });
                 return items;
             }
             catch (error) {
@@ -45,7 +45,7 @@ class ItemModel {
     getByDescription(partialMatch) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const items = yield this.model.find({ description: { $regex: partialMatch, $options: 'i' } });
+                const items = yield this.model.find({ description: { $regex: partialMatch, $options: 'i' }, active: true });
                 return items;
             }
             catch (error) {
@@ -98,7 +98,7 @@ class ItemModel {
     delete(item_id) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const deletedItem = yield this.model.findByIdAndDelete({ _id: item_id });
+                const deletedItem = yield this.model.findByIdAndUpdate({ _id: item_id }, { active: false }, { new: true });
                 return deletedItem;
             }
             catch (error) {

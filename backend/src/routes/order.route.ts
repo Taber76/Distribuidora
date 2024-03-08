@@ -36,7 +36,7 @@ orderRouter.put(
 
 orderRouter.delete(
   '/delete/:order_id',
-  passport.authenticate('userJWT', { session: false }),
+  passport.authenticate('adminJWT', { session: false }),
   orderController.delete
 )
 

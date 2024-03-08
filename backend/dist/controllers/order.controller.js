@@ -44,7 +44,7 @@ class orderController {
                 if (req.params.field && req.params.value) {
                     const field = req.params.field;
                     const orders = yield order_model_1.default.getByField(field, req.params.value);
-                    res.status(202).json(orders);
+                    res.status(202).json({ orders });
                 }
                 else {
                     res.status(400).json({ error: language_loader_1.default.order.query_error });

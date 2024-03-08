@@ -74,7 +74,7 @@ class UserModel {
     getAll() {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const users = yield this.model.find();
+                const users = yield this.model.find({ active: true });
                 return users;
             }
             catch (error) {
@@ -98,7 +98,7 @@ class UserModel {
     delete(id) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const deletedUser = yield this.model.findByIdAndDelete(id);
+                const deletedUser = yield this.model.findByIdAndUpdate(id, { active: false }, { new: true });
                 return deletedUser;
             }
             catch (error) {

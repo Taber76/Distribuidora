@@ -1,4 +1,8 @@
 import { Schema, Document } from 'mongoose';
+//import AutoIncrementFactory from 'mongoose-sequence';
+//import MongoDB from '../config/mogodb';
+
+//const AutoIncrement = AutoIncrementFactory(MongoDB.getInstance().getConnection());
 
 interface IItem {
   item_id: string,
@@ -7,6 +11,7 @@ interface IItem {
 }
 
 export interface IOrder extends Document {
+  // order_id: number;
   client_id: string;
   client_name: string;
   user_id: string;
@@ -18,9 +23,11 @@ export interface IOrder extends Document {
   created_at: Date;
   updated_at: Date;
   finished_at: Date;
+  active: boolean;
 }
 
 export const OrderSchema = new Schema<IOrder>({
+  // order_id: { type: Number },
   client_id: { type: String, required: false },
   client_name: { type: String, required: false },
   user_id: { type: String, required: true },
@@ -34,10 +41,12 @@ export const OrderSchema = new Schema<IOrder>({
   status: {
     type: String,
     required: true,
-    enum: ['PENDING', 'IN_PROGRESS', 'FINISHED', 'CANCELED', 'BILLED']
+    enum: ['DRAFT', 'PENDING', 'IN_PROGRESS', 'FINISHED', 'CANCELED', 'BILLED']
   },
   invoice_number: { type: String, required: false },
   created_at: { type: Date, default: Date.now },
   updated_at: { type: Date, default: Date.now },
   finished_at: { type: Date, default: Date.now },
+  active: { type: Boolean, default: true },
 })
+

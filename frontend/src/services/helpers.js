@@ -5,6 +5,25 @@ export const helpers = {
 
   formatDate: (date) => { // ISO 8601 format to dd/mm/yyyy
     return new Date(date).toLocaleDateString('es-ES', { day: '2-digit', month: '2-digit', year: 'numeric' })
+  },
+
+  statusDictionary: {
+    DRAFT: 'Borrador',
+    PENDING: 'Pendiente',
+    IN_PROGRESS: 'Procesando',
+    FINISHED: 'Finalizado',
+    CANCELED: 'Cancelado',
+    BILLED: 'Facturado'
+  },
+
+  inverseStatusDictionary: {
+    Borrador: 'DRAFT',
+    Pendiente: 'PENDING',
+    Procesando: 'IN_PROGRESS',
+    Finalizado: 'FINISHED',
+    Cancelado: 'CANCELED',
+    Facturado: 'BILLED'
   }
 
 }
+

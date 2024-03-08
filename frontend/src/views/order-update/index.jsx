@@ -8,6 +8,7 @@ const OrderUpdate = () => {
 	const [showModal, setShowModal] = useState(false);
 	const [modalText, setModalText] = useState('');
 	const [formData, setFormData] = useState({});
+	const [updateData, setUpdateData] = useState(false);
 	const navigate = useNavigate()
 	const location = useLocation();
 
@@ -16,6 +17,7 @@ const OrderUpdate = () => {
 		setModalText(text);
 		setTimeout(() => {
 			setShowModal(false);
+			navigate('/orders')
 		}, time)
 	}
 
@@ -33,9 +35,17 @@ const OrderUpdate = () => {
 		getData()
 	}, [])
 
+	// Save form data to api
+	useEffect(() => {
+		if (updateData) {
+			handleSubmit()
+		}
+	}, [formData])
+
 	// For children update order
 	const handleFillForm = (newForm) => {
 		setFormData(newForm);
+		setUpdateData(true);
 	};
 
 	// To render children with updated data
@@ -49,7 +59,7 @@ const OrderUpdate = () => {
 	// Submit when formData is updated
 	const handleSubmit = async () => {
 		try {
-			const res = await apiService.postPut('PUT', 'order/update', formData)
+			const res = await apiService.postPut('PUT', `order/update/${location.state.item_id}`, formData)
 			if (res.status === 202) {
 				activeModal("Orden actualizada correctamente.", 1500)
 			} else {

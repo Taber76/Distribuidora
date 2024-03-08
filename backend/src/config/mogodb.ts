@@ -42,6 +42,7 @@ class MongoDB {
   public getConnection(): Connection {
     return this.connection;
   }
+
 }
 
 export default MongoDB;

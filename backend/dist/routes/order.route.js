@@ -9,10 +9,8 @@ const auth_mid_1 = __importDefault(require("../middlewares/auth.mid"));
 const orderRouter = express_1.default.Router();
 orderRouter.post('/register', auth_mid_1.default.authenticate('userJWT', { session: false }), order_controller_1.default.register);
 orderRouter.get('/getAll', auth_mid_1.default.authenticate('userJWT', { session: false }), order_controller_1.default.getAll);
-orderRouter.get('/getByField/:field/:value', 
-//passport.authenticate('userJWT', { session: false }),
-order_controller_1.default.getByField);
+orderRouter.get('/getByField/:field/:value', auth_mid_1.default.authenticate('userJWT', { session: false }), order_controller_1.default.getByField);
 orderRouter.post('/getFiltered', auth_mid_1.default.authenticate('userJWT', { session: false }), order_controller_1.default.getFiltered);
 orderRouter.put('/update/:order_id', auth_mid_1.default.authenticate('userJWT', { session: false }), order_controller_1.default.update);
-orderRouter.delete('/delete/:order_id', auth_mid_1.default.authenticate('userJWT', { session: false }), order_controller_1.default.delete);
+orderRouter.delete('/delete/:order_id', auth_mid_1.default.authenticate('adminJWT', { session: false }), order_controller_1.default.delete);
 exports.default = orderRouter;

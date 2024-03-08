@@ -11,4 +11,5 @@ exports.ItemSchema = new mongoose_1.Schema({
     supliers_id: [{ type: String, required: false }],
     created_at: { type: Date, default: Date.now },
     updated_at: { type: Date, default: Date.now },
+    active: { type: Boolean, default: true },
 });

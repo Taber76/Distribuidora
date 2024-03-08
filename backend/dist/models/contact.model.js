@@ -34,7 +34,7 @@ class ContactModel {
     getAll() {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const contacts = yield this.model.find();
+                const contacts = yield this.model.find({ active: true });
                 return contacts;
             }
             catch (error) {
@@ -45,7 +45,7 @@ class ContactModel {
     getByPartialMatch(partialMatch) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const contacts = yield this.model.find({ name: { $regex: partialMatch, $options: 'i' } });
+                const contacts = yield this.model.find({ name: { $regex: partialMatch, $options: 'i' }, active: true });
                 return contacts;
             }
             catch (error) {
@@ -56,7 +56,7 @@ class ContactModel {
     getById(id) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const contact = yield this.model.findById(id);
+                const contact = yield this.model.findOne({ _id: id, active: true });
                 return contact;
             }
             catch (error) {
@@ -79,7 +79,7 @@ class ContactModel {
     delete(id) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const deletedContact = yield this.model.findByIdAndDelete(id);
+                const deletedContact = yield this.model.findByIdAndUpdate(id, { active: false }, { new: true });
                 return deletedContact;
             }
             catch (error) {
