@@ -74,7 +74,7 @@ const OrderUpdate = () => {
 	return (
 		<div className="py-4 md:py-6 bg-gray-100">
 			<div className="flex flex-col text-center items-center">
-				<h2 className="text-2xl font-bold text-gray-700 mb-4">Modificacion de orden de compra</h2>
+				<h2 className="text-2xl font-bold text-gray-700 mb-3">Orden de compra</h2>
 
 				{showModal && (
 					<Modal

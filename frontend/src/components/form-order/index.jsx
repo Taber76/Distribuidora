@@ -1,8 +1,10 @@
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { FaPlus, FaTrash } from 'react-icons/fa';
+import { useNavigate } from 'react-router-dom';
 
 import { InputDropdown } from '../input-dropdown';
+import { Modal } from '../modal';
 import { apiService } from '../../services/apiService';
 import { helpers } from '../../services/helpers';
 
@@ -16,6 +18,7 @@ const FormOrder = ({
   const [selectedClient, setSelectedClient] = useState({});
   const [selectedProduct, setSelectedProduct] = useState({});
   const [productList, setProductList] = useState([])
+  const navigate = useNavigate();
   const { user } = useSelector((state) => state.user);
 
   // Calculate total
@@ -127,26 +130,26 @@ const FormOrder = ({
   }
 
   const handleSendOrder = () => {
-    if (formData?.status != 'BILLED' || formData?.status != 'FINISHED') {
+    if (formData?.status != 'BILLED') {
       fillForm('IN_PROGRESS', '')
     } else {
-      activeModal('La orden ya ha sido facturada o finalizada', 3000)
+      activeModal('La orden ya ha sido facturada, no se puede modificar.', 3000)
     }
   }
 
   const handleSaveOrder = () => {
-    if (formData?.status != 'BILLED' || formData?.status != 'FINISHED') {
+    if (formData?.status != 'BILLED') {
       fillForm('DRAFT', '')
     } else {
-      activeModal('La orden ya ha sido facturada o finalizada', 3000)
+      activeModal('La orden ya ha sido facturada, no se puede modificar.', 3000)
     }
   }
 
   const handleBillOrder = async () => {
     if (formData?.status === 'BILLED') {
-      activeModal('La orden ya ha sido facturada.', 3000)
+      activeModal('La orden ya ha sido facturada, no se puede volver a facturar.', 3000)
     } else {
-      const res = await apiService.postPut('POST', 'einvoice/register', {}) // bill order simulating
+      const res = await apiService.postPut('POST', 'einvoice/register', formData) // bill order simulating
       if (res.status === 201) {
         const data = await res.json()
         fillForm('BILLED', data.invoice_number)
@@ -380,40 +383,56 @@ const FormOrder = ({
 
 
       {/* Buttons */}
-      <div className="flex w-full">
 
-        <div className="flex w-1/3 m-1 justify-center">
-          <input
-            className={`text-sm sm:text-base btn py-2 rounded text-center w-full ${isAllowed ? 'bg-blue-500 text-white' : 'bg-gray-300 text-gray-500 cursor-not-allowed'}`}
-            type='button'
-            onClick={handleSaveOrder}
-            value={"Guardar borrador"}
-            disabled={!isAllowed}
-          />
+      {formData?.status === 'BILLED' ?
+
+        <div className="flex w-full justify-center">
+          <div className="flex w-2/3 m-1 justify-center">
+            <input
+              className={`text-sm sm:text-base btn py-2 rounded text-center w-full bg-blue-500 text-white`}
+              type='button'
+              onClick={() => navigate('/orders')}
+              value={"Volver"}
+            />
+          </div>
         </div>
 
-        <div className="flex w-1/3 m-1 justify-center">
-          <input
-            className={`text-sm sm:text-base btn py-2 rounded text-center w-full ${isAllowed ? 'bg-blue-500 text-white' : 'bg-gray-300 text-gray-500 cursor-not-allowed'}`}
-            type="button"
-            onClick={handleSendOrder}
-            value="Generar orden"
-            disabled={!isAllowed}
-          />
+        :
+        <div className="flex w-full">
+
+          <div className="flex w-1/3 m-1 justify-center">
+            <input
+              className={`text-sm sm:text-base btn py-2 rounded text-center w-full ${isAllowed ? 'bg-blue-500 text-white' : 'bg-gray-300 text-gray-500 cursor-not-allowed'}`}
+              type='button'
+              onClick={handleSaveOrder}
+              value={"Guardar borrador"}
+              disabled={!isAllowed}
+            />
+          </div>
+
+          <div className="flex w-1/3 m-1 justify-center">
+            <input
+              className={`text-sm sm:text-base btn py-2 rounded text-center w-full ${isAllowed ? 'bg-blue-500 text-white' : 'bg-gray-300 text-gray-500 cursor-not-allowed'}`}
+              type="button"
+              onClick={handleSendOrder}
+              value="Generar orden"
+              disabled={!isAllowed}
+            />
+          </div>
+
+          <div className="flex w-1/3 m-1 justify-center">
+            <input
+              className={`text-sm sm:text-base btn py-2 rounded text-center w-full ${(isAllowed && user.role === 'ADMIN') ? 'bg-blue-500 text-white' : 'bg-gray-300 text-gray-500 cursor-not-allowed'}`}
+              type="button"
+              onClick={handleBillOrder}
+              value="Facturar"
+              disabled={!isAllowed || user.role !== 'ADMIN'}
+            />
+          </div>
+
+
         </div>
-
-        <div className="flex w-1/3 m-1 justify-center">
-          <input
-            className={`text-sm sm:text-base btn py-2 rounded text-center w-full ${(isAllowed && user.role === 'ADMIN') ? 'bg-blue-500 text-white' : 'bg-gray-300 text-gray-500 cursor-not-allowed'}`}
-            type="button"
-            onClick={handleBillOrder}
-            value="Facturar"
-            disabled={!isAllowed || user.role !== 'ADMIN'}
-          />
-        </div>
-
-
-      </div>
+      }
     </form>
   );
 };
