@@ -15,6 +15,7 @@ const contact_route_1 = __importDefault(require("./routes/contact.route"));
 const user_route_1 = __importDefault(require("./routes/user.route"));
 const item_route_1 = __importDefault(require("./routes/item.route"));
 const order_route_1 = __importDefault(require("./routes/order.route"));
+const invoice_route_1 = __importDefault(require("./routes/invoice.route"));
 //import chatWebsocket from './websocket/chat.websocket';
 const app = (0, express_1.default)();
 //const server = http.createServer(app);
@@ -35,6 +36,7 @@ app.use('/api/v1/contact', contact_route_1.default);
 app.use('/api/v1/user', user_route_1.default);
 app.use('/api/v1', item_route_1.default);
 app.use('/api/v1/order', order_route_1.default);
+app.use('/api/v1', invoice_route_1.default);
 // ---------- Websocket ------------
 //chatWebsocket(io);
 // ---------- Start server ---------

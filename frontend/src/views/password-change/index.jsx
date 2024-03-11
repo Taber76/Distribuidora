@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 import { apiService } from '../../services/apiService';
 import { Modal } from '../../components';
@@ -8,6 +8,7 @@ const PasswordChange = () => {
   const [showModal, setShowModal] = useState(false);
   const [modalText, setModalText] = useState('');
   const [formData, setFormData] = useState({});
+  const location = useLocation();
   const navigate = useNavigate()
 
   const activeModal = (text, time) => {
@@ -15,6 +16,7 @@ const PasswordChange = () => {
     setModalText(text);
     setTimeout(() => {
       setShowModal(false);
+      navigate('/')
     }, time)
   }
 
@@ -25,13 +27,12 @@ const PasswordChange = () => {
         activeModal('Las contraseñas no coinciden.', 2000)
         return;
       }
-      const res = await apiService.postPut('PUT', 'user/update', formData)
+      const res = await apiService.postPut('PUT', 'user/updatepassword', { user_id: location.state.user_id, password: formData.password })
       if (res.status == 202) {
         activeModal('Contraseña actualizada con éxito.', 1500)
       } else {
         activeModal('Ocurrió un error, intente más tarde.', 2500)
       }
-      navigate('/')
     } catch (error) {
       activeModal('Ocurrió un error, intente más tarde.', 2500)
     }

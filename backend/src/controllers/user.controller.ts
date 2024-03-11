@@ -97,6 +97,21 @@ class UserController {
     }
   }
 
+  public async updatePassword(req: Request, res: Response): Promise<void> {
+    try {
+      console.log(req.body)
+      const newPassword = validateAndHashPassword(req.body.password);
+      const updatedUser = await userModelInstance.updatePassword(req.body.user_id, newPassword);
+      if (!updatedUser) {
+        res.status(404).json({ error: language.user.user_not_found });
+      } else {
+        res.status(202).json({ updatedUser });
+      }
+    } catch (error) {
+      res.status(500).json({ error: `${language.user.update_error}: ${error}` });
+    }
+  }
+
   public async delete(req: Request, res: Response): Promise<void> {
     try {
       const deletedUser = await userModelInstance.delete(req.params.user_id);

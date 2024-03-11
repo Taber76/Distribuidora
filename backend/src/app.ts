@@ -11,6 +11,7 @@ import contactRouter from './routes/contact.route';
 import userRouter from './routes/user.route';
 import itemRouter from './routes/item.route';
 import orderRouter from './routes/order.route';
+import einvoiceRouter from './routes/invoice.route';
 //import chatWebsocket from './websocket/chat.websocket';
 
 const app = express();
@@ -35,6 +36,7 @@ app.use('/api/v1/contact', contactRouter);
 app.use('/api/v1/user', userRouter);
 app.use('/api/v1', itemRouter);
 app.use('/api/v1/order', orderRouter);
+app.use('/api/v1', einvoiceRouter);
 
 // ---------- Websocket ------------
 //chatWebsocket(io);

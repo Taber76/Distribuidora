@@ -9,7 +9,7 @@ import { Modal } from '../../components';
 const Login = () => {
 	const [showModal, setShowModal] = useState(false);
 	const [modalText, setModalText] = useState('');
-	const [formData, setFormData] = useState({});
+	const [formData, setFormData] = useState({ username: 'Administrador', password: '12345678Aa' }); // for testing
 	const dispatch = useDispatch();
 	const navigate = useNavigate()
 
@@ -30,7 +30,8 @@ const Login = () => {
 				localStorage.setItem('token', data.token);
 				dispatch(setUser(data.user));
 				if (res.status === 302) {
-					navigate('/users/password-change')
+
+					navigate('/users/password-change', { state: { user_id: data.user._id } })
 					return
 				}
 				navigate('/')

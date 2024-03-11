@@ -109,7 +109,7 @@ const FormOrder = ({
   };
 
   // Fill form and send to father element
-  const fillForm = (status) => {
+  const fillForm = (status, invoice_number) => {
     const client = selectedClient.selectedElementOfList
     const newForm = {
       client_id: client._id,
@@ -118,6 +118,7 @@ const FormOrder = ({
       discount: discountPercentage,
       observation: '',
       status: status,
+      invoice_number: invoice_number,
       items: productList.map((item) => ({
         item_id: item.item_id, quantity: item.quantity, price: item.sale_price
       }))
@@ -127,7 +128,7 @@ const FormOrder = ({
 
   const handleSendOrder = () => {
     if (formData?.status != 'BILLED' || formData?.status != 'FINISHED') {
-      fillForm('IN_PROGRESS')
+      fillForm('IN_PROGRESS', '')
     } else {
       activeModal('La orden ya ha sido facturada o finalizada', 3000)
     }
@@ -135,14 +136,24 @@ const FormOrder = ({
 
   const handleSaveOrder = () => {
     if (formData?.status != 'BILLED' || formData?.status != 'FINISHED') {
-      fillForm('DRAFT')
+      fillForm('DRAFT', '')
     } else {
       activeModal('La orden ya ha sido facturada o finalizada', 3000)
     }
   }
 
-  const handleBillOrder = () => {
-    fillForm('BILLED')
+  const handleBillOrder = async () => {
+    if (formData?.status === 'BILLED') {
+      activeModal('La orden ya ha sido facturada.', 3000)
+    } else {
+      const res = await apiService.postPut('POST', 'einvoice/register', {}) // bill order simulating
+      if (res.status === 201) {
+        const data = await res.json()
+        fillForm('BILLED', data.invoice_number)
+      } else {
+        activeModal('Error al facturar la orden', 3000)
+      }
+    }
   }
 
   return (
@@ -154,7 +165,7 @@ const FormOrder = ({
 
           <div className="flex flex-col flex-1 sm:w-full w-1/3 border border-gray-300 rounded p-2 m-1" style={{ width: '100%' }}>
             <span className="text-xs text-gray-500" style={{ textAlign: 'left' }}>Estado</span>
-            <span className="bg-blue-100 text-xs rounded p-1 mt-1 block" style={{ minHeight: '1.5rem' }}>{helpers.statusDictionary[formData?.status]}</span>
+            <span className="bg-blue-100 text-xs rounded p-1 mt-1 block" style={{ minHeight: '1.5rem' }}>{helpers.statusDictionary[formData?.status] || 'Borrador'}</span>
           </div>
 
           <div className="flex flex-col sm:flex-row items-center justify-between w-full">

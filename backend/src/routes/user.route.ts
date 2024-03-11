@@ -38,6 +38,12 @@ userRouter.put(
   userController.update
 )
 
+userRouter.put(
+  '/updatepassword',
+  passport.authenticate('userJWT', { session: false }),
+  userController.updatePassword
+)
+
 userRouter.delete(
   '/delete/:user_id',
   passport.authenticate('userJWT', { session: false }),

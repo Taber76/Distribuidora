@@ -65,6 +65,15 @@ class UserModel {
     }
   }
 
+  public async updatePassword(user_id: string, password: string): Promise<IUser | null> {
+    try {
+      const updatedUser = await this.model.findByIdAndUpdate(user_id, { password }, { new: true, runValidators: true });
+      return updatedUser;
+    } catch (error) {
+      throw error;
+    }
+  }
+
   public async delete(id: string): Promise<IUser | null> {
     try {
       const deletedUser = await this.model.findByIdAndUpdate(id, { active: false }, { new: true });
