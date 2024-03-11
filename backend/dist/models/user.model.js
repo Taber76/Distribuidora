@@ -95,6 +95,17 @@ class UserModel {
             }
         });
     }
+    updatePassword(user_id, password) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const updatedUser = yield this.model.findByIdAndUpdate(user_id, { password }, { new: true, runValidators: true });
+                return updatedUser;
+            }
+            catch (error) {
+                throw error;
+            }
+        });
+    }
     delete(id) {
         return __awaiter(this, void 0, void 0, function* () {
             try {

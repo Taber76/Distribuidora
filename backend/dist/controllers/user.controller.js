@@ -123,6 +123,24 @@ class UserController {
             }
         });
     }
+    updatePassword(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                console.log(req.body);
+                const newPassword = (0, user_helper_1.validateAndHashPassword)(req.body.password);
+                const updatedUser = yield user_model_1.default.updatePassword(req.body.user_id, newPassword);
+                if (!updatedUser) {
+                    res.status(404).json({ error: language_loader_1.default.user.user_not_found });
+                }
+                else {
+                    res.status(202).json({ updatedUser });
+                }
+            }
+            catch (error) {
+                res.status(500).json({ error: `${language_loader_1.default.user.update_error}: ${error}` });
+            }
+        });
+    }
     delete(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {

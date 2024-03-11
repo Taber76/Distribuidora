@@ -13,5 +13,6 @@ userRouter.get('/getbyid/:user_id', auth_mid_1.default.authenticate('userJWT', {
 userRouter.get('/getall', auth_mid_1.default.authenticate('adminJWT', { session: false }), user_controller_1.default.getAll);
 userRouter.get('/getbytoken', auth_mid_1.default.authenticate('userJWT', { session: false }), user_controller_1.default.getByToken);
 userRouter.put('/update', auth_mid_1.default.authenticate('userJWT', { session: false }), user_controller_1.default.update);
+userRouter.put('/updatepassword', auth_mid_1.default.authenticate('userJWT', { session: false }), user_controller_1.default.updatePassword);
 userRouter.delete('/delete/:user_id', auth_mid_1.default.authenticate('userJWT', { session: false }), user_controller_1.default.delete);
 exports.default = userRouter;

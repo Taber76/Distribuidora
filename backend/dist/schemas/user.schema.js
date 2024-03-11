@@ -31,5 +31,5 @@ exports.UserSchema = new mongoose_1.Schema({
     secure_password: { type: Boolean, default: false },
     created_at: { type: Date, default: Date.now },
     updated_at: { type: Date, default: Date.now },
-    active: { type: Boolean, default: false },
+    active: { type: Boolean, default: true },
 });
