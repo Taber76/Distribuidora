@@ -10,6 +10,7 @@ import { Filter, Modal, List } from '../../components';
 const Orders = () => {
   const [showModal, setShowModal] = useState(false);
   const [modalText, setModalText] = useState('');
+  const [showFilters, setShowFilters] = useState(false)
   const [orderList, setOrderList] = useState([])
   const [deleteOrder, setDeleteOrder] = useState(false)
   const { user } = useSelector(state => state.user)
@@ -30,6 +31,10 @@ const Orders = () => {
       setShowModal(false);
     }, time)
   }
+
+  const toggleFilters = () => {
+    setShowFilters(!showFilters);
+  };
 
   const columnWidths = {
     client_name: '40%',
@@ -97,95 +102,109 @@ const Orders = () => {
       <div className="flex flex-col text-center items-center">
         <h2 className="text-2xl font-bold text-gray-700 mb-4">Ventas</h2>
 
-        {/* Filters */}
-        <div className="w-full flex flex-col sm:flex-row gap-4 justify-center items-center">
-
-          <div className="flex items-center">
-            <p className="font-semibold text-sm">
-              Filtrar por:
-            </p>
-          </div>
-
-          <div className="flex flex-col sm:flex-row gap-4">
-
-            <Filter
-              name="Clientes"
-              getRoute="contact/getall"
-              jsonData="contacts"
-              searchField="name"
-              liveFilter={true}
-              setFilter={setClient}
-              allInfo={false}
+        {/* Checkbox para mostrar/ocultar los filtros */}
+        <div className="flex w-2/3 justify-end">
+          <label className="text-sm font-bold text-gray-600">
+            Mostrar Filtros
+            <input
+              type="checkbox"
+              checked={showFilters}
+              onChange={toggleFilters}
+              className="ml-2"
             />
-
-            <Filter
-              name="Vendedores"
-              getRoute="user/getall"
-              searchField="name"
-              jsonData="users"
-              liveFilter={true}
-              setFilter={setSeler}
-              allInfo={true}
-            />
-
-            <Filter
-              name="Estado"
-              getRoute=""
-              searchField="status"
-              liveFilter={true}
-              preLoadedOptions={[
-                { status: 'Borrador' },
-                { status: 'Pendiente' },
-                { status: 'Procesado' },
-                { status: 'Finalizado' },
-                { status: 'Cancelado' },
-                { status: 'Facturado' },
-              ]}
-              setFilter={setStatus}
-              allInfo={false}
-            />
-
-            <Filter
-              name="Fecha"
-              getRoute="order/getall"
-              searchField="created_at"
-              liveFilter={true}
-              preLoadedOptions={[
-                { created_at: 'Semana' },
-                { created_at: 'Mes' },
-                { created_at: 'Trimestre' },
-                { created_at: 'Año' },
-                { created_at: 'Todos' },
-              ]}
-              setFilter={setDate}
-              allInfo={false}
-            />
-
-            <Filter
-              name="Factura"
-              getRoute="order/getall"
-              searchField="invoice_number"
-              liveFilter={false}
-              setFilter={setInvoice}
-              allInfo={false}
-            />
-
-          </div>
-
-          <div className={`flex items-center justify-end mb-2 sm:mb-0`} >
-            <FaSearch
-              className="text-green-500 mr-2 cursor-pointer"
-              title="Buscar"
-              onClick={handleSearch}
-            />
-            <FaTrash
-              className="hidden text-red-500 cursor-pointer"
-              title="Borrar filtros"
-              onClick={handleClearFilters}
-            />
-          </div>
-
+          </label>
         </div>
+
+        {/* Filters */}
+        {showFilters &&
+          <div className="w-full flex flex-col sm:flex-row gap-4 justify-center items-center">
+
+            <div className="flex items-center">
+              <p className="font-semibold text-sm">
+                Filtrar por:
+              </p>
+            </div>
+
+            <div className="flex flex-col sm:flex-row gap-4">
+
+              <Filter
+                name="Clientes"
+                getRoute="contact/getall"
+                jsonData="contacts"
+                searchField="name"
+                liveFilter={true}
+                setFilter={setClient}
+                allInfo={false}
+              />
+
+              <Filter
+                name="Vendedores"
+                getRoute="user/getall"
+                searchField="name"
+                jsonData="users"
+                liveFilter={true}
+                setFilter={setSeler}
+                allInfo={true}
+              />
+
+              <Filter
+                name="Estado"
+                getRoute=""
+                searchField="status"
+                liveFilter={true}
+                preLoadedOptions={[
+                  { status: 'Borrador' },
+                  { status: 'Pendiente' },
+                  { status: 'Procesado' },
+                  { status: 'Finalizado' },
+                  { status: 'Cancelado' },
+                  { status: 'Facturado' },
+                ]}
+                setFilter={setStatus}
+                allInfo={false}
+              />
+
+              <Filter
+                name="Fecha"
+                getRoute="order/getall"
+                searchField="created_at"
+                liveFilter={true}
+                preLoadedOptions={[
+                  { created_at: 'Semana' },
+                  { created_at: 'Mes' },
+                  { created_at: 'Trimestre' },
+                  { created_at: 'Año' },
+                  { created_at: 'Todos' },
+                ]}
+                setFilter={setDate}
+                allInfo={false}
+              />
+
+              <Filter
+                name="Factura"
+                getRoute="order/getall"
+                searchField="invoice_number"
+                liveFilter={false}
+                setFilter={setInvoice}
+                allInfo={false}
+              />
+
+            </div>
+
+            <div className={`flex items-center justify-end mb-2 sm:mb-0`} >
+              <FaSearch
+                className="text-green-500 mr-2 cursor-pointer"
+                title="Buscar"
+                onClick={handleSearch}
+              />
+              <FaTrash
+                className="hidden text-red-500 cursor-pointer"
+                title="Borrar filtros"
+                onClick={handleClearFilters}
+              />
+            </div>
+
+          </div>}
 
         {/* Orders list */}
 
@@ -205,20 +224,21 @@ const Orders = () => {
           <div className="flex orders-center gap-4 w-full">
             <div className="flex flex-col sm:flex-row bg-blue-500 rounded-md shadow-md p-4 w-full">
 
-              <div className={`mb-2 sm:mb-0 orders-center justify-center flex`} style={{ minWidth: `${columnWidths.client_name}` }}>
+              <div className={`hidden sm:block mb-2 sm:mb-0 orders-center justify-center flex`} style={{ minWidth: `${columnWidths.client_name}` }}>
                 <h3 className="text-md text-white font-semibold">Cliente</h3>
               </div>
-              <div className={`mb-2 sm:mb-0`} style={{ minWidth: `${columnWidths.status}` }}>
+              <div className={`hidden sm:block mb-2 sm:mb-0`} style={{ minWidth: `${columnWidths.status}` }}>
                 <h3 className="text-md text-white font-semibold">Estado</h3>
               </div>
-              <div className={`mb-2 sm:mb-0`} style={{ minWidth: `${columnWidths.invoice_number}` }}>
+              <div className={`hidden sm:block mb-2 sm:mb-0`} style={{ minWidth: `${columnWidths.invoice_number}` }}>
                 <h3 className="text-md text-white font-semibold">Factura</h3>
               </div>
-              <div className={`mb-2 sm:mb-0 orders-center justify-center flex`} style={{ minWidth: `${columnWidths.created_at}` }}>
+              <div className={`hidden sm:block mb-2 sm:mb-0 orders-center justify-center flex`} style={{ minWidth: `${columnWidths.created_at}` }}>
                 <h3 className="text-md text-white font-semibold">Fecha</h3>
               </div>
 
-              <div className={`flex orders-center justify-end items-center mb-2 sm:mb-0`} style={{ minWidth: `10%` }}>
+
+              <div className={`flex orders-center justify-center sm:justify-end items-center mb-0`} style={{ minWidth: `10%` }}>
                 <FaPlus
                   className="text-green-500 mr-2 cursor-pointer"
                   title="Nuevo"
