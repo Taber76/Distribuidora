@@ -15,7 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const item_model_1 = __importDefault(require("../models/item.model"));
 const language_loader_1 = __importDefault(require("../languages/language.loader"));
 class ItemController {
-    register(req, res) {
+    static register(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 req.body.description = String(req.body.description).toUpperCase();
@@ -27,7 +27,7 @@ class ItemController {
             }
         });
     }
-    getAll(req, res) {
+    static getAll(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const items = yield item_model_1.default.getAll();
@@ -38,7 +38,7 @@ class ItemController {
             }
         });
     }
-    getByDescription(req, res) {
+    static getByDescription(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const items = yield item_model_1.default.getByDescription(String(req.params.partialMatch));
@@ -49,7 +49,7 @@ class ItemController {
             }
         });
     }
-    getById(req, res) {
+    static getById(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const item = yield item_model_1.default.getById(req.params.item_id);
@@ -65,7 +65,7 @@ class ItemController {
             }
         });
     }
-    getDescriptions(req, res) {
+    static getDescriptions(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const descriptions = yield item_model_1.default.getDescriptions(req.body.arrayOfIds);
@@ -77,7 +77,7 @@ class ItemController {
             }
         });
     }
-    update(req, res) {
+    static update(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 req.body.description = String(req.body.description).toUpperCase();
@@ -94,7 +94,7 @@ class ItemController {
             }
         });
     }
-    delete(req, res) {
+    static delete(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const deletedItem = yield item_model_1.default.delete(req.params.item_id);
@@ -111,4 +111,4 @@ class ItemController {
         });
     }
 }
-exports.default = new ItemController();
+exports.default = ItemController;

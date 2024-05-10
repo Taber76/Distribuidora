@@ -5,12 +5,12 @@ import { IUser, UserSchema } from '../schemas/user.schema';
 class UserModel {
   private model: Model<IUser>;
 
-  public constructor() {
+  constructor() {
     const connection = MongoDB.getInstance().getConnection();
     this.model = connection.model<IUser>('User', UserSchema);
   }
 
-  public async login(username: string): Promise<IUser | null> {
+  async login(username: string): Promise<IUser | null> {
     try {
       let user = null;
       if (username) {
@@ -26,7 +26,7 @@ class UserModel {
     }
   }
 
-  public async register(userData: IUser): Promise<IUser> {
+  async register(userData: IUser): Promise<IUser> {
     try {
       const newUser = new this.model(userData);
       const savedUser = await newUser.save();
@@ -36,7 +36,7 @@ class UserModel {
     }
   }
 
-  public async getById(id: string): Promise<IUser | null> {
+  async getById(id: string): Promise<IUser | null> {
     try {
       const user = await this.model.findById(id);
       return user;
@@ -45,7 +45,7 @@ class UserModel {
     }
   }
 
-  public async getAll(): Promise<IUser[]> {
+  async getAll(): Promise<IUser[]> {
     try {
       const users = await this.model.find({ active: true });
       return users;
@@ -54,7 +54,7 @@ class UserModel {
     }
   }
 
-  public async update(userData: IUser): Promise<IUser | null> {
+  async update(userData: IUser): Promise<IUser | null> {
     try {
       const { _id, secure_password, created_at, ...dataToUpdate } = userData;
       dataToUpdate.updated_at = new Date();
@@ -65,7 +65,7 @@ class UserModel {
     }
   }
 
-  public async updatePassword(user_id: string, password: string): Promise<IUser | null> {
+  async updatePassword(user_id: string, password: string): Promise<IUser | null> {
     try {
       const updatedUser = await this.model.findByIdAndUpdate(user_id, { password }, { new: true, runValidators: true });
       return updatedUser;
@@ -74,7 +74,7 @@ class UserModel {
     }
   }
 
-  public async delete(id: string): Promise<IUser | null> {
+  async delete(id: string): Promise<IUser | null> {
     try {
       const deletedUser = await this.model.findByIdAndUpdate(id, { active: false }, { new: true });
       return deletedUser;

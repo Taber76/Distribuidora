@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 
 class EInvoiceController {
 
-  public async register(req: Request, res: Response): Promise<void> {
+  static async register(req: Request, res: Response): Promise<void> {
     try {
       res.status(201).json({ invoice_number: Math.floor(Math.random() * 9000000) + 1000000 });
     } catch (error) {
@@ -12,4 +12,4 @@ class EInvoiceController {
 
 }
 
-export default new EInvoiceController()
+export default EInvoiceController

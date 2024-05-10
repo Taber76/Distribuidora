@@ -5,12 +5,12 @@ import { IOrder, OrderSchema } from '../schemas/order.schema';
 class OrderModel {
   private model: Model<IOrder>;
 
-  public constructor() {
+  constructor() {
     const connection = MongoDB.getInstance().getConnection();
     this.model = connection.model<IOrder>('Order', OrderSchema);
   }
 
-  public async register(orderData: IOrder): Promise<IOrder> {
+  async register(orderData: IOrder): Promise<IOrder> {
     try {
       const newOrder = new this.model(orderData);
       const savedOrder = await newOrder.save();
@@ -20,7 +20,7 @@ class OrderModel {
     }
   }
 
-  public async getAll(): Promise<IOrder[]> {
+  async getAll(): Promise<IOrder[]> {
     try {
       const orders = await this.model.find({ active: true });
       return orders;
@@ -29,7 +29,7 @@ class OrderModel {
     }
   }
 
-  public async getByField(field: keyof IOrder, value: any): Promise<IOrder[]> {
+  async getByField(field: keyof IOrder, value: any): Promise<IOrder[]> {
     try {
       const filter: FilterQuery<IOrder> = {};
       filter[field] = value;
@@ -41,7 +41,7 @@ class OrderModel {
     }
   }
 
-  public async getFiltered(filter: FilterQuery<IOrder>): Promise<IOrder[]> {
+  async getFiltered(filter: FilterQuery<IOrder>): Promise<IOrder[]> {
     try {
       filter['active'] = true;
       const orders = await this.model.find(filter);
@@ -51,7 +51,7 @@ class OrderModel {
     }
   }
 
-  public async update(order_id: string, orderData: IOrder): Promise<IOrder | null> {
+  async update(order_id: string, orderData: IOrder): Promise<IOrder | null> {
     try {
       const updatedOrder = await this.model.findByIdAndUpdate(
         { _id: order_id },
@@ -63,7 +63,7 @@ class OrderModel {
     }
   }
 
-  public async delete(order_id: string): Promise<IOrder | null> {
+  async delete(order_id: string): Promise<IOrder | null> {
     try {
       const deletedOrder = await this.model.findByIdAndUpdate({ _id: order_id }, { active: false }, { new: true });
       return deletedOrder;

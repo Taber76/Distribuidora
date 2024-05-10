@@ -5,7 +5,7 @@ import language from '../languages/language.loader';
 
 class ItemController {
 
-  public async register(req: Request, res: Response): Promise<void> {
+  static async register(req: Request, res: Response): Promise<void> {
     try {
       req.body.description = String(req.body.description).toUpperCase();
       const item = await itemModelInstance.register(req.body);
@@ -16,7 +16,7 @@ class ItemController {
     }
   }
 
-  public async getAll(req: Request, res: Response): Promise<void> {
+  static async getAll(req: Request, res: Response): Promise<void> {
     try {
       const items = await itemModelInstance.getAll();
       res.status(202).json({ items });
@@ -25,7 +25,7 @@ class ItemController {
     }
   }
 
-  public async getByDescription(req: Request, res: Response): Promise<void> {
+  static async getByDescription(req: Request, res: Response): Promise<void> {
     try {
       const items = await itemModelInstance.getByDescription(String(req.params.partialMatch));
       res.status(202).json({ items });
@@ -34,7 +34,7 @@ class ItemController {
     }
   }
 
-  public async getById(req: Request, res: Response): Promise<void> {
+  static async getById(req: Request, res: Response): Promise<void> {
     try {
       const item = await itemModelInstance.getById(req.params.item_id);
       if (!item) {
@@ -47,7 +47,7 @@ class ItemController {
     }
   }
 
-  public async getDescriptions(req: Request, res: Response): Promise<void> {
+  static async getDescriptions(req: Request, res: Response): Promise<void> {
     try {
       const descriptions = await itemModelInstance.getDescriptions(req.body.arrayOfIds);
       res.status(202).json({ descriptions });
@@ -57,7 +57,7 @@ class ItemController {
     }
   }
 
-  public async update(req: Request, res: Response): Promise<void> {
+  static async update(req: Request, res: Response): Promise<void> {
     try {
       req.body.description = String(req.body.description).toUpperCase();
       const item = await itemModelInstance.update(req.params.item_id, req.body);
@@ -71,7 +71,7 @@ class ItemController {
     }
   }
 
-  public async delete(req: Request, res: Response): Promise<void> {
+  static async delete(req: Request, res: Response): Promise<void> {
     try {
       const deletedItem = await itemModelInstance.delete(req.params.item_id);
       if (!deletedItem) {
@@ -88,4 +88,4 @@ class ItemController {
 }
 
 
-export default new ItemController()
+export default ItemController

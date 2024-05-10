@@ -1,5 +1,5 @@
 import express from 'express';
-import orderController from '../controllers/order.controller';
+import OrderController from '../controllers/order.controller';
 import passport from '../middlewares/auth.mid';
 
 const orderRouter = express.Router();
@@ -7,37 +7,37 @@ const orderRouter = express.Router();
 orderRouter.post(
   '/register',
   passport.authenticate('userJWT', { session: false }),
-  orderController.register
+  OrderController.register
 )
 
 orderRouter.get(
   '/getAll',
   passport.authenticate('userJWT', { session: false }),
-  orderController.getAll
+  OrderController.getAll
 )
 
 orderRouter.get(
   '/getByField/:field/:value',
   passport.authenticate('userJWT', { session: false }),
-  orderController.getByField
+  OrderController.getByField
 )
 
 orderRouter.post(
   '/getFiltered',
   passport.authenticate('userJWT', { session: false }),
-  orderController.getFiltered
+  OrderController.getFiltered
 )
 
 orderRouter.put(
   '/update/:order_id',
   passport.authenticate('userJWT', { session: false }),
-  orderController.update
+  OrderController.update
 )
 
 orderRouter.delete(
   '/delete/:order_id',
   passport.authenticate('adminJWT', { session: false }),
-  orderController.delete
+  OrderController.delete
 )
 
 

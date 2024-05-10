@@ -26,18 +26,18 @@ class RedisDB {
     });
   }
 
-  public static getInstance(): RedisDB {
+  static getInstance(): RedisDB {
     if (!RedisDB.instance) {
       RedisDB.instance = new RedisDB();
     }
     return RedisDB.instance;
   }
 
-  public async set(key: string, value: string | null): Promise<void> {
+  async set(key: string, value: string | null): Promise<void> {
     await this.client.set(key, value);
   }
 
-  public async get(key: string): Promise<string | null> {
+  async get(key: string): Promise<string | null> {
     const value = await this.client.get(key);
     return value;
   }

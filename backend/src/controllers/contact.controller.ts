@@ -5,16 +5,17 @@ import language from '../languages/language.loader';
 
 class ContactController {
 
-  public async register(req: Request, res: Response): Promise<void> {
+  static async register(req: Request, res: Response): Promise<void> {
     try {
       const contact = await contactModelInstance.register(req.body);
       res.status(201).json({ message: language.contact.register_success, contact: contact });
     } catch (error) {
+      console.log(error);
       res.status(500).json({ error: `${language.contact.register_error}: ${error}` });
     }
   }
 
-  public async getAll(req: Request, res: Response): Promise<void> {
+  static async getAll(req: Request, res: Response): Promise<void> {
     try {
       const contacts = await contactModelInstance.getAll();
       res.status(202).json({ contacts });
@@ -23,7 +24,7 @@ class ContactController {
     }
   }
 
-  public async getByPartialMatch(req: Request, res: Response): Promise<void> {
+  static async getByPartialMatch(req: Request, res: Response): Promise<void> {
     try {
       const contacts = await contactModelInstance.getByPartialMatch(String(req.params.partialMatch));
       res.status(202).json({ contacts });
@@ -32,7 +33,7 @@ class ContactController {
     }
   }
 
-  public async getById(req: Request, res: Response): Promise<void> {
+  static async getById(req: Request, res: Response): Promise<void> {
     try {
       const contact = await contactModelInstance.getById(req.params.contact_id);
       if (!contact) {
@@ -45,7 +46,7 @@ class ContactController {
     }
   }
 
-  public async update(req: Request, res: Response): Promise<void> {
+  static async update(req: Request, res: Response): Promise<void> {
     try {
       const updatedContact = await contactModelInstance.update(req.body);
       if (!updatedContact) {
@@ -58,7 +59,7 @@ class ContactController {
     }
   }
 
-  public async delete(req: Request, res: Response): Promise<void> {
+  static async delete(req: Request, res: Response): Promise<void> {
     try {
       const deletedContact = await contactModelInstance.delete(req.params.contact_id);
       if (!deletedContact) {
@@ -74,4 +75,4 @@ class ContactController {
 
 }
 
-export default new ContactController();
+export default ContactController;

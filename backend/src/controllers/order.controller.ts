@@ -6,7 +6,7 @@ import { IOrder } from '../schemas/order.schema';
 
 class orderController {
 
-  public async register(req: Request, res: Response): Promise<void> {
+  static async register(req: Request, res: Response): Promise<void> {
     try {
       const order = await orderModelInstance.register(req.body);
       res.status(201).json(order);
@@ -17,7 +17,7 @@ class orderController {
     }
   }
 
-  public async getAll(req: Request, res: Response): Promise<void> {
+  static async getAll(req: Request, res: Response): Promise<void> {
     try {
       const orders = await orderModelInstance.getAll();
       res.status(202).json({ orders });
@@ -26,7 +26,7 @@ class orderController {
     }
   }
 
-  public async getByField(req: Request, res: Response): Promise<void> {
+  static async getByField(req: Request, res: Response): Promise<void> {
     try {
       if (req.params.field && req.params.value) {
         const field = req.params.field as keyof IOrder;
@@ -40,7 +40,7 @@ class orderController {
     }
   }
 
-  public async getFiltered(req: Request, res: Response): Promise<void> {
+  static async getFiltered(req: Request, res: Response): Promise<void> {
     try {
       const orders = await orderModelInstance.getFiltered(req.body);
       res.status(202).json({ orders });
@@ -49,7 +49,7 @@ class orderController {
     }
   }
 
-  public async update(req: Request, res: Response): Promise<void> {
+  static async update(req: Request, res: Response): Promise<void> {
     try {
       const order = await orderModelInstance.update(req.params.order_id, req.body);
       if (!order) {
@@ -62,7 +62,7 @@ class orderController {
     }
   }
 
-  public async delete(req: Request, res: Response): Promise<void> {
+  static async delete(req: Request, res: Response): Promise<void> {
     try {
       const deletedOrder = await orderModelInstance.delete(req.params.order_id);
       if (!deletedOrder) {
@@ -79,4 +79,4 @@ class orderController {
 }
 
 
-export default new orderController()
+export default orderController

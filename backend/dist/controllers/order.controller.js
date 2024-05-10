@@ -15,7 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const order_model_1 = __importDefault(require("../models/order.model"));
 const language_loader_1 = __importDefault(require("../languages/language.loader"));
 class orderController {
-    register(req, res) {
+    static register(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const order = yield order_model_1.default.register(req.body);
@@ -27,7 +27,7 @@ class orderController {
             }
         });
     }
-    getAll(req, res) {
+    static getAll(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const orders = yield order_model_1.default.getAll();
@@ -38,7 +38,7 @@ class orderController {
             }
         });
     }
-    getByField(req, res) {
+    static getByField(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 if (req.params.field && req.params.value) {
@@ -55,7 +55,7 @@ class orderController {
             }
         });
     }
-    getFiltered(req, res) {
+    static getFiltered(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const orders = yield order_model_1.default.getFiltered(req.body);
@@ -66,7 +66,7 @@ class orderController {
             }
         });
     }
-    update(req, res) {
+    static update(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const order = yield order_model_1.default.update(req.params.order_id, req.body);
@@ -82,7 +82,7 @@ class orderController {
             }
         });
     }
-    delete(req, res) {
+    static delete(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const deletedOrder = yield order_model_1.default.delete(req.params.order_id);
@@ -99,4 +99,4 @@ class orderController {
         });
     }
 }
-exports.default = new orderController();
+exports.default = orderController;

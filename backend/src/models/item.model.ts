@@ -5,12 +5,12 @@ import { IItem, ItemSchema } from '../schemas/item.schema';
 class ItemModel {
   private model: Model<IItem>;
 
-  public constructor() {
+  constructor() {
     const connection = MongoDB.getInstance().getConnection();
     this.model = connection.model<IItem>('Item', ItemSchema);
   }
 
-  public async register(itemData: IItem): Promise<IItem> {
+  async register(itemData: IItem): Promise<IItem> {
     try {
       const newItem = new this.model(itemData);
       const savedItem = await newItem.save();
@@ -20,7 +20,7 @@ class ItemModel {
     }
   }
 
-  public async getAll(): Promise<IItem[]> {
+  async getAll(): Promise<IItem[]> {
     try {
       const items = await this.model.find({ active: true });
       return items;
@@ -29,7 +29,7 @@ class ItemModel {
     }
   }
 
-  public async getByDescription(partialMatch: string): Promise<IItem[]> {
+  async getByDescription(partialMatch: string): Promise<IItem[]> {
     try {
       const items = await this.model.find({ description: { $regex: partialMatch, $options: 'i' }, active: true });
       return items;
@@ -38,7 +38,7 @@ class ItemModel {
     }
   }
 
-  public async getById(id: string): Promise<IItem | null> {
+  async getById(id: string): Promise<IItem | null> {
     try {
       const item = await this.model.findById({ _id: id });
       return item;
@@ -47,7 +47,7 @@ class ItemModel {
     }
   }
 
-  public async getDescriptions(arrayOfIds: string[]): Promise<Record<string, string>> {
+  async getDescriptions(arrayOfIds: string[]): Promise<Record<string, string>> {
     try {
       let descriptions: Record<string, string> = {};
       for (let i = 0; i < arrayOfIds.length; i++) {
@@ -65,7 +65,7 @@ class ItemModel {
   }
 
 
-  public async update(item_id: string, itemData: IItem): Promise<IItem | null> {
+  async update(item_id: string, itemData: IItem): Promise<IItem | null> {
     try {
       const updatedItem = await this.model.findByIdAndUpdate(
         { _id: item_id },
@@ -77,7 +77,7 @@ class ItemModel {
     }
   }
 
-  public async delete(item_id: string): Promise<IItem | null> {
+  async delete(item_id: string): Promise<IItem | null> {
     try {
       const deletedItem = await this.model.findByIdAndUpdate({ _id: item_id }, { active: false }, { new: true });
       return deletedItem;

@@ -1,5 +1,5 @@
 import express from 'express';
-import contactController from '../controllers/contact.controller';
+import ContactController from '../controllers/contact.controller';
 import passport from '../middlewares/auth.mid';
 
 const contactRouter = express.Router();
@@ -7,37 +7,37 @@ const contactRouter = express.Router();
 contactRouter.post(
   '/register',
   passport.authenticate('userJWT', { session: false }),
-  contactController.register
+  ContactController.register
 )
 
 contactRouter.get(
   '/getall',
   passport.authenticate('userJWT', { session: false }),
-  contactController.getAll
+  ContactController.getAll
 )
 
 contactRouter.get(
   '/getbypartialmatch/:partialMatch',
   passport.authenticate('userJWT', { session: false }),
-  contactController.getByPartialMatch
+  ContactController.getByPartialMatch
 )
 
 contactRouter.get(
   '/getById/:contact_id',
   passport.authenticate('userJWT', { session: false }),
-  contactController.getById
+  ContactController.getById
 )
 
 contactRouter.put(
   '/update',
   passport.authenticate('userJWT', { session: false }),
-  contactController.update
+  ContactController.update
 )
 
 contactRouter.delete(
   '/delete/:contact_id',
   passport.authenticate('adminJWT', { session: false }),
-  contactController.delete
+  ContactController.delete
 )
 
 

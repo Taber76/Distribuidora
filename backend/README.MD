@@ -15,7 +15,7 @@ El servidor es una aplicación monolítica desarrollada en Node.js utilizando Ty
 - **Socket.io**: Biblioteca para comunicación bidireccional en tiempo real a través de WebSocket.
 - **MongoDB**: Base de datos NoSQL utilizada para almacenar datos estructurados.
 - **Redis**: Almacén de estructuras de datos en memoria utilizado para almacenamiento en caché y gestión de sesiones.
-![Diagrama del servidor](/backend/public/backend.jpg "Diagrama del servidor")
+![Diagrama del servidor](/backend/static/backend.jpg "Diagrama del servidor")
 ### ARQUITECTURA
 El servidor sigue el patrón de diseño Modelo-Vista-Controlador (MVC), que divide la aplicación en tres componentes principales:
 - **Modelo (Model)**: Responsable de la gestión y manipulación de datos. Interactúa con las bases de datos MongoDB y Redis para el almacenamiento y recuperación de datos.

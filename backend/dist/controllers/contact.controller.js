@@ -15,18 +15,19 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const contact_model_1 = __importDefault(require("../models/contact.model"));
 const language_loader_1 = __importDefault(require("../languages/language.loader"));
 class ContactController {
-    register(req, res) {
+    static register(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const contact = yield contact_model_1.default.register(req.body);
                 res.status(201).json({ message: language_loader_1.default.contact.register_success, contact: contact });
             }
             catch (error) {
+                console.log(error);
                 res.status(500).json({ error: `${language_loader_1.default.contact.register_error}: ${error}` });
             }
         });
     }
-    getAll(req, res) {
+    static getAll(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const contacts = yield contact_model_1.default.getAll();
@@ -37,7 +38,7 @@ class ContactController {
             }
         });
     }
-    getByPartialMatch(req, res) {
+    static getByPartialMatch(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const contacts = yield contact_model_1.default.getByPartialMatch(String(req.params.partialMatch));
@@ -48,7 +49,7 @@ class ContactController {
             }
         });
     }
-    getById(req, res) {
+    static getById(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const contact = yield contact_model_1.default.getById(req.params.contact_id);
@@ -64,7 +65,7 @@ class ContactController {
             }
         });
     }
-    update(req, res) {
+    static update(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const updatedContact = yield contact_model_1.default.update(req.body);
@@ -80,7 +81,7 @@ class ContactController {
             }
         });
     }
-    delete(req, res) {
+    static delete(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const deletedContact = yield contact_model_1.default.delete(req.params.contact_id);
@@ -97,4 +98,4 @@ class ContactController {
         });
     }
 }
-exports.default = new ContactController();
+exports.default = ContactController;

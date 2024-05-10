@@ -1,49 +1,49 @@
 import express from 'express';
-import itemController from '../controllers/item.controller';
+import ItemController from '../controllers/item.controller';
 import passport from '../middlewares/auth.mid';
 
 const itemRouter = express.Router();
 
 itemRouter.post(
-  '/item/register',
+  '/register',
   passport.authenticate('userJWT', { session: false }),
-  itemController.register
+  ItemController.register
 )
 
 itemRouter.get(
-  '/item/getall',
+  '/getall',
   passport.authenticate('userJWT', { session: false }),
-  itemController.getAll
+  ItemController.getAll
 )
 
 itemRouter.get(
-  '/item/getbypartialmatch/:partialMatch',
+  '/getbypartialmatch/:partialMatch',
   passport.authenticate('userJWT', { session: false }),
-  itemController.getByDescription
+  ItemController.getByDescription
 )
 
 itemRouter.get(
-  '/item/getbyid/:item_id',
+  '/getbyid/:item_id',
   passport.authenticate('userJWT', { session: false }),
-  itemController.getById
+  ItemController.getById
 )
 
 itemRouter.put(
-  '/item/getdescriptions',
+  '/getdescriptions',
   passport.authenticate('userJWT', { session: false }),
-  itemController.getDescriptions
+  ItemController.getDescriptions
 )
 
 itemRouter.put(
-  '/item/update/:item_id',
+  '/update/:item_id',
   passport.authenticate('userJWT', { session: false }),
-  itemController.update
+  ItemController.update
 )
 
 itemRouter.delete(
-  '/item/delete/:item_id',
+  '/delete/:item_id',
   passport.authenticate('adminJWT', { session: false }),
-  itemController.delete
+  ItemController.delete
 )
 
 

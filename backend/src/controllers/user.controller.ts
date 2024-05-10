@@ -8,7 +8,7 @@ import { MODE } from '../config/environment';
 
 class UserController {
 
-  public async register(req: Request, res: Response): Promise<void> {
+  static async register(req: Request, res: Response): Promise<void> {
     try {
       req.body.password = validateAndHashPassword("Aa12345678");
       const user = await userModelInstance.register(req.body);
@@ -21,7 +21,7 @@ class UserController {
     }
   }
 
-  public async login(req: Request, res: Response): Promise<void> {
+  static async login(req: Request, res: Response): Promise<void> {
     try {
       if (MODE === 'dev') {
         const token = createJWT('1', 'ADMIN');
@@ -46,7 +46,7 @@ class UserController {
     }
   }
 
-  public async getById(req: Request, res: Response): Promise<void> {
+  static async getById(req: Request, res: Response): Promise<void> {
     try {
       const user = await userModelInstance.getById(req.params.user_id);
       if (!user) {
@@ -59,7 +59,7 @@ class UserController {
     }
   }
 
-  public async getAll(req: Request, res: Response): Promise<void> {
+  static async getAll(req: Request, res: Response): Promise<void> {
     try {
       const users = await userModelInstance.getAll();
       res.status(202).json({ users });
@@ -68,7 +68,7 @@ class UserController {
     }
   }
 
-  public async getByToken(req: Request, res: Response): Promise<void> {
+  static async getByToken(req: Request, res: Response): Promise<void> {
     try {
       const user = await userModelInstance.getById((req.user as AuthenticatedUser).id);
       if (!user) {
@@ -80,7 +80,7 @@ class UserController {
     }
   }
 
-  public async update(req: Request, res: Response): Promise<void> {
+  static async update(req: Request, res: Response): Promise<void> {
     try {
       if (req.body.password) {
         req.body.password = validateAndHashPassword(req.body.password);
@@ -97,7 +97,7 @@ class UserController {
     }
   }
 
-  public async updatePassword(req: Request, res: Response): Promise<void> {
+  static async updatePassword(req: Request, res: Response): Promise<void> {
     try {
       console.log(req.body)
       const newPassword = validateAndHashPassword(req.body.password);
@@ -112,7 +112,7 @@ class UserController {
     }
   }
 
-  public async delete(req: Request, res: Response): Promise<void> {
+  static async delete(req: Request, res: Response): Promise<void> {
     try {
       const deletedUser = await userModelInstance.delete(req.params.user_id);
       if (!deletedUser) {
@@ -128,4 +128,4 @@ class UserController {
 
 }
 
-export default new UserController();
+export default UserController

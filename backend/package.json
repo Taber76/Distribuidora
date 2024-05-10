@@ -5,7 +5,7 @@
   "main": "dist/app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "tsc && nodemon --exec ts-node --esm src/app.ts",
+    "dev": "tsc && nodemon --exec ts-node  src/app.ts",
     "build": "tsc",
     "start": "tsc && node dist/app.js",
     "lint": "eslint src/**/*.ts --fix"
@@ -44,7 +44,8 @@
     "eslint-config-prettier": "^9.0.0",
     "eslint-plugin-prettier": "^5.0.1",
     "prettier": "^3.1.0",
+    "ts-node": "^10.9.2",
     "ts-node-dev": "^2.0.0",
-    "typescript": "^5.3.2"
+    "typescript": "^5.4.5"
   }
 }

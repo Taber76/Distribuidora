@@ -10,7 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 class EInvoiceController {
-    register(req, res) {
+    static register(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 res.status(201).json({ invoice_number: Math.floor(Math.random() * 9000000) + 1000000 });
@@ -21,4 +21,4 @@ class EInvoiceController {
         });
     }
 }
-exports.default = new EInvoiceController();
+exports.default = EInvoiceController;

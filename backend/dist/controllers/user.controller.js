@@ -17,7 +17,7 @@ const user_helper_1 = require("../helpers/user.helper");
 const language_loader_1 = __importDefault(require("../languages/language.loader"));
 const environment_1 = require("../config/environment");
 class UserController {
-    register(req, res) {
+    static register(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 req.body.password = (0, user_helper_1.validateAndHashPassword)("Aa12345678");
@@ -32,7 +32,7 @@ class UserController {
             }
         });
     }
-    login(req, res) {
+    static login(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 if (environment_1.MODE === 'dev') {
@@ -62,7 +62,7 @@ class UserController {
             }
         });
     }
-    getById(req, res) {
+    static getById(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const user = yield user_model_1.default.getById(req.params.user_id);
@@ -78,7 +78,7 @@ class UserController {
             }
         });
     }
-    getAll(req, res) {
+    static getAll(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const users = yield user_model_1.default.getAll();
@@ -89,7 +89,7 @@ class UserController {
             }
         });
     }
-    getByToken(req, res) {
+    static getByToken(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const user = yield user_model_1.default.getById(req.user.id);
@@ -103,7 +103,7 @@ class UserController {
             }
         });
     }
-    update(req, res) {
+    static update(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 if (req.body.password) {
@@ -123,7 +123,7 @@ class UserController {
             }
         });
     }
-    updatePassword(req, res) {
+    static updatePassword(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 console.log(req.body);
@@ -141,7 +141,7 @@ class UserController {
             }
         });
     }
-    delete(req, res) {
+    static delete(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const deletedUser = yield user_model_1.default.delete(req.params.user_id);
@@ -158,4 +158,4 @@ class UserController {
         });
     }
 }
-exports.default = new UserController();
+exports.default = UserController;

@@ -5,12 +5,12 @@ import { IContact, ContactSchema } from '../schemas/contact.schema';
 class ContactModel {
   private model: Model<IContact>;
 
-  public constructor() {
+  constructor() {
     const connection = MongoDB.getInstance().getConnection();
     this.model = connection.model<IContact>('Contact', ContactSchema);
   }
 
-  public async register(contactData: IContact): Promise<IContact> {
+  async register(contactData: IContact): Promise<IContact> {
     try {
       const newContact = new this.model(contactData);
       const savedContact = await newContact.save();
@@ -20,7 +20,7 @@ class ContactModel {
     }
   }
 
-  public async getAll(): Promise<IContact[]> {
+  async getAll(): Promise<IContact[]> {
     try {
       const contacts = await this.model.find({ active: true });
       return contacts;
@@ -29,7 +29,7 @@ class ContactModel {
     }
   }
 
-  public async getByPartialMatch(partialMatch: string): Promise<IContact[]> {
+  async getByPartialMatch(partialMatch: string): Promise<IContact[]> {
     try {
       const contacts = await this.model.find({ name: { $regex: partialMatch, $options: 'i' }, active: true });
       return contacts;
@@ -38,7 +38,7 @@ class ContactModel {
     }
   }
 
-  public async getById(id: string): Promise<IContact | null> {
+  async getById(id: string): Promise<IContact | null> {
     try {
       const contact = await this.model.findOne({ _id: id, active: true })
       return contact;
@@ -47,7 +47,7 @@ class ContactModel {
     }
   }
 
-  public async update(contactData: IContact): Promise<IContact | null> {
+  async update(contactData: IContact): Promise<IContact | null> {
     try {
       contactData.updated_at = new Date();
       const updatedContact = await this.model.findByIdAndUpdate(contactData._id, contactData, { new: true, runValidators: true });
@@ -57,7 +57,7 @@ class ContactModel {
     }
   }
 
-  public async delete(id: string): Promise<IContact | null> {
+  async delete(id: string): Promise<IContact | null> {
     try {
       const deletedContact = await this.model.findByIdAndUpdate(id, { active: false }, { new: true });
       return deletedContact;
