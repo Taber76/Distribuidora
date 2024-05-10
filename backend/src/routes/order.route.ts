@@ -10,35 +10,35 @@ orderRouter.post(
   OrderController.register
 )
 
-orderRouter.get(
-  '/getAll',
-  passport.authenticate('userJWT', { session: false }),
-  OrderController.getAll
-)
+  .get(
+    '/getAll',
+    passport.authenticate('userJWT', { session: false }),
+    OrderController.getAll
+  )
 
-orderRouter.get(
-  '/getByField/:field/:value',
-  passport.authenticate('userJWT', { session: false }),
-  OrderController.getByField
-)
+  .get(
+    '/getByField/:field/:value',
+    passport.authenticate('userJWT', { session: false }),
+    OrderController.getByField
+  )
 
-orderRouter.post(
-  '/getFiltered',
-  passport.authenticate('userJWT', { session: false }),
-  OrderController.getFiltered
-)
+  .post(
+    '/getFiltered',
+    passport.authenticate('userJWT', { session: false }),
+    OrderController.getFiltered
+  )
 
-orderRouter.put(
-  '/update/:order_id',
-  passport.authenticate('userJWT', { session: false }),
-  OrderController.update
-)
+  .put(
+    '/update/:order_id',
+    passport.authenticate('userJWT', { session: false }),
+    OrderController.update
+  )
 
-orderRouter.delete(
-  '/delete/:order_id',
-  passport.authenticate('adminJWT', { session: false }),
-  OrderController.delete
-)
+  .delete(
+    '/delete/:order_id',
+    passport.authenticate('adminJWT', { session: false }),
+    OrderController.delete
+  )
 
 
 export default orderRouter
