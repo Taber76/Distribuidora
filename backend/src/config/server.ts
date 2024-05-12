@@ -2,7 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import rateLimit from 'express-rate-limit';
 
-import { PORT } from './environment';
+import { PORT, CORS_ORIGIN } from './environment';
 import MongoDB from './mogodb';
 import contactRouter from '../routes/contact.route';
 import userRouter from '../routes/user.route';
@@ -30,7 +30,9 @@ class Server {
     });
     this.app.use(limiter);
     this.app.use(express.json());
-    this.app.use(cors());
+    this.app.use(cors({
+      origin: CORS_ORIGIN,
+    }));
   }
 
   private routes() {

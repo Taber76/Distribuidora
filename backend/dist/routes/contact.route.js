@@ -7,10 +7,11 @@ const express_1 = __importDefault(require("express"));
 const contact_controller_1 = __importDefault(require("../controllers/contact.controller"));
 const auth_mid_1 = __importDefault(require("../middlewares/auth.mid"));
 const contactRouter = express_1.default.Router();
-contactRouter.post('/register', auth_mid_1.default.authenticate('userJWT', { session: false }), contact_controller_1.default.register);
-contactRouter.get('/getall', auth_mid_1.default.authenticate('userJWT', { session: false }), contact_controller_1.default.getAll);
-contactRouter.get('/getbypartialmatch/:partialMatch', auth_mid_1.default.authenticate('userJWT', { session: false }), contact_controller_1.default.getByPartialMatch);
-contactRouter.get('/getById/:contact_id', auth_mid_1.default.authenticate('userJWT', { session: false }), contact_controller_1.default.getById);
-contactRouter.put('/update', auth_mid_1.default.authenticate('userJWT', { session: false }), contact_controller_1.default.update);
-contactRouter.delete('/delete/:contact_id', auth_mid_1.default.authenticate('adminJWT', { session: false }), contact_controller_1.default.delete);
+contactRouter
+    .post('/register', auth_mid_1.default.authenticate('userJWT', { session: false }), contact_controller_1.default.register)
+    .get('/getall', auth_mid_1.default.authenticate('userJWT', { session: false }), contact_controller_1.default.getAll)
+    .get('/getbypartialmatch/:partialMatch', auth_mid_1.default.authenticate('userJWT', { session: false }), contact_controller_1.default.getByPartialMatch)
+    .get('/getById/:contact_id', auth_mid_1.default.authenticate('userJWT', { session: false }), contact_controller_1.default.getById)
+    .put('/update', auth_mid_1.default.authenticate('userJWT', { session: false }), contact_controller_1.default.update)
+    .delete('/delete/:contact_id', auth_mid_1.default.authenticate('adminJWT', { session: false }), contact_controller_1.default.delete);
 exports.default = contactRouter;
