@@ -10,7 +10,7 @@ class MongoDB {
       throw new Error('MONGODB_URI is not defined.');
     }
     const options: ConnectOptions = {
-      serverSelectionTimeoutMS: 10000,
+      serverSelectionTimeoutMS: 9000,
     };
 
     this.connection = mongoose.createConnection(MONGODB_URI, options);
