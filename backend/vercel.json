@@ -1,5 +1,6 @@
 {
   "version": 2,
+  "buildCommand": "npm run build",
   "builds": [
     {
       "src": "dist/app.js",
@@ -11,10 +12,5 @@
       "src": "/(.*)",
       "dest": "dist/app.js"
     }
-  ],
-  "build": {
-    "env": {
-      "BUILD_COMMAND": "echo 'Skip build step'"
-    }
-  }
+  ]
 }
