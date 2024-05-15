@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuites name="jest tests" tests="8" failures="0" errors="0" time="6.134">
-  <testsuite name="User" errors="0" failures="0" skipped="0" timestamp="2024-05-15T14:59:55" time="3.855" tests="7">
-    <testcase classname="User should return unauthorized without token" name="User should return unauthorized without token" time="0.119">
+<testsuites name="jest tests" tests="8" failures="0" errors="0" time="5.295">
+  <testsuite name="User" errors="0" failures="0" skipped="0" timestamp="2024-05-15T15:02:03" time="3.938" tests="7">
+    <testcase classname="User should return unauthorized without token" name="User should return unauthorized without token" time="0.112">
     </testcase>
-    <testcase classname="User should return user not found on login" name="User should return user not found on login" time="1.031">
+    <testcase classname="User should return user not found on login" name="User should return user not found on login" time="1.119">
     </testcase>
-    <testcase classname="User should return invalid password on login" name="User should return invalid password on login" time="0.073">
+    <testcase classname="User should return invalid password on login" name="User should return invalid password on login" time="0.083">
     </testcase>
-    <testcase classname="User should return a token on login" name="User should return a token on login" time="0.081">
+    <testcase classname="User should return a token on login" name="User should return a token on login" time="0.088">
     </testcase>
-    <testcase classname="User should return all users" name="User should return all users" time="0.054">
+    <testcase classname="User should return all users" name="User should return all users" time="0.058">
     </testcase>
-    <testcase classname="User should return a user by id" name="User should return a user by id" time="0.056">
+    <testcase classname="User should return a user by id" name="User should return a user by id" time="0.05">
     </testcase>
-    <testcase classname="User should return error on invalid id" name="User should return error on invalid id" time="0.017">
+    <testcase classname="User should return error on invalid id" name="User should return error on invalid id" time="0.006">
     </testcase>
   </testsuite>
-  <testsuite name="Item" errors="0" failures="0" skipped="0" timestamp="2024-05-15T14:59:58" time="2.157" tests="1">
-    <testcase classname="Item should return all items" name="Item should return all items" time="0.07">
+  <testsuite name="Item" errors="0" failures="0" skipped="0" timestamp="2024-05-15T15:02:07" time="1.237" tests="1">
+    <testcase classname="Item should return all items" name="Item should return all items" time="0.065">
     </testcase>
   </testsuite>
 </testsuites>
