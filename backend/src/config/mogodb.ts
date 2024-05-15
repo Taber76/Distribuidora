@@ -36,6 +36,10 @@ class MongoDB {
     return this.connection;
   }
 
+  public async close(): Promise<void> {
+    await this.connection.close();
+  }
+
 }
 
 export default MongoDB;

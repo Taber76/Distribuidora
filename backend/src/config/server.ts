@@ -12,6 +12,8 @@ import einvoiceRouter from '../routes/invoice.route';
 
 class Server {
   public app: express.Application;
+  private server: any;
+
   constructor() {
     this.app = express();
     this.dataBase();
@@ -28,12 +30,11 @@ class Server {
       windowMs: 15 * 60 * 1000, // 15 minutes
       max: 100, // limit each IP to 100 requests per windowMs
     });
-    this.app.use(cors(//{
-      //origin: CORS_ORIGIN,
-      //methods: ['GET', 'POST', 'PUT', 'DELETE'],
-      //credentials: true
-      //}));
-    ))
+    this.app.use(cors({
+      origin: CORS_ORIGIN,
+      methods: ['GET', 'POST', 'PUT', 'DELETE'],
+      credentials: true
+    }));
     this.app.use(express.json());
     this.app.use(limiter);
   }
@@ -47,9 +48,14 @@ class Server {
   }
 
   listen() {
-    this.app.listen(PORT, () => {
+    this.server = this.app.listen(PORT, () => {
       console.log(`Server running on port ${PORT}`);
     });
+  }
+
+  async close() {
+    await MongoDB.getInstance().close();
+    this.server.close();
   }
 }
 
