@@ -20,5 +20,16 @@ class EInvoiceController {
             }
         });
     }
+    static getAll(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const invoices = [];
+                res.status(202).json(invoices);
+            }
+            catch (error) {
+                res.status(500).json({ error: `Electronic invoice get all error: ${error}` });
+            }
+        });
+    }
 }
 exports.default = EInvoiceController;

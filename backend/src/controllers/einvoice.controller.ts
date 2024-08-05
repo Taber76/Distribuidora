@@ -10,6 +10,15 @@ class EInvoiceController {
     }
   }
 
+  static async getAll(req: Request, res: Response): Promise<void> {
+    try {
+      const invoices: any = [];
+      res.status(202).json(invoices);
+    } catch (error) {
+      res.status(500).json({ error: `Electronic invoice get all error: ${error}` });
+    }
+  }
+
 }
 
 export default EInvoiceController
