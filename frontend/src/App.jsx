@@ -1,5 +1,5 @@
 import { Home, Contacts, ContactRegister, ContactUpdate, Login, Orders, OrderRegister, OrderUpdate, Users, UserRegister, UserUpdate, PasswordChange, ItemRegister, ItemUpdate, Items, Instructions } from './views';
-import { NavBar, Footer } from './components';
+import { NavBar, Footer, Pri } from './components';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
 function App() {

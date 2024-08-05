@@ -6,7 +6,7 @@ const einvoiceRouter = express.Router();
 
 einvoiceRouter.post(
   '/register',
-  passport.authenticate('adminJWT', { session: false }),
+  //passport.authenticate('adminJWT', { session: false }),
   EinvoiceController.register
 )
 
