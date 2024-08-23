@@ -104,9 +104,11 @@
   },
   "include": [
     "src/**/*.ts",
+    "src/test/api/item.test.ts.bak",
   ],
   "exclude": [
     "node_modules",
     "dist",
+    "src/test"
   ]
 }

@@ -5,5 +5,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const server_1 = __importDefault(require("./config/server"));
 const server = new server_1.default();
-server.listen();
-exports.default = server;
+exports.default = (req, res) => {
+    server.app(req, res);
+};

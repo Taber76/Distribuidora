@@ -28,6 +28,7 @@ class Server {
         this.dataBase();
         this.middlewares();
         this.routes();
+        this.listen();
     }
     dataBase() {
         mogodb_1.default.getInstance();

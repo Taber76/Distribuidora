@@ -10,7 +10,7 @@ import itemRouter from '../routes/item.route';
 import orderRouter from '../routes/order.route';
 import einvoiceRouter from '../routes/invoice.route';
 
-class Server {
+export default class Server {
   public app: express.Application;
   private server: any;
 
@@ -19,6 +19,7 @@ class Server {
     this.dataBase();
     this.middlewares();
     this.routes();
+    this.listen();
   }
 
   private dataBase() {
@@ -47,7 +48,7 @@ class Server {
     this.app.use('/api/v1/einvoice', einvoiceRouter);
   }
 
-  listen() {
+  private listen() {
     this.server = this.app.listen(PORT, () => {
       console.log(`Server running on port ${PORT}`);
     });
@@ -59,5 +60,3 @@ class Server {
   }
 }
 
-
-export default Server
